@@ -5,33 +5,36 @@ const ExperienceSection = () => {
   return (
     <section
       id="experience"
-      className="min-h-screen px-6 md:px-12 lg:px-24 py-24 bg-slate-900 text-slate-50"
+      className="min-h-screen bg-slate-950 flex items-center"
     >
-      <SectionTitle
-        eyebrow="Experience"
-        title="경력 & 활동"
-        description="실제로 경험하고 성과를 낸 프로젝트 기반으로 성장했습니다."
-      />
+      <div className="w-full max-w-6xl mx-auto px-6 md:px-12 lg:px-24">
+        <SectionTitle
+          eyebrow="Experience"
+          title="경험"
+          description="프로젝트와 학습을 통해 성장해온 과정입니다."
+        />
 
-      <ul className="timeline space-y-12 border-l border-slate-700 pl-8">
-        {experiences.map((exp, idx) => (
-          <li key={idx} className="relative">
-            {/* 타임라인 동그란 점 */}
-            <span className="absolute -left-[19px] top-1 w-3 h-3 bg-teal-400 rounded-full"></span>
+        <ul className="border-l border-slate-800 pl-10 space-y-20">
+          {experiences.map((exp, idx) => (
+            <li key={idx} className="relative">
+              <span className="absolute -left-[7px] top-2 w-2 h-2 bg-teal-400 rounded-full" />
 
-            <h3 className="text-lg font-bold text-slate-100 mb-1">
-              {exp.role} · {exp.company}
-            </h3>
-            <p className="text-sm text-slate-400 mb-3">{exp.period}</p>
+              <h3 className="text-xl font-semibold text-slate-100">
+                {exp.role}
+              </h3>
+              <p className="text-slate-400 mt-1">
+                {exp.company} · {exp.period}
+              </p>
 
-            <ul className="space-y-1 list-disc list-inside text-slate-300">
-              {exp.description.map((d, i) => (
-                <li key={i}>{d}</li>
-              ))}
-            </ul>
-          </li>
-        ))}
-      </ul>
+              <ul className="mt-6 space-y-2 text-slate-300">
+                {exp.description.map((d, i) => (
+                  <li key={i}>– {d}</li>
+                ))}
+              </ul>
+            </li>
+          ))}
+        </ul>
+      </div>
     </section>
   );
 };

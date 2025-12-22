@@ -5,41 +5,37 @@ const SkillsSection = () => {
   return (
     <section
       id="skills"
-      className="min-h-screen px-6 md:px-12 lg:px-24 py-24 bg-slate-900 text-slate-50"
+      className="min-h-screen bg-slate-950 flex items-center"
     >
-      <SectionTitle
-        eyebrow="Skills"
-        title="핵심 역량 & 기술 스택"
-        description="실제 프로젝트에 적용해본 기술들을 중심으로 정리했습니다."
-      />
+      <div className="w-full max-w-6xl mx-auto px-6 md:px-12 lg:px-24">
+        <SectionTitle
+          eyebrow="Skills"
+          title="기술 스택"
+          description="실제 프로젝트에 적용해본 기술들입니다."
+        />
 
-      <div className="grid gap-8 md:grid-cols-2">
-        <div>
-          <h3 className="text-lg font-semibold mb-3">핵심 프론트엔드</h3>
-          <ul className="flex flex-wrap gap-2">
-            {coreSkills.map((skill) => (
-              <li
-                key={skill.name}
-                className="px-3 py-1 rounded-full bg-slate-800 text-sm text-slate-100"
-              >
-                {skill.name}
-              </li>
-            ))}
-          </ul>
-        </div>
+        <div className="grid gap-16 md:grid-cols-2">
+          <div>
+            <h3 className="text-xl font-semibold mb-6">Frontend</h3>
+            <ul className="space-y-3">
+              {coreSkills.map((skill) => (
+                <li key={skill.name} className="text-slate-300">
+                  {skill.name}
+                </li>
+              ))}
+            </ul>
+          </div>
 
-        <div>
-          <h3 className="text-lg font-semibold mb-3">그 외</h3>
-          <ul className="flex flex-wrap gap-2">
-            {etcSkills.map((skill) => (
-              <li
-                key={skill.name}
-                className="px-3 py-1 rounded-full bg-slate-800 text-sm text-slate-100"
-              >
-                {skill.name}
-              </li>
-            ))}
-          </ul>
+          <div>
+            <h3 className="text-xl font-semibold mb-6">Others</h3>
+            <ul className="space-y-3">
+              {etcSkills.map((skill) => (
+                <li key={skill.name} className="text-slate-300">
+                  {skill.name}
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
     </section>

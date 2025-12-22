@@ -5,17 +5,21 @@ type SectionTitleProps = {
 };
 
 export const SectionTitle = ({ eyebrow, title, description }: SectionTitleProps) => (
-  <header className="mb-8">
+  <header className="mb-16 max-w-3xl">
     {eyebrow && (
-      <p className="text-sm uppercase tracking-[0.2em] text-slate-400">
+      <p className="text-xs tracking-[0.25em] uppercase text-slate-500 mb-4">
         {eyebrow}
       </p>
     )}
-    <h2 className="text-3xl md:text-4xl font-bold text-slate-100 mt-2">
+
+    <h2 className="text-4xl md:text-5xl font-extrabold text-slate-100 leading-tight">
       {title}
     </h2>
+
     {description && (
-      <p className="mt-3 text-slate-400 max-w-2xl">{description}</p>
+      <p className="mt-6 text-lg text-slate-400 leading-relaxed">
+        {description}
+      </p>
     )}
   </header>
 );

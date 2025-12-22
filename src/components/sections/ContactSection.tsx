@@ -5,30 +5,32 @@ const ContactSection = () => {
   return (
     <section
       id="contact"
-      className="min-h-screen px-6 md:px-12 lg:px-24 py-24 bg-slate-900 text-slate-50 flex flex-col justify-center"
+      className="min-h-screen bg-slate-950 flex items-center"
     >
-      <SectionTitle
-        eyebrow="Contact"
-        title="함께할 기회를 기다리고 있습니다"
-        description="아래 링크를 통해 언제든 연락 주세요."
-      />
+      <div className="w-full max-w-6xl mx-auto px-6 md:px-12 lg:px-24">
+        <SectionTitle
+          eyebrow="Contact"
+          title="함께할 기회를 기다리고 있습니다"
+          description="아래 채널을 통해 언제든 편하게 연락 주세요."
+        />
 
-      <div className="flex gap-6 mt-10">
-        {contactLinks.map((link, i) => (
-          <a
-            key={i}
-            href={link.href}
-            target="_blank"
-            className="text-lg font-medium text-teal-400 hover:text-teal-300 transition"
-          >
-            {link.label}
-          </a>
-        ))}
+        <div className="mt-16 flex flex-col gap-8">
+          {contactLinks.map((link) => (
+            <a
+              key={link.label}
+              href={link.href}
+              target="_blank"
+              className="text-2xl font-semibold text-slate-300 hover:text-teal-400 transition"
+            >
+              {link.label} →
+            </a>
+          ))}
+        </div>
+
+        <p className="mt-24 text-sm text-slate-500">
+          © {new Date().getFullYear()} Jihoon Kim
+        </p>
       </div>
-
-      <p className="mt-12 text-slate-500 text-sm">
-        © {new Date().getFullYear()} Jihoon Kim
-      </p>
     </section>
   );
 };
