@@ -5,77 +5,80 @@ const ScrollProgressBar = () => {
   const [progress, setProgress] = useState(0);
   const [activeId, setActiveId] = useState("intro");
 
-  /* 1️⃣ 스크롤 진행도 (실시간 동기화) */
   useEffect(() => {
-    let rafId: number | null = null;
+    let sectionMeta: {
+      id: string;
+      start: number;
+      end: number;
+    }[] = [];
+
+    const calculateSections = () => {
+      let currentOffset = 0;
+      sectionMeta = [];
+
+      for (const section of SECTIONS) {
+        const el = document.getElementById(section.id);
+        if (!el) continue;
+
+        const height = el.offsetHeight;
+
+        sectionMeta.push({
+          id: section.id,
+          start: currentOffset,
+          end: currentOffset + height,
+        });
+
+        currentOffset += height;
+      }
+    };
 
     const update = () => {
-      const scrollTop = window.scrollY;
-      const docHeight =
-        document.documentElement.scrollHeight - window.innerHeight;
+      const scrollY = window.scrollY;
+      const viewportCenter = scrollY + window.innerHeight / 2;
 
-      if (docHeight > 0) {
-        setProgress(scrollTop / docHeight);
+      if (sectionMeta.length === 0) return;
+
+
+      // ===== progress 계산 =====
+      const totalScrollable =
+  document.documentElement.scrollHeight - window.innerHeight;
+const nextProgress = totalScrollable > 0 ? scrollY / totalScrollable : 0;
+      setProgress(Math.min(Math.max(nextProgress, 0), 1));
+
+      // ===== active section =====
+      for (const meta of sectionMeta) {
+        if (
+          viewportCenter >= meta.start &&
+          viewportCenter < meta.end
+        ) {
+          setActiveId(meta.id);
+          break;
+        }
       }
-
-      rafId = null;
     };
 
-    const onScroll = () => {
-      if (rafId === null) {
-        rafId = requestAnimationFrame(update);
-      }
-    };
-
-    window.addEventListener("scroll", onScroll, { passive: true });
+    calculateSections();
     update();
 
+    window.addEventListener("resize", calculateSections);
+    window.addEventListener("scroll", update, { passive: true });
+
     return () => {
-      window.removeEventListener("scroll", onScroll);
-      if (rafId) cancelAnimationFrame(rafId);
+      window.removeEventListener("resize", calculateSections);
+      window.removeEventListener("scroll", update);
     };
-  }, []);
-
-  /* 2️⃣ 현재 섹션 감지 */
-  useEffect(() => {
-    const sections = SECTIONS
-      .map((s) => document.getElementById(s.id))
-      .filter(Boolean) as HTMLElement[];
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveId(entry.target.id);
-          }
-        });
-      },
-      { threshold: 0.6 }
-    );
-
-    sections.forEach((s) => observer.observe(s));
-    return () => observer.disconnect();
   }, []);
 
   return (
     <div className="fixed left-8 top-1/2 -translate-y-1/2 z-40 flex gap-6">
-      {/* Progress Bar */}
-      <div className="relative w-[2px] h-[80vh] bg-slate-700/60 rounded-full overflow-hidden">
+      <div className="relative w-[2px] h-[70vh] bg-slate-700/60 rounded-full overflow-hidden">
         <div
-          className="
-            absolute inset-0
-            bg-teal-400
-            origin-top
-            will-change-transform
-          "
-          style={{
-            transform: `scaleY(${progress})`,
-          }}
+          className="absolute inset-0 bg-teal-400 origin-top transition-transform duration-200 ease-out"
+          style={{ transform: `scaleY(${progress})` }}
         />
       </div>
 
-      {/* Section Indicators */}
-      <ul className="flex flex-col justify-between h-[80vh] text-xs tracking-widest">
+      <ul className="flex flex-col justify-between h-[70vh] text-xs tracking-widest">
         {SECTIONS.map((section) => {
           const isActive = section.id === activeId;
 
@@ -87,8 +90,10 @@ const ScrollProgressBar = () => {
               }`}
             >
               <span
-                className={`w-2 h-2 rounded-full transition-transform duration-200 ${
-                  isActive ? "bg-teal-400 scale-125" : "bg-slate-500"
+                className={`w-2 h-2 rounded-full transition-transform ${
+                  isActive
+                    ? "bg-teal-400 scale-125"
+                    : "bg-slate-500"
                 }`}
               />
               {section.label}
