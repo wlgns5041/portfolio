@@ -165,7 +165,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         >
           {/* ✅ 이 문구도 가운데 정렬 */}
           <p className="text-sm text-slate-400 text-center">
-            메시지는{" "}
+            작성한 메시지는{" "}
             <span className="text-indigo-300 font-semibold">
               wlgns6921@gmail.com
             </span>

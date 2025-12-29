@@ -1,6 +1,14 @@
 import { motion } from "framer-motion";
 import { projects } from "../../data/projects";
 import { SectionTitle } from "../common/SectionTitle";
+import { useState } from "react";
+
+import ProjectPdfModal from "../modals/ProjectPdfModal";
+import ProjectDetailModal, {
+  type ProjectItem as ModalProjectItem,
+} from "../modals/ProjectDetailModal";
+
+import { projectDetails } from "../../data/projectDetails";
 
 import jsLogo from "../../assets/logos/javascript.png";
 import tsLogo from "../../assets/logos/typescript.png";
@@ -13,6 +21,8 @@ import reactqueryLogo from "../../assets/logos/reactquery.png";
 import reactLogo from "../../assets/logos/react.png";
 import tailwindLogo from "../../assets/logos/tailwild.png";
 import vercelLogo from "../../assets/logos/vercel.png";
+
+type ProjectItem = (typeof projects)[number];
 
 const TECH_LOGOS: Record<string, string> = {
   JavaScript: jsLogo,
@@ -80,6 +90,52 @@ const highlightPeople = (text?: string) => {
 };
 
 const ProjectsSection = () => {
+  // ✅ PDF 모달
+  const [selectedPdf, setSelectedPdf] = useState<ProjectItem | null>(null);
+
+  // ✅ Detail 모달
+  const [openDetail, setOpenDetail] = useState(false);
+  const [activeProject, setActiveProject] = useState<ModalProjectItem | null>(
+    null
+  );
+
+  // ✅ “카드용 Project” -> “모달용 ProjectItem” 변환 (여기서만 합치기)
+  const toModalProject = (p: ProjectItem): ModalProjectItem => {
+    return {
+      id: p.id,
+      title: p.title,
+      period: p.period,
+      people: p.people,
+      role: p.role,
+      techStack: p.techStack,
+      links: p.links,
+      detailImages: p.detailImages ?? [],
+      detail: projectDetails?.[p.id] ?? undefined,
+    };
+  };
+
+  const openProject = (project: ProjectItem) => {
+    // (선택) WIP는 클릭 막기
+    if (project.status === "WIP") return;
+
+    // 1) pdfUrl 있으면 PDF 모달(펫토리)
+    if (project.pdfUrl) {
+      setSelectedPdf(project);
+      return;
+    }
+
+    // 2) 아니면 상세 모달(개인 포폴 등)
+    setActiveProject(toModalProject(project));
+    setOpenDetail(true);
+  };
+
+  const closePdf = () => setSelectedPdf(null);
+
+  const closeDetail = () => {
+    setOpenDetail(false);
+    setActiveProject(null);
+  };
+
   return (
     <section id="projects" className="min-h-screen bg-slate-950">
       <div className="w-full max-w-7xl mx-auto px-6 md:px-12 lg:px-24 py-28">
@@ -93,7 +149,7 @@ const ProjectsSection = () => {
         <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-14">
           {projects.map((project, idx) => (
             <motion.article
-              key={idx}
+              key={project.id ?? idx}
               initial={{ opacity: 0, y: 18 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-120px" }}
@@ -104,6 +160,7 @@ const ProjectsSection = () => {
               }}
             >
               <div
+                onClick={() => openProject(project)}
                 className="
                   group
                   relative
@@ -122,6 +179,9 @@ const ProjectsSection = () => {
                 "
                 style={{
                   backgroundColor: idx === 1 ? "#2DD4BF" : "#F8FAFC",
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") openProject(project);
                 }}
               >
                 {project.image ? (
@@ -146,7 +206,6 @@ const ProjectsSection = () => {
                 )}
 
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.08] to-transparent" />
-
                 <div className="pointer-events-none absolute inset-x-0 bottom-0 h-0 bg-gradient-to-t from-black/35 to-transparent" />
               </div>
 
@@ -156,12 +215,26 @@ const ProjectsSection = () => {
                     {project.title}
                   </h3>
 
-                  {(project.links?.demo || project.links?.repo) && (
-                    <a className="text-xs md:text-sm text-slate-400 hover:text-slate-200 transition cursor-pointer">
-                      자세히 보기 →
-                    </a>
-                  )}
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation(); 
+                      openProject(project);
+                    }}
+                    disabled={project.status === "WIP"}
+                    className={`
+                      text-xs md:text-sm transition cursor-pointer
+                      ${
+                        project.status === "WIP"
+                          ? "text-slate-600 cursor-not-allowed"
+                          : "text-slate-400 hover:text-slate-200"
+                      }
+                    `}
+                  >
+                    자세히 보기 →
+                  </button>
                 </div>
+
                 <div className="mt-3 flex items-center gap-3 text-sm text-slate-500">
                   <span>{project.period}</span>
                   <span className="opacity-40">|</span>
@@ -229,6 +302,23 @@ const ProjectsSection = () => {
           ))}
         </div>
       </div>
+
+      {/* ✅ PETORY PDF */}
+      {selectedPdf?.pdfUrl && (
+        <ProjectPdfModal
+          open={!!selectedPdf}
+          onClose={closePdf}
+          title={selectedPdf.title}
+          pdfUrl={selectedPdf.pdfUrl}
+        />
+      )}
+
+      {/* ✅ 나머지 상세 */}
+      <ProjectDetailModal
+        open={openDetail}
+        project={activeProject}
+        onClose={closeDetail}
+      />
     </section>
   );
 };

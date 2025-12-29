@@ -12,6 +12,7 @@ export interface Experience {
 }
 
 export interface Project {
+  id: string;
   title: string;
   period: string;
   people: string;
@@ -26,6 +27,8 @@ export interface Project {
     demo?: string;
     repo?: string;
   };
+   pdfUrl?: string;
+   detailImages?: string[];
 }
 
 export interface ContactLink {

@@ -2,8 +2,14 @@ import type { Project } from "../types/profile";
 import petoryThumb from "../assets/images/petory.svg";
 import portfolioThumb from "../assets/images/portfolio.svg";
 
+import p1 from "../assets/images/portfolio_1.png";
+import p2 from "../assets/images/portfolio_2.png";
+import p3 from "../assets/images/portfolio_3.png";
+import p4 from "../assets/images/portfolio_4.png";
+
 export const projects: Project[] = [
   {
+    id: "petory",
     title: "PETORY - 반려동물 일정 / 공유돌봄 플랫폼",
     period: "2025.02 ~ 2025.11",
     people: "2명 (Backend 1, Frontend 1)",
@@ -22,20 +28,18 @@ export const projects: Project[] = [
     image: petoryThumb,
     links: {
       demo: "https://petory.site",
-      repo: "https://github.com/....",
+      repo: "https://github.com/wlgns5041/Petroy-FrontEnd",
     },
+    pdfUrl: "/pdfs/petory.pdf",
+    status: "READY",
   },
 
-   {
+  {
+    id: "portfolio",
     title: "개인 포트폴리오 웹사이트",
-    period: "2025.12 ~ 진행 중",
+    period: "2025.12",
     people: "개인 프로젝트",
-    techStack: [
-      "TypeScript",
-      "React",
-      "Tailwind CSS",
-      "Vercel",
-    ],
+    techStack: ["TypeScript", "React", "Tailwind CSS", "Vercel"],
     summary:
       "프론트엔드 개발 역량과 프로젝트 경험을 정리해 보여주는 웹 기반 포트폴리오.",
     role:
@@ -43,26 +47,23 @@ export const projects: Project[] = [
     image: portfolioThumb,
     links: {
       demo: "https://your-portfolio.vercel.app",
-      repo: "https://github.com/yourname/portfolio",
+      repo: "https://github.com/wlgns5041/portfolio",
     },
+    detailImages: [p1, p2, p3, p4], 
+    status: "READY",
   },
 
   {
-  title: "AI 코딩테스트 플랫폼 (준비 중)",
-  period: "2026 예정",
-  people: "3명 (Backend 2, Frontend 2)",
-      techStack: [
-      "TypeScript",
-      "React",
-      "React Query",
-      "Tailwind CSS",
-    ],
-  summary:
-    "언어/레벨별로 하루 1문제 코딩테스트를 제공하고, 개발자 전용 채팅 기반으로 풀이·피드백이 가능한 웹 플랫폼.",
-  role:
-    "AI 문제 생성 · 정답/피드백 평가 · 정답률/통계 시스템\n프롬프트 기반 풀이 경험 설계 · 랭킹 및 출석체크/코인 시스템",
-  status: "WIP",
-  thumbnailBg: "#0B1220",
-},
-
+    id: "ai-platform",
+    title: "AI 코딩테스트 플랫폼 (준비 중)",
+    period: "2026 예정",
+    people: "3명 (Backend 2, Frontend 2)",
+    techStack: ["TypeScript", "React", "React Query", "Tailwind CSS"],
+    summary:
+      "언어/레벨별로 하루 1문제 코딩테스트를 제공하고, 개발자 전용 채팅 기반으로 풀이·피드백이 가능한 웹 플랫폼.",
+    role:
+      "AI 문제 생성 · 정답/피드백 평가 · 정답률/통계 시스템\n프롬프트 기반 풀이 경험 설계 · 랭킹 및 출석체크/코인 시스템",
+    status: "WIP",
+    thumbnailBg: "#0B1220",
+  },
 ];
