@@ -1,7 +1,19 @@
-import type { ContactLink } from "../types/profile";
+import githubIcon from "../assets/logos/git.png";
+import blogIcon from "../assets/logos/velog.svg";
 
-export const contactLinks: ContactLink[] = [
-  { label: "GitHub", href: "https://github.com/...", type: "github" },
-  { label: "Blog", href: "https://blog...", type: "blog" },
-  { label: "Email", href: "mailto:you@example.com", type: "email" },
+export const contactLinks = [
+  {
+    label: "GitHub",
+    subLabel: "",
+    href: "https://github.com/yourname",
+    type: "github",
+    icon: githubIcon,
+  },
+  {
+    label: "개발 블로그",
+    subLabel: "",
+    href: "https://yourblog.com",
+    type: "blog",
+    icon: blogIcon,
+  },
 ];

@@ -14,9 +14,14 @@ export interface Experience {
 export interface Project {
   title: string;
   period: string;
+  people: string;
   techStack: string[];
   summary: string;
   role: string;
+  image?: string;
+  status?: "READY" | "WIP"; 
+  thumbnailBg?: string;
+  thumbnailMode?: "light" | "dark";
   links?: {
     demo?: string;
     repo?: string;

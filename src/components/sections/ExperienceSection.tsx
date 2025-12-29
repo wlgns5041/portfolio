@@ -7,7 +7,7 @@ const ExperienceSection = () => {
       id="experience"
       className="min-h-screen bg-slate-950 flex items-center"
     >
-      <div className="w-full max-w-6xl mx-auto px-6 md:px-12 lg:px-24">
+      <div className="w-full max-w-7xl mx-auto px-6 md:px-12 lg:px-24">
         <SectionTitle
           eyebrow="Experience"
           title="경험"

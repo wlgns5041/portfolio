@@ -6,6 +6,14 @@ import {
   useMotionValueEvent,
 } from "framer-motion";
 import type { Variants } from "framer-motion";
+
+import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
+import CalendarMonthRoundedIcon from "@mui/icons-material/CalendarMonthRounded";
+import LocationOnRoundedIcon from "@mui/icons-material/LocationOnRounded";
+import PhoneRoundedIcon from "@mui/icons-material/PhoneRounded";
+import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
+import EditNoteRoundedIcon from "@mui/icons-material/EditNoteRounded";
+
 import { useRef, useState } from "react";
 import galaxyImg from "../../assets/images/galaxy.jpg";
 import LogoLottie from "../common/LogoLottie";
@@ -40,22 +48,22 @@ const IntroSection = () => {
   const introHeroRef = useRef<HTMLDivElement>(null);
   const detailGridRef = useRef<HTMLDivElement>(null);
 
-  const { scrollYProgress } = useScroll({
-    target: visualWrapperRef,
-    offset: ["start end", "end start"],
-  });
+const { scrollYProgress: heroProgress } = useScroll({
+  target: introHeroRef,
+  offset: ["end end", "end start"],
+});
 
   const bottomFadeHeight = useTransform(
-    scrollYProgress,
+    heroProgress,
     [0.6, 0.9, 1],
     ["200px", "500px", "800px"]
   );
 
   const [isDocked, setIsDocked] = useState(false);
 
-  useMotionValueEvent(scrollYProgress, "change", (v) => {
-    setIsDocked(v > 0.001);
-  });
+useMotionValueEvent(heroProgress, "change", (v) => {
+  setIsDocked(v > 0.02);
+});
 
   return (
     <LayoutGroup>
@@ -174,6 +182,113 @@ const IntroSection = () => {
               </motion.div>
             </motion.div>
           </motion.div>
+        </div>
+
+        {/* ================== ABOUT ME ================== */}
+        <div className="relative z-20">
+          <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24 py-24">
+            {/* Title */}
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-120px" }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              className="flex flex-col items-center text-center"
+            >
+              <div className="flex items-center gap-4">
+                <h2 className="text-5xl md:text-6xl font-extrabold tracking-tight text-slate-100">
+                  ABOUT ME
+                </h2>
+              </div>
+
+              <div className="mt-6 w-80 max-w-xl h-px bg-slate-800" />
+            </motion.div>
+
+            {/* Grid */}
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-120px" }}
+              className="mt-16 mb-72 ml-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10"
+            >
+              {/* 1 */}
+              <motion.div variants={itemVariants} className="flex gap-5">
+                <div className="w-14 h-14 rounded-2xl bg-slate-900 flex items-center justify-center text-slate-200">
+                  <PersonRoundedIcon sx={{ fontSize: 28 }} />
+                </div>
+                <div>
+                  <p className="text-lg font-semibold text-slate-100">이름</p>
+                  <p className="mt-2 text-slate-400">김지훈</p>
+                </div>
+              </motion.div>
+
+              {/* 2 */}
+              <motion.div variants={itemVariants} className="flex gap-5">
+                <div className="w-14 h-14 rounded-2xl bg-slate-900 flex items-center justify-center text-slate-200">
+                  <CalendarMonthRoundedIcon sx={{ fontSize: 28 }} />
+                </div>
+                <div>
+                  <p className="text-lg font-semibold text-slate-100">
+                    생년월일
+                  </p>
+                  <p className="mt-2 text-slate-400">01.01.20</p>
+                </div>
+              </motion.div>
+
+              {/* 3 */}
+              <motion.div variants={itemVariants} className="flex gap-5">
+                <div className="w-14 h-14 rounded-2xl bg-slate-900 flex items-center justify-center text-slate-200">
+                  <LocationOnRoundedIcon sx={{ fontSize: 28 }} />
+                </div>
+                <div>
+                  <p className="text-lg font-semibold text-slate-100">위치</p>
+                  <p className="mt-2 text-slate-400">인천광역시 서구</p>
+                </div>
+              </motion.div>
+
+              {/* 4 */}
+              <motion.div variants={itemVariants} className="flex gap-5">
+                <div className="w-14 h-14 rounded-2xl bg-slate-900 flex items-center justify-center text-slate-200">
+                  <PhoneRoundedIcon sx={{ fontSize: 26 }} />
+                </div>
+                <div>
+                  <p className="text-lg font-semibold text-slate-100">연락처</p>
+                  <p className="mt-2 text-slate-400">010-5664-5041</p>
+                </div>
+              </motion.div>
+
+              {/* 5 */}
+              <motion.div variants={itemVariants} className="flex gap-5">
+                <div className="w-14 h-14 rounded-2xl bg-slate-900 flex items-center justify-center text-slate-200">
+                  <EmailRoundedIcon sx={{ fontSize: 26 }} />
+                </div>
+                <div>
+                  <p className="text-lg font-semibold text-slate-100">이메일</p>
+                  <p className="mt-2 text-slate-400 break-all">
+                    wlgns6921@gmail.com
+                  </p>
+                </div>
+              </motion.div>
+
+              {/* 6 */}
+              <motion.div className="grid grid-cols-[56px_1fr] gap-5 items-start">
+                <div className="w-14 h-14 rounded-2xl bg-slate-900 mt-1 flex items-center justify-center">
+                  <EditNoteRoundedIcon sx={{ fontSize: 26, opacity: 0.85 }} />
+                </div>
+
+                <div className="min-w-0">
+                  <p className="text-lg font-semibold text-slate-100 leading-none">
+                    학력
+                  </p>
+                  <div className="mt-2 text-slate-400 leading-snug">
+                    <div>성결대학교 정보통신공학과</div>
+                    <div>2025.02 졸업</div>
+                  </div>
+                </div>
+              </motion.div>
+            </motion.div>
+          </div>
         </div>
 
         {/* ================== SCROLL SECTION ================== */}
