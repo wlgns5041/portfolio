@@ -372,16 +372,14 @@ const IntroSection = () => {
                   안녕하세요. 책임감 있는 프론트엔드 개발자 김지훈입니다.
                 </motion.p>
 
-                <div className="border-t border-dashed border-slate-700 my-6" />
 
                 {/* 섹션 카드들 */}
                 <div className="mt-8 grid gap-4">
                   {/* 지원 동기 */}
                   <motion.section
                     variants={itemVariants}
-                    className="relative pl-8 rounded-2xl bg-slate-950/35 p-6"
+                    className="relative pl-2 bg-slate-950/35 p-6 border-t border-dashed border-slate-700"
                   >
-                    <span className="absolute left-1 top-6 bottom-6 w-[4px] bg-slate-700/70" />
                     <p className="text-sm tracking-[0.18em] uppercase text-slate-500">
                       Motivation
                     </p>
@@ -401,9 +399,8 @@ const IntroSection = () => {
                   {/* 역량/프로젝트 */}
                   <motion.section
                     variants={itemVariants}
-                    className="relative pl-8 rounded-2xl bg-slate-950/35 p-6"
+                    className="relative pl-2 bg-slate-950/35 p-6 border-t border-dashed border-slate-700"
                   >
-                    <span className="absolute left-1 top-6 bottom-6 w-[4px] bg-slate-700/70" />
                     <p className="text-sm tracking-[0.18em] uppercase text-slate-500">
                       Capability & Projects
                     </p>
@@ -444,9 +441,8 @@ const IntroSection = () => {
                   {/* 문제 해결 */}
                   <motion.section
                     variants={itemVariants}
-                    className="relative pl-8 rounded-2xl bg-slate-950/35 p-6"
+                    className="relative pl-2 bg-slate-950/35 p-6 border-t border-dashed border-slate-700"
                   >
-                    <span className="absolute left-1 top-6 bottom-6 w-[4px] bg-slate-700/70" />
                     <p className="text-sm tracking-[0.18em] uppercase text-slate-500">
                       Problem Solving
                     </p>
@@ -486,9 +482,8 @@ const IntroSection = () => {
                   {/* 협업 */}
                   <motion.section
                     variants={itemVariants}
-                    className="relative pl-8 rounded-2xl bg-slate-950/35 p-6"
+                    className="relative pl-2 bg-slate-950/35 p-6 border-t border-dashed border-slate-700"
                   >
-                    <span className="absolute left-1 top-6 bottom-6 w-[4px] bg-slate-700/70" />
                     <p className="text-sm tracking-[0.18em] uppercase text-slate-500">
                       Collaboration
                     </p>
@@ -506,9 +501,8 @@ const IntroSection = () => {
                   {/* 포부 */}
                   <motion.section
                     variants={itemVariants}
-                    className="relative pl-8 rounded-2xl bg-slate-950/35 p-6"
+                    className="relative pl-2 bg-slate-950/35 p-6 border-t border-dashed border-slate-700"
                   >
-                    <span className="absolute left-1 top-6 bottom-6 w-[4px] bg-slate-700/70" />
                     <p className="text-sm tracking-[0.18em] uppercase text-slate-500">
                       Goal
                     </p>
