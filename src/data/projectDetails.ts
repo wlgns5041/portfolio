@@ -1,4 +1,3 @@
-// src/data/projectDetails.ts
 import type { ProjectItem } from "../components/modals/ProjectDetailModal";
 
 export const projectDetails: Record<string, ProjectItem["detail"]> = {

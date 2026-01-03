@@ -1,4 +1,4 @@
-import type { Project } from "../types/profile";
+import type { Project } from "../types/types";
 import petoryThumb from "../assets/images/petory.svg";
 import portfolioThumb from "../assets/images/portfolio.svg";
 
@@ -22,6 +22,7 @@ export const projects: Project[] = [
       "Docker",
       "Jenkins",
       "AWS",
+      "Vercel"
     ],
     summary: "반려동물 일정 관리, 공유 돌봄, 커뮤니티 기능을 제공하는 웹 서비스.",
     role: "프론트엔드 단독 개발 (기획, UI/UX 설계, React 구조 설계, 배포)",

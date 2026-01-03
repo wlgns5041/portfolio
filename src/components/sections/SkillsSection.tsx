@@ -85,7 +85,7 @@ const SkillsSection = () => {
 
   return (
     <section id="skills" className="min-h-screen bg-slate-950 flex items-center">
-      <div className="w-full max-w-6xl mx-auto px-6 md:px-12 lg:px-24 py-28">
+      <div className="w-full max-w-7xl mx-auto px-6 md:px-12 lg:px-24 py-28">
         <SectionTitle
           eyebrow="Skills"
           title="기술 스택"

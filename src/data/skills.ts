@@ -1,4 +1,4 @@
-import type { Skill } from "../types/profile";
+import type { Skill } from "../types/types";
 
 export const coreSkills: Skill[] = [
   { name: "React", level: "advanced", category: "Frontend" },

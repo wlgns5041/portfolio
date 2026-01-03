@@ -293,7 +293,7 @@ const ProjectsSection = () => {
                 </div>
 
                 <div className="mt-4 flex flex-wrap gap-3">
-                  {project.techStack?.slice(0, 6).map((tech) => (
+                  {project.techStack?.slice(0, 9).map((tech) => (
                     <TechBox key={tech} label={tech} />
                   ))}
                 </div>

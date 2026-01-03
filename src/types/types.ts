@@ -4,11 +4,20 @@ export interface Skill {
   category?: string; 
 }
 
-export interface Experience {
-  company: string;
-  role: string;
-  period: string;       
-  description: string[]; 
+export interface Capability {
+  title: string;     
+  summary: string;   
+  points: string[];  
+  tags?: string[];   
+}
+
+export interface ExperienceCase {
+  title: string; 
+  project?: string; 
+  items: {
+    label: "문제" | "해결" | "성과" | "배운점";
+    text: string;
+  }[];
 }
 
 export interface Project {

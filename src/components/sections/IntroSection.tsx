@@ -7,6 +7,8 @@ import {
 } from "framer-motion";
 import type { Variants } from "framer-motion";
 
+import ProjectPdfModal from "../modals/ProjectPdfModal";
+
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import CalendarMonthRoundedIcon from "@mui/icons-material/CalendarMonthRounded";
 import LocationOnRoundedIcon from "@mui/icons-material/LocationOnRounded";
@@ -48,10 +50,10 @@ const IntroSection = () => {
   const introHeroRef = useRef<HTMLDivElement>(null);
   const detailGridRef = useRef<HTMLDivElement>(null);
 
-const { scrollYProgress: heroProgress } = useScroll({
-  target: introHeroRef,
-  offset: ["end end", "end start"],
-});
+  const { scrollYProgress: heroProgress } = useScroll({
+    target: introHeroRef,
+    offset: ["end end", "end start"],
+  });
 
   const bottomFadeHeight = useTransform(
     heroProgress,
@@ -61,9 +63,26 @@ const { scrollYProgress: heroProgress } = useScroll({
 
   const [isDocked, setIsDocked] = useState(false);
 
-useMotionValueEvent(heroProgress, "change", (v) => {
-  setIsDocked(v > 0.02);
-});
+  useMotionValueEvent(heroProgress, "change", (v) => {
+    setIsDocked(v > 0.02);
+  });
+
+    const [pdfOpen, setPdfOpen] = useState(false);
+  const [pdfTitle, setPdfTitle] = useState("");
+  const [pdfUrl, setPdfUrl] = useState("");
+  const [pdfFileName, setPdfFileName] = useState("");
+
+  const openPdf = (opts: { title: string; url: string; fileName: string }) => {
+    setPdfTitle(opts.title);
+    setPdfUrl(opts.url);
+    setPdfFileName(opts.fileName);
+    setPdfOpen(true);
+  };
+
+  const closePdf = () => setPdfOpen(false);
+
+  const RESUME_PDF = "/pdfs/resume.pdf";
+  const COVERLETTER_PDF = "/pdfs/coverletter.pdf"; 
 
   return (
     <LayoutGroup>
@@ -118,7 +137,16 @@ useMotionValueEvent(heroProgress, "change", (v) => {
                 variants={itemVariants}
                 className="mt-16 flex flex-row gap-6"
               >
-                <a
+ {/* ✅ 이력서 버튼 */}
+                <button
+                  type="button"
+                  onClick={() =>
+                    openPdf({
+                      title: "이력서",
+                      url: RESUME_PDF,
+                      fileName: "김지훈_이력서.pdf",
+                    })
+                  }
                   className="
                     px-8 py-4 rounded-xl
                     bg-slate-800/70 hover:bg-slate-700/70
@@ -129,8 +157,19 @@ useMotionValueEvent(heroProgress, "change", (v) => {
                   "
                 >
                   이력서 다운로드 ↓
-                </a>
-                <a
+                </button>
+
+
+                {/* ✅ 자기소개서 버튼 */}
+                <button
+                  type="button"
+                  onClick={() =>
+                    openPdf({
+                      title: "자기소개서",
+                      url: COVERLETTER_PDF,
+                      fileName: "김지훈_자기소개서.pdf",
+                    })
+                  }
                   className="
                     px-8 py-4 rounded-xl
                     bg-slate-800/70 hover:bg-slate-700/70
@@ -141,7 +180,7 @@ useMotionValueEvent(heroProgress, "change", (v) => {
                   "
                 >
                   자기소개서 다운로드 ↓
-                </a>
+                </button>
               </motion.div>
             </div>
 
@@ -298,7 +337,7 @@ useMotionValueEvent(heroProgress, "change", (v) => {
               ref={detailGridRef}
               className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24 grid grid-cols-1 lg:grid-cols-2 gap-24 items-center"
             >
-              <div className="sticky top-10 h-[1100px] w-full rounded-3xl bg-black shadow-2xl overflow-hidden">
+              <div className="sticky top-10 h-[1400px] w-full rounded-3xl bg-black shadow-2xl overflow-hidden">
                 <div
                   className="absolute inset-0 w-full h-full"
                   style={{
@@ -325,60 +364,196 @@ useMotionValueEvent(heroProgress, "change", (v) => {
                 viewport={{ once: true, margin: "-100px" }}
                 className="text-slate-300 leading-relaxed"
               >
+                {/* 상단 인사/한줄 */}
                 <motion.p
                   variants={itemVariants}
-                  className="text-lg text-slate-100 font-semibold mb-4"
+                  className="text-xl text-slate-100 font-extrabold mb-4"
                 >
-                  안녕하세요. 프론트엔드 개발자 김지훈입니다.
+                  안녕하세요. 책임감 있는 프론트엔드 개발자 김지훈입니다.
                 </motion.p>
 
                 <div className="border-t border-dashed border-slate-700 my-6" />
 
-                <motion.p variants={itemVariants} className="mb-4">
-                  이 단어는 저의 성향을 가장 잘 표현한다고 생각합니다.
-                </motion.p>
+                {/* 섹션 카드들 */}
+                <div className="mt-8 grid gap-4">
+                  {/* 지원 동기 */}
+                  <motion.section
+                    variants={itemVariants}
+                    className="relative pl-8 rounded-2xl bg-slate-950/35 p-6"
+                  >
+                    <span className="absolute left-1 top-6 bottom-6 w-[4px] bg-slate-700/70" />
+                    <p className="text-sm tracking-[0.18em] uppercase text-slate-500">
+                      Motivation
+                    </p>
+                    <h4 className="mt-2 text-xl font-extrabold text-slate-100">
+                      사용자의 경험을 가치를 만드는 일에 보람을 느꼈습니다
+                    </h4>
+                    <p className="mt-3 text-sm text-slate-300 leading-relaxed">
+                      웹은 서비스의 첫 인상이며, 사용자가 일상에서 가장 많이
+                      접하는 공간이라 생각합니다. 눈에 보이는 UI/UX로 직접적인
+                      만족을 전달하고, 웹사이트마다 다른 경험을 설계하는 과정에
+                      큰 흥미를 느꼈습니다. 협업을 통해 문제를 정의하고 해결하는
+                      과정 또한 제 성향과 잘 맞아 프론트엔드 개발자의 매력을
+                      확신하게 되었습니다.
+                    </p>
+                  </motion.section>
 
-                <motion.p
-                  variants={itemVariants}
-                  className="text-teal-400 font-medium mb-4 uppercase tracking-wider"
-                >
-                  “몰두하다: 어떤 일에 온 정신을 다 기울여 열중하다.”
-                </motion.p>
+                  {/* 역량/프로젝트 */}
+                  <motion.section
+                    variants={itemVariants}
+                    className="relative pl-8 rounded-2xl bg-slate-950/35 p-6"
+                  >
+                    <span className="absolute left-1 top-6 bottom-6 w-[4px] bg-slate-700/70" />
+                    <p className="text-sm tracking-[0.18em] uppercase text-slate-500">
+                      Capability & Projects
+                    </p>
+                    <h4 className="mt-2 text-xl font-extrabold text-slate-100">
+                      작은 개선을 통해 큰 사용자 경험을 만듭니다
+                    </h4>
 
-                <motion.p variants={itemVariants} className="mb-6">
-                  어떤 일이든 온 마음을 다해 몰두하며 목표를 달성하기 위해
-                  끝까지 파고듭니다. 사용자 입장에서 수십 번 테스트하며 더 나은
-                  결과를 만들어내는 것을 중요하게 생각합니다.
-                </motion.p>
+                    <ul className="mt-4 space-y-3 text-sm text-slate-300">
+                      <li className="flex items-center gap-3">
+                        <span className="h-2 w-2 rounded-full bg-teal-400/80 shrink-0" />
+                        <span>
+                          <b className="text-slate-100">PETORY</b>에서 컴포넌트
+                          구조 분리, 상태 관리, 인증 구조, 에러 처리 등 서비스의
+                          기본 동작을 설계하고 적용하며 기초를 다졌습니다.
+                        </span>
+                      </li>
 
+                      <li className="flex items-center gap-3">
+                        <span className="h-2 w-2 rounded-full bg-teal-400/80 shrink-0" />
+                        <span>
+                          React Query로 불필요한 네트워크 요청을 줄이고 화면
+                          응답성을 개선하며 “작은 기술적 개선이 UX 차이를
+                          만든다”는 점을 체감했습니다.
+                        </span>
+                      </li>
+
+                      <li className="flex items-center gap-3">
+                        <span className="h-2 w-2 rounded-full bg-teal-400/80 shrink-0" />
+                        <span>
+                          AWS 환경에서 Nginx 기반 배포와 Docker 자동 배포
+                          파이프라인에 참여하며 운영/배포 프로세스 이해를
+                          넓혔습니다.
+                        </span>
+                      </li>
+                    </ul>
+                  </motion.section>
+
+                  {/* 문제 해결 */}
+                  <motion.section
+                    variants={itemVariants}
+                    className="relative pl-8 rounded-2xl bg-slate-950/35 p-6"
+                  >
+                    <span className="absolute left-1 top-6 bottom-6 w-[4px] bg-slate-700/70" />
+                    <p className="text-sm tracking-[0.18em] uppercase text-slate-500">
+                      Problem Solving
+                    </p>
+                    <h4 className="mt-2 text-xl font-extrabold text-slate-100">
+                      해결할 때까지 절대 포기하지 않는 책임감
+                    </h4>
+
+                    <div className="mt-4 grid grid-cols-2 gap-3">
+                      <div className="rounded-xl bg-slate-900/40 border border-slate-800/60 p-4">
+                        <p className="text-xs text-slate-400">
+                          불필요한 API 호출 감소
+                        </p>
+                        <p className="mt-1 text-lg font-extrabold text-teal-300">
+                          70~80%
+                        </p>
+                      </div>
+
+                      <div className="rounded-xl bg-slate-900/40 border border-slate-800/60 p-4">
+                        <p className="text-xs text-slate-400">
+                          재방문 로딩 시간
+                        </p>
+                        <p className="mt-1 text-lg font-extrabold text-teal-300">
+                          35~40ms
+                        </p>
+                      </div>
+                    </div>
+
+                    <p className="mt-4 text-sm text-slate-300 leading-relaxed">
+                      또한 반응형 구현 과정에서 브라우저별 주소창/뷰포트 동작
+                      차이로 레이아웃이 잘리거나 빈 공간이 생기는 문제를
+                      겪었습니다. 각 환경의 뷰포트를 비교 분석하고 CSS 변수를
+                      활용해 실시간 높이를 계산하는 방식으로 안정적인 UI를
+                      제공했습니다.
+                    </p>
+                  </motion.section>
+
+                  {/* 협업 */}
+                  <motion.section
+                    variants={itemVariants}
+                    className="relative pl-8 rounded-2xl bg-slate-950/35 p-6"
+                  >
+                    <span className="absolute left-1 top-6 bottom-6 w-[4px] bg-slate-700/70" />
+                    <p className="text-sm tracking-[0.18em] uppercase text-slate-500">
+                      Collaboration
+                    </p>
+                    <h4 className="mt-2 text-xl font-extrabold text-slate-100">
+                      팀의 성공을 위해, 제가 먼저 움직입니다
+                    </h4>
+                    <p className="mt-3 text-sm text-slate-300 leading-relaxed">
+                      프론트엔드를 전담하며 기능 구현뿐만 아니라 데이터 구조
+                      협의, 예외 처리 방식 제안 등 서비스 흐름을 먼저 고려해
+                      조율해 왔습니다. 문제가 발견되면 먼저 해결하고 과정을
+                      투명하게 공유해 팀 효율을 높이고자 노력했습니다.
+                    </p>
+                  </motion.section>
+
+                  {/* 포부 */}
+                  <motion.section
+                    variants={itemVariants}
+                    className="relative pl-8 rounded-2xl bg-slate-950/35 p-6"
+                  >
+                    <span className="absolute left-1 top-6 bottom-6 w-[4px] bg-slate-700/70" />
+                    <p className="text-sm tracking-[0.18em] uppercase text-slate-500">
+                      Goal
+                    </p>
+                    <h4 className="mt-2 text-xl font-extrabold text-slate-100">
+                      믿고 맡길 수 있는 동료로 성장하겠습니다
+                    </h4>
+                    <p className="mt-3 text-sm text-slate-300 leading-relaxed">
+                      회사의 서비스 구조를 빠르게 이해하고, 사용자 경험을
+                      향상시키는 방향으로 능동적으로 기여하겠습니다. 반응형 UI,
+                      성능 최적화, 접근성 같은 기본기를 탄탄히 다지고, 필요한
+                      일을 먼저 찾아 실행하며 팀에 신뢰를 주는 개발자가
+                      되겠습니다.
+                    </p>
+                  </motion.section>
+                </div>
+                <div className="border-t border-dashed border-slate-700 my-6" />
                 <motion.div
                   variants={itemVariants}
-                  className="flex flex-wrap gap-3"
+                  className="mt-4 flex flex-wrap gap-4 justify-end"
                 >
-                  {["열정적인", "끈기있는", "섬세한", "완벽주의자"].map(
-                    (tag) => (
-                      <span
-                        key={tag}
-                        className="
-                        px-4 py-1
-                        rounded-full
-                        text-sm
-                        bg-slate-800
-                        text-slate-200
+                  {["열정적인", "끈기있는", "섬세한", "책임감"].map((tag) => (
+                    <span
+                      key={tag}
+                      className="
+                        px-3 py-1 rounded-full text-sm
+                        bg-slate-800 text-slate-200
                         border border-slate-700
-                        transition-all
-                        hover:bg-slate-700
+                        transition-all hover:bg-slate-700
                       "
-                      >
-                        #{tag}
-                      </span>
-                    )
-                  )}
+                    >
+                      #{tag}
+                    </span>
+                  ))}
                 </motion.div>
               </motion.div>
             </div>
           </div>
         </div>
+        <ProjectPdfModal
+          open={pdfOpen}
+          onClose={closePdf}
+          title={pdfTitle}
+          pdfUrl={pdfUrl}
+          fileName={pdfFileName}
+        />
       </section>
     </LayoutGroup>
   );

@@ -1,63 +1,104 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 const NAV_ITEMS = [
   { label: "기술 스택", href: "#skills" },
-  { label: "경험", href: "#experience" },
+  { label: "역량 및 문제해결", href: "#problem" },
   { label: "프로젝트", href: "#projects" },
   { label: "추가 정보", href: "#contact" },
 ];
 
+type SectionMeta = { id: string; top: number; bottom: number };
+
 const TopNav = () => {
   const [visible, setVisible] = useState(false);
-  const [activeId, setActiveId] = useState<string>("skills");
+  const [activeId, setActiveId] = useState("skills");
 
   const navRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<Record<string, HTMLAnchorElement | null>>({});
   const [pillStyle, setPillStyle] = useState({ left: 0, width: 0 });
 
-  /* 1️⃣ Intro 보이면 nav 숨김 */
-  /* 1️⃣ Intro 보이면 nav 숨김 - 이 부분을 수정하세요 */
-  useEffect(() => {
-    const intro = document.getElementById("intro");
-    if (!intro) return;
+  const ids = useMemo(() => NAV_ITEMS.map((i) => i.href.replace("#", "")), []);
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        // entry.isIntersecting이 조금이라도 true면 (인트로가 화면에 있으면) nav를 숨김
-        setVisible(!entry.isIntersecting);
-      },
-      {
-        threshold: 0.1, // 0.6에서 0.1로 변경 (인트로가 10%만 보여도 감지)
-        rootMargin: "0px",
+  useEffect(() => {
+    let meta: SectionMeta[] = [];
+    let ticking = false;
+
+    const calcMeta = () => {
+      meta = ids
+        .map((id) => {
+          const el = document.getElementById(id);
+          if (!el) return null;
+
+          const rect = el.getBoundingClientRect();
+          const top = rect.top + window.scrollY;
+          const bottom = top + rect.height;
+
+          return { id, top, bottom };
+        })
+        .filter(Boolean) as SectionMeta[];
+    };
+
+    const update = () => {
+      ticking = false;
+
+      // ✅ 스크롤/애니메이션으로 높이 바뀌는 케이스 대비: 매번 최신 meta로
+      calcMeta();
+
+      // intro 보이면 nav 숨김
+      const introEl = document.getElementById("intro");
+      if (introEl) {
+        const r = introEl.getBoundingClientRect();
+        const inView = r.bottom > 0 && r.top < window.innerHeight;
+        setVisible(!inView);
+      } else {
+        setVisible(true);
       }
-    );
 
-    observer.observe(intro);
-    return () => observer.disconnect();
+      if (!meta.length) return;
+
+      const anchorY = window.scrollY + window.innerHeight * 0.35;
+
+      let current = meta.find((s) => anchorY >= s.top && anchorY < s.bottom);
+
+      if (!current) {
+        const last = meta[meta.length - 1];
+        if (anchorY >= last.top) current = last;
+      }
+
+      if (current) setActiveId(current.id);
+    };
+
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(update);
+    };
+
+    const onResize = () => {
+      calcMeta();
+      update();
+    };
+
+    // 초기
+    calcMeta();
+    update();
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onResize);
+
+    // 폰트/이미지 로딩 후 안정화
+    const t1 = window.setTimeout(update, 200);
+    const t2 = window.setTimeout(update, 800);
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onResize);
+      window.clearTimeout(t1);
+      window.clearTimeout(t2);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  /* 2️⃣ active 섹션 추적 */
-  useEffect(() => {
-    const sections = NAV_ITEMS.map((i) =>
-      document.getElementById(i.href.replace("#", ""))
-    ).filter(Boolean) as HTMLElement[];
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveId(entry.target.id);
-          }
-        });
-      },
-      { threshold: 0.6 }
-    );
-
-    sections.forEach((s) => observer.observe(s));
-    return () => observer.disconnect();
-  }, []);
-
-  /* 3️⃣ active pill 위치 이동 */
   useEffect(() => {
     const el = itemRefs.current[activeId];
     const nav = navRef.current;
@@ -90,21 +131,15 @@ const TopNav = () => {
           border border-white/5
           shadow-[0_12px_40px_rgba(0,0,0,0.25)]
         "
-
       >
-        {/* active pill */}
         <span
           className="absolute top-1/2 -translate-y-1/2 h-10 rounded-full
             bg-slate-950 shadow-inner transition-all duration-300 ease-out"
-          style={{
-            left: pillStyle.left,
-            width: pillStyle.width,
-          }}
+          style={{ left: pillStyle.left, width: pillStyle.width }}
         />
 
         {NAV_ITEMS.map((item) => {
           const id = item.href.replace("#", "");
-
           return (
             <a
               key={item.href}
@@ -115,11 +150,7 @@ const TopNav = () => {
               className={`
                 relative z-10 px-7 py-2.5 rounded-full
                 text-base font-bold transition-colors
-                ${
-                  activeId === id
-                    ? "text-white"
-                    : "text-slate-300 hover:text-white"
-                }
+                ${activeId === id ? "text-white" : "text-slate-300 hover:text-white"}
               `}
             >
               {item.label}

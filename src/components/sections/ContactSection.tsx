@@ -50,7 +50,6 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     setStatus({ type: "", text: "" });
 
     try {
-      // 템플릿 변수명과 반드시 동일해야 함: name / email / message
       await emailjs.send(
         SERVICE_ID,
         TEMPLATE_ID,
@@ -77,7 +76,6 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 
   return (
     <section id="contact" className="min-h-screen bg-slate-950">
-      {/* ✅ 타이틀은 좌측 기준 그대로 */}
       <div className="w-full max-w-7xl mx-auto px-6 md:px-12 lg:px-24 pt-28">
         <SectionTitle
           eyebrow="Contact"
@@ -86,9 +84,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         />
       </div>
 
-      {/* ✅ 카드/폼/푸터는 가운데 기준(메일폼 기준) */}
       <div className="mt-32 w-full max-w-4xl mx-auto px-6 md:px-12 lg:px-24 pb-28">
-        {/* 링크 카드: 가운데 정렬 + 크기 조금 줄임 */}
         <div className="flex justify-center">
           <div className="ml-24 mr-24 grid grid-cols-2 sm:grid-cols-2 gap-12 w-fit">
             {contactLinks.map((link) => (
@@ -163,7 +159,6 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
             p-6 md:p-8
           "
         >
-          {/* ✅ 이 문구도 가운데 정렬 */}
           <p className="text-sm text-slate-400 text-center">
             작성한 메시지는{" "}
             <span className="text-indigo-300 font-semibold">
@@ -265,7 +260,6 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
           </form>
         </div>
 
-        {/* ✅ © 문구도 가운데 정렬 */}
         <p className="mt-16 text-sm text-slate-600 text-center">
           © {new Date().getFullYear()} Jihoon Kim
         </p>
