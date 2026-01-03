@@ -335,21 +335,21 @@ function ModalBody({
         )}
 
         {/* 사용 기술 스택(텍스트 배지) */}
-{project.techStack?.length ? (
-  <div className="mt-6 rounded-2xl border border-white/10 bg-slate-900/15 p-6 md:p-8">
-    <div className="text-sm font-bold text-slate-100 flex items-center gap-2">
-      <BuildRoundedIcon fontSize="small" />
-      사용된 기술 스택
-    </div>
+        {project.techStack?.length ? (
+          <div className="mt-6 rounded-2xl border border-white/10 bg-slate-900/15 p-6 md:p-8">
+            <div className="text-sm font-bold text-slate-100 flex items-center gap-2">
+              <BuildRoundedIcon fontSize="small" />
+              사용된 기술 스택
+            </div>
 
-    <div className="mt-4 flex flex-wrap gap-4">
-      {project.techStack.map((tech) => {
-        const logo = TECH_LOGOS[tech];
+            <div className="mt-4 flex flex-wrap gap-4">
+              {project.techStack.map((tech) => {
+                const logo = TECH_LOGOS[tech];
 
-        return (
-          <div
-            key={tech}
-            className="
+                return (
+                  <div
+                    key={tech}
+                    className="
               flex items-center gap-3
               px-4 py-2
               rounded-xl
@@ -357,27 +357,27 @@ function ModalBody({
               border border-white/10
               shadow-[0_10px_30px_rgba(0,0,0,0.35)]
             "
-          >
-            {logo && (
-              <img
-                src={logo}
-                alt={tech}
-                className={`
+                  >
+                    {logo && (
+                      <img
+                        src={logo}
+                        alt={tech}
+                        className={`
                   w-6 h-6 object-contain
                   ${tech === "Vercel" ? "invert" : ""}
                 `}
-                draggable={false}
-              />
-            )}
-            <span className="text-sm font-semibold text-slate-200">
-              {tech}
-            </span>
+                        draggable={false}
+                      />
+                    )}
+                    <span className="text-sm font-semibold text-slate-200">
+                      {tech}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
           </div>
-        );
-      })}
-    </div>
-  </div>
-) : null}
+        ) : null}
 
         {/* 주요 기능 */}
         {project.detail?.features?.length ? (
@@ -391,6 +391,32 @@ function ModalBody({
                 <li key={f}>{f}</li>
               ))}
             </ul>
+          </div>
+        ) : null}
+
+        {/* ✅ 핵심 하이라이트 */}
+        {project.detail?.highlights?.length ? (
+          <div className="mt-6 rounded-2xl border border-white/10 bg-slate-900/15 p-6 md:p-8">
+            <div className="text-sm font-bold text-slate-100 flex items-center gap-2">
+              <BoltRoundedIcon fontSize="small" />
+              핵심 포인트
+            </div>
+
+            <div className="mt-4 grid gap-3">
+              {project.detail.highlights.map((h) => (
+                <div
+                  key={h}
+                  className="
+            flex items-start gap-3
+            rounded-xl border border-white/10
+            bg-black/20 p-4
+          "
+                >
+                  <span className="mt-[6px] h-2 w-2 rounded-full bg-teal-400/80 shrink-0" />
+                  <p className="text-sm text-slate-300 leading-relaxed">{h}</p>
+                </div>
+              ))}
+            </div>
           </div>
         ) : null}
 

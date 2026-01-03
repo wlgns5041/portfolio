@@ -47,7 +47,7 @@ export const projects: Project[] = [
       "프론트엔드 단독 개발 (UI/UX 설계, 컴포넌트 구조 설계, 애니메이션 구현, 배포)",
     image: portfolioThumb,
     links: {
-      demo: "https://your-portfolio.vercel.app",
+      demo: "https://jihoon.cloud",
       repo: "https://github.com/wlgns5041/portfolio",
     },
     detailImages: [p1, p2, p3, p4], 

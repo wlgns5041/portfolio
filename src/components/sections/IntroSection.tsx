@@ -271,7 +271,7 @@ const IntroSection = () => {
                   <p className="text-lg font-semibold text-slate-100">
                     생년월일
                   </p>
-                  <p className="mt-2 text-slate-400">01.01.20</p>
+                  <p className="mt-2 text-slate-400">2001.01.20</p>
                 </div>
               </motion.div>
 
