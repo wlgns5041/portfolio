@@ -8,7 +8,7 @@ type Props = {
   open: boolean;
   onClose: () => void;
   title: string;
-  pdfUrl: string; // 예: "/pdfs/petory.pdf"
+  pdfUrl: string;
   fileName?: string;
 };
 
@@ -35,7 +35,6 @@ const ProjectPdfModal = ({ open, onClose, title, pdfUrl, fileName }: Props) => {
   }, [open, onClose]);
 
   const handleDownload = async () => {
-    // 66MB라도 이 방식이 제일 확실하게 "실제 다운로드" 됩니다.
     const res = await fetch(pdfUrl);
     const blob = await res.blob();
     const url = URL.createObjectURL(blob);
@@ -107,7 +106,6 @@ const ProjectPdfModal = ({ open, onClose, title, pdfUrl, fileName }: Props) => {
               </div>
             </div>
 
-            {/* ✅ pdf area (native viewer) */}
             <div className="h-[calc(90vh-56px)] bg-black">
               <iframe
                 title={`${title} PDF`}

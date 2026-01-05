@@ -12,11 +12,11 @@ const ContactSection = () => {
   });
 
   const [sending, setSending] = useState(false);
-  const [status, setStatus] = useState({ type: "", text: "" }); 
+  const [status, setStatus] = useState({ type: "", text: "" });
 
-const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
-const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+  const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+  const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+  const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
   const isValid = useMemo(() => {
     const nameOk = form.name.trim().length >= 2;
@@ -25,16 +25,16 @@ const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
     return nameOk && emailOk && msgOk;
   }, [form]);
 
-const handleChange = (
-  e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-) => {
-  const { name, value } = e.currentTarget;
-  setForm((prev) => ({ ...prev, [name]: value }));
-  setStatus({ type: "", text: "" });
-};
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.currentTarget;
+    setForm((prev) => ({ ...prev, [name]: value }));
+    setStatus({ type: "", text: "" });
+  };
 
-const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
     if (!SERVICE_ID || !TEMPLATE_ID || !PUBLIC_KEY) {
       setStatus({
@@ -75,7 +75,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
   };
 
   return (
-    <section id="contact" className="min-h-screen bg-slate-950">
+    <section id="contact" className="min-h-screen bg-slate-950 [overflow-x:clip]">
       <div className="w-full max-w-7xl mx-auto px-6 md:px-12 lg:px-24 pt-28">
         <SectionTitle
           eyebrow="Contact"
@@ -84,74 +84,75 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         />
       </div>
 
-      <div className="mt-32 w-full max-w-4xl mx-auto px-6 md:px-12 lg:px-24 pb-28">
-        <div className="flex justify-center">
-          <div className="ml-24 mr-24 grid grid-cols-2 sm:grid-cols-2 gap-12 w-fit">
-            {contactLinks.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                target="_blank"
-                rel="noreferrer"
+      <div className="mt-16 md:mt-32 w-full max-w-5xl mx-auto px-6 md:px-12 lg:px-24 pb-28">
+        {/* ✅ 링크 카드: 반응형 그리드(가로 스크롤 방지) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          {contactLinks.map((link) => (
+            <a
+              key={link.label}
+              href={link.href}
+              target="_blank"
+              rel="noreferrer"
+              className="
+                group relative
+                w-full
+                rounded-[12px]
+                bg-slate-900/40
+                border border-slate-800/60
+                shadow-[0_25px_80px_rgba(0,0,0,0.55)]
+                overflow-hidden
+                flex flex-col items-center justify-center
+                transition-all duration-300
+                hover:shadow-[0_35px_110px_rgba(0,0,0,0.7)]
+                hover:bg-slate-700/40
+                px-4 py-8
+                min-h-[140px] sm:min-h-[160px]
+              "
+            >
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.06] to-transparent" />
+
+              <div
                 className="
-                  group relative
-                  w-[220px] h-[160px]
-                  rounded-[12px]
-                  bg-slate-900/40
-                  border border-slate-800/60
-                  shadow-[0_25px_80px_rgba(0,0,0,0.55)]
-                  overflow-hidden
-                  flex flex-col items-center justify-center
-                  transition-all duration-300
-                  hover:shadow-[0_35px_110px_rgba(0,0,0,0.7)]
-                  hover:bg-slate-700/40
+                  absolute right-2 top-2
+                  w-8 h-8 rounded-[8px]
+                  bg-slate-900/50
+                  border border-slate-700/50
+                  flex items-center justify-center
+                  text-slate-300
+                  transition group-hover:text-slate-100
                 "
+                aria-hidden
               >
-                <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.06] to-transparent" />
+                ↗
+              </div>
 
-                <div
-                  className="
-                    absolute right-2 top-2
-                    w-8 h-8 rounded-[8px]
-                    bg-slate-900/50
-                    border border-slate-700/50
-                    flex items-center justify-center
-                    text-slate-300
-                    transition group-hover:text-slate-100
-                  "
-                  aria-hidden
-                >
-                  ↗
-                </div>
+              <div className="w-12 h-12 flex items-center justify-center">
+                {link.icon ? (
+                  <img
+                    src={link.icon}
+                    alt={link.label}
+                    draggable={false}
+                    className={`
+                      w-12 h-12 object-contain
+                      ${link.type === "github" ? "invert" : ""}
+                    `}
+                  />
+                ) : (
+                  <span className="text-3xl">◎</span>
+                )}
+              </div>
 
-                <div className="w-12 h-12 flex items-center justify-center">
-                  {link.icon ? (
-                    <img
-                      src={link.icon}
-                      alt={link.label}
-                      draggable={false}
-                      className={`
-                        w-12 h-12 object-contain
-                        ${link.type === "github" ? "invert" : ""}
-                      `}
-                    />
-                  ) : (
-                    <span className="text-3xl">◎</span>
-                  )}
-                </div>
-
-                <p className="mt-3 text-sm font-semibold text-slate-200">
-                  {link.label}
-                </p>
-              </a>
-            ))}
-          </div>
+              <p className="mt-3 text-sm font-semibold text-slate-200">
+                {link.label}
+              </p>
+            </a>
+          ))}
         </div>
 
         {/* 메일 폼 박스 */}
         <div
           className="
-            mt-16
+            mt-12 md:mt-16
             rounded-[12px]
             bg-slate-900/30
             border border-slate-800/60
@@ -159,9 +160,9 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
             p-6 md:p-8
           "
         >
-          <p className="text-sm text-slate-400 text-center">
+          <p className="text-sm text-slate-400 text-center break-words">
             작성한 메시지는{" "}
-            <span className="text-indigo-300 font-semibold">
+            <span className="text-indigo-300 font-semibold break-all">
               wlgns6921@gmail.com
             </span>
             으로 전송됩니다.
@@ -245,7 +246,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
               type="submit"
               disabled={!isValid || sending}
               className="
-                w-full rounded-[4px]
+                w-full rounded-[8px]
                 bg-indigo-600
                 py-4 font-semibold text-white
                 shadow-[0_20px_60px_rgba(79,70,229,0.35)]
@@ -260,7 +261,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
           </form>
         </div>
 
-        <p className="mt-16 text-sm text-slate-600 text-center">
+        <p className="mt-12 md:mt-16 text-sm text-slate-600 text-center">
           © {new Date().getFullYear()} Jihoon Kim
         </p>
       </div>

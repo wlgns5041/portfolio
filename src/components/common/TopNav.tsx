@@ -19,6 +19,28 @@ const TopNav = () => {
 
   const ids = useMemo(() => NAV_ITEMS.map((i) => i.href.replace("#", "")), []);
 
+  // ✅ 모바일에서 클릭 시 직접 스크롤 (상단 고정 UI 높이만큼 오프셋)
+  const handleJump = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+    e.preventDefault();
+
+    const el = document.getElementById(id);
+    if (!el) return;
+
+    // 모바일 상단에 프로그레스바 + nav가 있어서 가려짐 방지 (필요하면 숫자 조절)
+    const isMobile = window.matchMedia("(max-width: 767px)").matches;
+    const headerOffset = isMobile ? 120 : 90;
+
+    const top = el.getBoundingClientRect().top + window.scrollY - headerOffset;
+
+    window.scrollTo({ top, behavior: "smooth" });
+
+    // 해시도 반영 (뒤로가기/공유 대응)
+    history.replaceState(null, "", `#${id}`);
+
+    // active도 즉시 갱신 (UX)
+    setActiveId(id);
+  };
+
   useEffect(() => {
     let meta: SectionMeta[] = [];
     let ticking = false;
@@ -38,13 +60,17 @@ const TopNav = () => {
         .filter(Boolean) as SectionMeta[];
     };
 
+    // ✅ active 흔들림 방지용: 직전 active를 ref로 들고 있음
+    const activeRef = { current: "skills" as string };
+
     const update = () => {
       ticking = false;
 
-      // ✅ 스크롤/애니메이션으로 높이 바뀌는 케이스 대비: 매번 최신 meta로
-      calcMeta();
+      // ❗️스크롤 중 meta 재계산을 계속하면 값이 미세하게 흔들릴 수 있으니
+      //    기본은 resize/초기에서만 meta를 계산하도록 유지
+      //    (초기/리사이즈에서 calcMeta 호출됨)
+      // calcMeta();
 
-      // intro 보이면 nav 숨김
       const introEl = document.getElementById("intro");
       if (introEl) {
         const r = introEl.getBoundingClientRect();
@@ -56,7 +82,8 @@ const TopNav = () => {
 
       if (!meta.length) return;
 
-      const anchorY = window.scrollY + window.innerHeight * 0.35;
+      // ✅ 기준점을 약간 위로 (경계 흔들림 감소)
+      const anchorY = window.scrollY + window.innerHeight * 0.28;
 
       let current = meta.find((s) => anchorY >= s.top && anchorY < s.bottom);
 
@@ -65,7 +92,26 @@ const TopNav = () => {
         if (anchorY >= last.top) current = last;
       }
 
-      if (current) setActiveId(current.id);
+      if (!current) return;
+
+      // ✅ 히스테리시스(완충 구간): 섹션 경계 근처 깜빡임 방지
+      const prevId = activeRef.current;
+      if (prevId && prevId !== current.id) {
+        const prev = meta.find((m) => m.id === prevId);
+        if (prev) {
+          const buffer = Math.min(120, window.innerHeight * 0.08);
+          const stillPrev =
+            anchorY >= prev.top + buffer && anchorY < prev.bottom - buffer;
+
+          if (stillPrev) return;
+        }
+      }
+
+      // ✅ ref + state 동시 업데이트 (불필요한 setState 방지)
+      if (activeRef.current !== current.id) {
+        activeRef.current = current.id;
+        setActiveId(current.id);
+      }
     };
 
     const onScroll = () => {
@@ -79,16 +125,20 @@ const TopNav = () => {
       update();
     };
 
-    // 초기
     calcMeta();
     update();
 
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onResize);
 
-    // 폰트/이미지 로딩 후 안정화
-    const t1 = window.setTimeout(update, 200);
-    const t2 = window.setTimeout(update, 800);
+    const t1 = window.setTimeout(() => {
+      calcMeta();
+      update();
+    }, 200);
+    const t2 = window.setTimeout(() => {
+      calcMeta();
+      update();
+    }, 800);
 
     return () => {
       window.removeEventListener("scroll", onScroll);
@@ -111,46 +161,69 @@ const TopNav = () => {
       left: elRect.left - navRect.left,
       width: elRect.width,
     });
+
+    nav.scrollTo({
+      left: elRect.left - navRect.left - navRect.width / 2 + elRect.width / 2,
+      behavior: "smooth",
+    });
   }, [activeId]);
 
   return (
-    <nav
-      className={`fixed top-6 left-1/2 -translate-x-1/2 z-50 transition-all duration-500
-        ${
-          visible
-            ? "opacity-100 translate-y-0"
-            : "opacity-0 -translate-y-4 pointer-events-none"
-        }`}
-    >
+<nav
+  className={`fixed left-1/2 -translate-x-1/2 z-50 transition-all duration-500
+    top-6 md:top-6
+    max-md:ml-[20px]
+    ${
+      visible
+        ? "opacity-100 translate-y-0"
+        : "opacity-0 -translate-y-3 pointer-events-none"
+    }`}
+>
       <div
         ref={navRef}
         className="
-          relative flex items-center gap-3 px-10 py-4 rounded-full
+          relative flex items-center gap-1 md:gap-3
+          px-1.5 py-2 md:px-10 md:py-4
+          rounded-full
           bg-white/10
           backdrop-blur-[28px]
           border border-white/5
-          shadow-[0_12px_40px_rgba(0,0,0,0.25)]
+          shadow-[0_8px_28px_rgba(0,0,0,0.22)]
+          max-w-[94vw] md:max-w-none
+          overflow-x-auto whitespace-nowrap scrollbar-hide
         "
       >
         <span
-          className="absolute top-1/2 -translate-y-1/2 h-10 rounded-full
-            bg-slate-950 shadow-inner transition-all duration-300 ease-out"
+          className="
+            pointer-events-none
+            absolute top-1/2 -translate-y-1/2 rounded-full
+            bg-slate-950 shadow-inner
+            transition-all duration-300 ease-out
+            h-8 md:h-12
+          "
           style={{ left: pillStyle.left, width: pillStyle.width }}
         />
 
         {NAV_ITEMS.map((item) => {
           const id = item.href.replace("#", "");
+          const isActive = activeId === id;
+
           return (
             <a
               key={item.href}
               href={item.href}
+              onClick={(e) => handleJump(e, id)}
               ref={(el) => {
                 itemRefs.current[id] = el;
               }}
               className={`
-                relative z-10 px-7 py-2.5 rounded-full
-                text-base font-bold transition-colors
-                ${activeId === id ? "text-white" : "text-slate-300 hover:text-white"}
+                relative z-10 rounded-full
+                px-2.5 py-2 md:px-7 md:py-2.5
+                text-[10px] md:text-base
+                font-black md:font-extrabold
+                tracking-normal
+                transition-colors
+                ${isActive ? "text-white" : "text-slate-300 hover:text-white"}
               `}
             >
               {item.label}

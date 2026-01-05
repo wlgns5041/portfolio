@@ -1,10 +1,14 @@
 import Lottie from "lottie-react";
 import logoAnimation from "../../assets/logos/logo.json";
 
-export default function LogoLottie() {
+const LogoLottie = () => {
   return (
-    <div className="w-[320px] h-[320px]">
-      <Lottie animationData={logoAnimation} loop autoplay />
-    </div>
+    <Lottie
+      animationData={logoAnimation}
+      loop
+      style={{ width: "100%", height: "100%" }}
+    />
   );
-}
+};
+
+export default LogoLottie;

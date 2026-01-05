@@ -22,25 +22,23 @@ import tailwindLogo from "../../assets/logos/tailwild.png";
 import vercelLogo from "../../assets/logos/vercel.png";
 
 type ProjectIssue = {
-  problem: string; // 문제
-  solution: string; // 해결
+  problem: string; 
+  solution: string;
 };
 
 type ProjectDetail = {
   intro?: string;
 
-  // 화면 상단 정보
-  statusLabel?: string; // 예: "서비스 중", "준비 중"
-  duration?: string; // 예: "2024.04 ~ 2024.08 (5개월)"
-  team?: string; // 예: "개인 프로젝트", "2명 (BE 1, FE 1)"
-  contribution?: string[]; // 예: ["개발 100%", "디자인 100%", "기획 100%"]
+  statusLabel?: string; 
+  duration?: string; 
+  team?: string; 
+  contribution?: string[]; 
 
-  // 내용 섹션
-  features?: string[]; // 주요 기능 (bullet)
-  techReasons?: string; // 기술 선정 이유 (문장/문단)
-  issues?: ProjectIssue[]; // 개발 이슈 (문제/해결)
-  takeaway?: string; // 개발 후 느낀점 (문장/문단)
-  highlights?: string[]; // (선택) 핵심 성과/포인트
+  features?: string[]; 
+  techReasons?: string; 
+  issues?: ProjectIssue[]; 
+  takeaway?: string; 
+  highlights?: string[]; 
 };
 
 export type ProjectItem = {
@@ -76,7 +74,6 @@ const TECH_LOGOS: Record<string, string> = {
 };
 
 const ProjectDetailModal = ({ open, project, onClose }: Props) => {
-  // ✅ 프로젝트별로 activeIdx 기억(없으면 0)
   const [activeByProject, setActiveByProject] = useState<
     Record<string, number>
   >({});
@@ -85,7 +82,6 @@ const ProjectDetailModal = ({ open, project, onClose }: Props) => {
   const activeIdx = project ? activeByProject[project.id] ?? 0 : 0;
   const mainImage = images[activeIdx];
 
-  // ✅ 배경 스크롤 잠금만 effect로 (setState 없음)
   useEffect(() => {
     if (!open) return;
     const prev = document.body.style.overflow;
@@ -95,7 +91,6 @@ const ProjectDetailModal = ({ open, project, onClose }: Props) => {
     };
   }, [open]);
 
-  // ✅ ESC 닫기
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
@@ -152,7 +147,6 @@ const ProjectDetailModal = ({ open, project, onClose }: Props) => {
               ✕
             </button>
 
-            {/* ✅ project.id가 바뀌면 이 아래는 전부 리마운트 => hasScrolled 자동 초기화 */}
             <ModalBody
               key={project.id}
               project={project}
@@ -183,11 +177,9 @@ function ModalBody({
   activeIdx: number;
   onThumbClick: (idx: number) => void;
 }) {
-  // ✅ 리마운트 될 때마다 자동으로 true (effect 필요 없음)
   const [showHint, setShowHint] = useState(true);
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
-  // ✅ 스크롤로 소개 영역 진입 시 힌트 제거
   useEffect(() => {
     const el = scrollRef.current;
     if (!el) return;
@@ -228,7 +220,7 @@ function ModalBody({
 
         {images.length > 0 && (
           <div className="mt-4 grid grid-cols-4 gap-3">
-            {images.slice(0, 4).map((src, i) => (
+            {images.slice(0, 7).map((src, i) => (
               <button
                 key={src + i}
                 type="button"

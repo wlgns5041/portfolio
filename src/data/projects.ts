@@ -6,6 +6,9 @@ import p1 from "../assets/images/portfolio_1.png";
 import p2 from "../assets/images/portfolio_2.png";
 import p3 from "../assets/images/portfolio_3.png";
 import p4 from "../assets/images/portfolio_4.png";
+import p5 from "../assets/images/portfolio_5.png";
+import p6 from "../assets/images/portfolio_6.png";
+import p7 from "../assets/images/portfolio_7.png";
 
 export const projects: Project[] = [
   {
@@ -50,7 +53,7 @@ export const projects: Project[] = [
       demo: "https://jihoon.cloud",
       repo: "https://github.com/wlgns5041/portfolio",
     },
-    detailImages: [p1, p2, p3, p4], 
+    detailImages: [p1, p2, p3, p4, p5, p6, p7], 
     status: "READY",
   },
 
