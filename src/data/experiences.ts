@@ -2,7 +2,7 @@ import type { ExperienceCase, Capability  } from "../types/types";
 
 export const capabilities: Capability[] = [
   {
-    title: "React 구조 설계 · 컴포넌트 책임 분리",
+    title: "01 React 구조 설계 · 컴포넌트 책임 분리",
     summary:
       "확장성과 유지보수를 고려해 React 구조를 설계합니다.",
     points: [
@@ -13,7 +13,7 @@ export const capabilities: Capability[] = [
     tags: ["React", "Component Design", "SoC"],
   },
   {
-    title: "React Query · 서버 상태 관리 및 성능 최적화",
+    title: "02 React Query · 서버 상태 관리 및 성능 최적화",
     summary:
       "서버 상태를 캐싱 중심으로 관리해 네트워크 비용과 체감 로딩을 개선합니다.",
     points: [
@@ -24,7 +24,7 @@ export const capabilities: Capability[] = [
     tags: ["React Query", "Caching", "Performance"],
   },
   {
-    title: "Axios · 인증 및 전역 에러 처리 구조화",
+    title: "03 Axios · 인증 및 전역 에러 처리 구조화",
     summary:
       "Axios 인터셉터를 활용해 인증/에러 흐름을 공통화합니다.",
     points: [
@@ -35,7 +35,7 @@ export const capabilities: Capability[] = [
     tags: ["Axios", "JWT", "Interceptor"],
   },
   {
-    title: "라우팅 · 접근 제어 및 인증 흐름 설계",
+    title: "04 라우팅 · 접근 제어 및 인증 흐름 설계",
     summary:
       "사용자 상태에 따라 접근 가능한 화면을 명확히 제어합니다.",
     points: [
@@ -46,7 +46,7 @@ export const capabilities: Capability[] = [
     tags: ["React Router", "Auth", "Routing"],
   },
   {
-    title: "배포 및 운영 · EC2 기반 운영 부담 개선과 Vercel 전환",
+    title: "05 배포 및 운영 · EC2 기반 운영 부담 개선과 Vercel 전환",
     summary:
       "프론트엔드 운영 부담을 줄이기 위해 배포 구조를 재설계하고,\n" + "자동화된 배포 환경으로 전환했습니다.",
     points: [
@@ -57,7 +57,7 @@ export const capabilities: Capability[] = [
     tags: ["Vercel", "EC2", "Docker", "Nginx", "Jenkins", "Deployment"],
   },
   {
-    title: "UI / UX · 실서비스 관점의 사용자 경험 개선",
+    title: "06 UI / UX · 실서비스 관점의 사용자 경험 개선",
     summary:
       "실제 사용자 환경을 고려한 UI/UX 설계와 인터랙션 개선을 지향합니다.",
     points: [
@@ -69,7 +69,7 @@ export const capabilities: Capability[] = [
   },
 
   {
-  title: "포트폴리오 UI 설계 · 인터랙션 중심 프론트엔드 구현",
+  title: "07 포트폴리오 UI 설계 · 인터랙션 중심 프론트엔드 구현",
   summary:
     "프론트엔드 역량을 효과적으로 전달하기 위한 UI 구조와 인터랙션을 설계합니다.",
   points: [
@@ -80,7 +80,7 @@ export const capabilities: Capability[] = [
   tags: ["React", "Framer Motion", "UI Architecture"],
 },
 {
-  title: "렌더링 성능 및 초기 로딩 최적화",
+  title: "08 렌더링 성능 및 초기 로딩 최적화",
   summary:
     "시각적 완성도를 유지하면서도 성능을 고려한 UI를 구현합니다.",
   points: [
@@ -169,7 +169,7 @@ export const experienceCases: ExperienceCase[] = [
   // 4) 배포 전환 + 도메인 + DNS (최근 네가 실제로 한 것)
   {
     project: "PETORY",
-    title: "EC2 기반 프론트 운영 한계 인식 후 Vercel 전환으로 배포 구조 개선",
+    title: "EC2 기반 배포 운영 한계 인식 후 Vercel 전환으로 배포 구조 개선",
     items: [
       {
         label: "문제",

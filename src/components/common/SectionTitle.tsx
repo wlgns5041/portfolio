@@ -6,17 +6,17 @@ type Props = {
 
 export const SectionTitle = ({ eyebrow, title, description }: Props) => {
   return (
-    <div className="mb-16">
-      <p className="mb-3 text-sm tracking-[0.25em] text-slate-500 uppercase">
+    <div className="mb-10 md:mb-16 text-left">
+      <p className="text-xs tracking-[0.05em] md:tracking-[0.3em] uppercase text-slate-500 mb-2 md:mb-4">
         {eyebrow}
       </p>
 
-      <h2 className="text-4xl md:text-5xl font-extrabold text-slate-100">
+      <h2 className="text-4xl md:text-5xl font-black md:font-extrabold leading-tight">
         {title}
       </h2>
 
       {description && (
-        <p className="mt-6 text-slate-400 whitespace-pre-line leading-relaxed">
+        <p className="mt-2 md:mt-4 text-[9px] md:text-lg text-slate-400 leading-relaxed whitespace-pre-line">
           {description}
         </p>
       )}

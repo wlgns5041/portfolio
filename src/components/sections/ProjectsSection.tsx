@@ -45,12 +45,13 @@ const TechBox = ({ label }: { label: string }) => {
     <div
       title={label}
       className="
-        w-10 h-10
-        rounded-xl
+        w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10
+        rounded-lg md:rounded-xl
         bg-slate-900/40
         border border-slate-800/60
         flex items-center justify-center
-        shadow-[0_10px_30px_rgba(0,0,0,0.45)]
+        shadow-[0_8px_18px_rgba(0,0,0,0.38)]
+        md:shadow-[0_10px_30px_rgba(0,0,0,0.45)]
         overflow-hidden
       "
     >
@@ -59,13 +60,13 @@ const TechBox = ({ label }: { label: string }) => {
           src={logo}
           alt={label}
           className={`
-            w-6 h-6 object-contain
+            w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 object-contain
             ${label === "Vercel" ? "invert" : ""}
           `}
           draggable={false}
         />
       ) : (
-        <span className="text-[11px] font-semibold text-slate-200">
+        <span className="text-[9px] md:text-[11px] font-semibold text-slate-200">
           {label.slice(0, 2).toUpperCase()}
         </span>
       )}
@@ -138,188 +139,191 @@ const ProjectsSection = () => {
 
   return (
     <section id="projects" className="min-h-screen bg-slate-950">
-      <div className="w-full max-w-7xl mx-auto px-6 md:px-12 lg:px-24 py-28">
-        <SectionTitle
-          eyebrow="Projects"
-          title="프로젝트"
-          description={`현재까지 개발한 프로젝트입니다
-            프로젝트를 클릭하면 자세히 볼 수 있습니다`}
-        />
+  <div className="w-full max-w-7xl mx-auto px-5 sm:px-6 md:px-12 lg:px-24 py-16 md:py-28">
+    <SectionTitle
+      eyebrow="Projects"
+      title="프로젝트"
+      description={`현재까지 개발한 프로젝트입니다\n프로젝트를 클릭하면 자세히 볼 수 있습니다`}
+    />
 
-        <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-14">
-          {projects.map((project, idx) => (
-            <motion.article
-              key={project.id ?? idx}
-              initial={{ opacity: 0, y: 18 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-120px" }}
-              transition={{
-                duration: 0.6,
-                delay: idx * 0.06,
-                ease: [0.16, 1, 0.3, 1],
-              }}
-            >
-              <div
-                onClick={() => openProject(project)}
-                className="
-                  group
-                  relative
-                  w-full
-                  aspect-[16/9]
-                  rounded-[12px]
-                  overflow-hidden
-                  border border-slate-800/60
-                  bg-slate-50
-                  cursor-pointer
-                  will-change-transform
-                  transition-transform duration-300 ease-out
-                  hover:-translate-y-4
-                  hover:border-slate-100/100
-                  flex items-center justify-center
-                "
-                style={{
-                  backgroundColor: idx === 1 ? "#2DD4BF" : "#F8FAFC",
+    {/* ✅ 모바일: 2열 / PC: 기존 2열 유지 */}
+    <div className="mt-10 md:mt-16 grid grid-cols-2 md:grid-cols-2 gap-4 md:gap-14">
+      {projects.map((project, idx) => (
+        <motion.article
+          key={project.id ?? idx}
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-120px" }}
+          transition={{
+            duration: 0.6,
+            delay: idx * 0.06,
+            ease: [0.16, 1, 0.3, 1],
+          }}
+        >
+          {/* ✅ 카드 */}
+          <div
+            onClick={() => openProject(project)}
+            role="button"
+            tabIndex={0}
+            className="
+              group relative w-full aspect-[16/12]
+              rounded-[10px] md:rounded-[12px]
+              overflow-hidden
+
+              bg-slate-50
+              cursor-pointer
+              will-change-transform
+              transition-transform duration-300 ease-out
+              hover:-translate-y-1 md:hover:-translate-y-4
+              hover:ring-slate-100/100
+              flex items-center justify-center
+              [transform:translateZ(0)] [backface-visibility:hidden]
+            "
+            style={{ backgroundColor: idx === 1 ? "#2DD4BF" : "#F8FAFC" }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") openProject(project);
+            }}
+          >
+            {project.image ? (
+// ProjectsSection 내부 img 태그 부분
+<img
+  src={project.image}
+  alt={project.title}
+  draggable={false}
+  className="
+    max-w-[62%] max-h-[62%] md:max-w-[55%] md:max-h-[55%]
+    object-contain
+    /* 1. 화질 개선을 위한 렌더링 힌트 */
+    [image-rendering:-webkit-optimize-contrast]
+    /* 2. 모바일에서 블러 현상을 줄이기 위해 초기 transform 제거 혹은 최적화 */
+    backface-visibility-hidden
+    /* 3. 그림자가 경계선에 미치는 영향 확인 (필요시 조절) */
+    drop-shadow-[0_8px_20px_rgba(0,0,0,0.2)]
+    transition-transform duration-500 ease-out
+    group-hover:scale-[1.05]
+  "
+/>
+            ) : project.status === "WIP" ? (
+              <div className="text-slate-900 font-extrabold text-[12px] sm:text-sm md:text-xl">
+                준비 중
+              </div>
+            ) : (
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-900/60 via-slate-950 to-fuchsia-900/30" />
+            )}
+
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.08] to-transparent" />
+          </div>
+
+          {/* ✅ 텍스트 영역 */}
+          <div className="mt-2.5 md:mt-4">
+            <div className="flex items-start justify-between gap-2 md:gap-6">
+              <h3 className="text-[12px] sm:text-[15px] md:text-xl font-extrabold text-slate-100 leading-snug">
+                {project.title}
+              </h3>
+
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  openProject(project);
                 }}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") openProject(project);
-                }}
+                disabled={project.status === "WIP"}
+                className={`
+                  shrink-0
+                  text-[8px] sm:text-xs md:text-sm
+                  font-bold
+                  transition
+                  ${
+                    project.status === "WIP"
+                      ? "text-slate-600 cursor-not-allowed"
+                      : "text-slate-400 hover:text-slate-200"
+                  }
+                `}
               >
-                {project.image ? (
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    draggable={false}
-                    className="
-                      max-w-[55%] max-h-[55%]
-                      object-contain
-                      drop-shadow-[0_12px_30px_rgba(0,0,0,0.25)]
-                      transition-transform duration-500 ease-out
-                      group-hover:scale-[1.08]
-                    "
-                  />
-                ) : project.status === "WIP" ? (
-                  <div className="text-slate-900 font-extrabold text-lg md:text-xl">
-                    준비 중
-                  </div>
-                ) : (
-                  <div className="absolute inset-0 bg-gradient-to-br from-purple-900/60 via-slate-950 to-fuchsia-900/30" />
-                )}
+                자세히 보기 →
+              </button>
+            </div>
 
-                <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.08] to-transparent" />
-                <div className="pointer-events-none absolute inset-x-0 bottom-0 h-0 bg-gradient-to-t from-black/35 to-transparent" />
-              </div>
+            <div className="mt-1 md:mt-3 flex flex-wrap items-center gap-1 md:gap-2 text-[10px] sm:text-xs md:text-sm text-slate-500">
+              <span>{project.period}</span>
+              <span className="opacity-40">|</span>
+              <span>{highlightPeople(project.people)}</span>
+            </div>
 
-              <div className="mt-4">
-                <div className="flex items-center justify-between gap-6">
-                  <h3 className="text-xl md:text-1xl font-extrabold text-slate-100">
-                    {project.title}
-                  </h3>
+            {project.role && (
+              <p className="mt-1.5 md:mt-2 text-[9px] sm:text-xs md:text-sm leading-relaxed text-slate-400 whitespace-pre-line">
+                {project.role}
+              </p>
+            )}
 
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation(); 
-                      openProject(project);
-                    }}
-                    disabled={project.status === "WIP"}
-                    className={`
-                      text-xs md:text-sm transition cursor-pointer
-                      ${
-                        project.status === "WIP"
-                          ? "text-slate-600 cursor-not-allowed"
-                          : "text-slate-400 hover:text-slate-200"
-                      }
-                    `}
-                  >
-                    자세히 보기 →
-                  </button>
-                </div>
+            {/* ✅ 링크 버튼: 모바일 더 작게 */}
+            <div className="mt-3 md:mt-4 flex flex-wrap items-center gap-2 md:gap-4">
+              {project.links?.demo && (
+                <a
+                  href={project.links.demo}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="
+                    inline-flex items-center gap-1
+                    px-3 py-2 md:px-4 md:py-2
+                    rounded-lg md:rounded-xl
+                    bg-slate-800/60
+                    text-[11px] sm:text-xs md:text-sm text-slate-200
+                    shadow-[0_8px_20px_rgba(0,0,0,0.35)]
+                    md:shadow-[0_10px_30px_rgba(0,0,0,0.4)]
+                    transition-all
+                    hover:bg-slate-700/60
+                    md:hover:-translate-y-0.5
+                  "
+                >
+                  서비스 <span className="opacity-70">↗</span>
+                </a>
+              )}
 
-                <div className="mt-3 flex items-center gap-3 text-sm text-slate-500">
-                  <span>{project.period}</span>
-                  <span className="opacity-40">|</span>
-                  <span>{highlightPeople(project.people)}</span>
-                </div>
+              {project.links?.repo && (
+                <a
+                  href={project.links.repo}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="
+                    inline-flex items-center gap-1
+                    px-3 py-2 md:px-4 md:py-2
+                    rounded-lg md:rounded-xl
+                    bg-slate-800/40
+                    text-[11px] sm:text-xs md:text-sm text-slate-300
+                    transition-all
+                    hover:bg-slate-700/50
+                    md:hover:-translate-y-0.5
+                  "
+                >
+                  GitHub <span className="opacity-70">↗</span>
+                </a>
+              )}
+            </div>
 
-                {project.role && (
-                  <p className="mt-2 text-sm leading-relaxed text-slate-500 max-w-xl whitespace-pre-line">
-                    {project.role}
-                  </p>
-                )}
+            {/* ✅ TechBox: 모바일 간격/크기 축소 */}
+            <div className="mt-3 md:mt-4 flex flex-wrap gap-1.5 sm:gap-2 md:gap-3">
+              {project.techStack?.slice(0, 9).map((tech) => (
+                <TechBox key={tech} label={tech} />
+              ))}
+            </div>
+          </div>
+        </motion.article>
+      ))}
+    </div>
+  </div>
 
-                <div className="mt-4 flex items-center gap-4">
-                  {project.links?.demo && (
-                    <a
-                      href={project.links.demo}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="
-                        inline-flex items-center gap-2
-                        px-4 py-2
-                        rounded-xl
-                        bg-slate-800/60
-                        text-sm text-slate-200
-                        shadow-[0_10px_30px_rgba(0,0,0,0.4)]
-                        transition-all
-                        hover:bg-slate-700/60
-                        hover:-translate-y-0.5
-                      "
-                    >
-                      서비스 이동
-                      <span className="opacity-70">↗</span>
-                    </a>
-                  )}
+  {selectedPdf?.pdfUrl && (
+    <ProjectPdfModal
+      open={!!selectedPdf}
+      onClose={closePdf}
+      title={selectedPdf.title}
+      pdfUrl={selectedPdf.pdfUrl}
+    />
+  )}
 
-                  {project.links?.repo && (
-                    <a
-                      href={project.links.repo}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="
-                        inline-flex items-center gap-2
-                        px-4 py-2
-                        rounded-xl
-                        bg-slate-800/40
-                        text-sm text-slate-300
-                        transition-all
-                        hover:bg-slate-700/50
-                        hover:-translate-y-0.5
-                      "
-                    >
-                      GitHub
-                      <span className="opacity-70">↗</span>
-                    </a>
-                  )}
-                </div>
-
-                <div className="mt-4 flex flex-wrap gap-3">
-                  {project.techStack?.slice(0, 9).map((tech) => (
-                    <TechBox key={tech} label={tech} />
-                  ))}
-                </div>
-              </div>
-            </motion.article>
-          ))}
-        </div>
-      </div>
-
-      {/* ✅ PETORY PDF */}
-      {selectedPdf?.pdfUrl && (
-        <ProjectPdfModal
-          open={!!selectedPdf}
-          onClose={closePdf}
-          title={selectedPdf.title}
-          pdfUrl={selectedPdf.pdfUrl}
-        />
-      )}
-
-      {/* ✅ 나머지 상세 */}
-      <ProjectDetailModal
-        open={openDetail}
-        project={activeProject}
-        onClose={closeDetail}
-      />
-    </section>
+  <ProjectDetailModal open={openDetail} project={activeProject} onClose={closeDetail} />
+</section>
   );
 };
 

@@ -61,7 +61,10 @@ const ContactSection = () => {
         { publicKey: PUBLIC_KEY }
       );
 
-      setStatus({ type: "success", text: "메시지가 전송되었습니다! 감사합니다 🙇‍♂️" });
+      setStatus({
+        type: "success",
+        text: "메시지가 전송되었습니다! 감사합니다 🙇‍♂️",
+      });
       setForm({ name: "", email: "", message: "" });
     } catch (err) {
       setStatus({
@@ -75,7 +78,10 @@ const ContactSection = () => {
   };
 
   return (
-    <section id="contact" className="min-h-screen bg-slate-950 [overflow-x:clip]">
+    <section
+      id="contact"
+      className="min-h-screen bg-slate-950 [overflow-x:clip]"
+    >
       <div className="w-full max-w-7xl mx-auto px-6 md:px-12 lg:px-24 pt-28">
         <SectionTitle
           eyebrow="Contact"
@@ -85,8 +91,7 @@ const ContactSection = () => {
       </div>
 
       <div className="mt-16 md:mt-32 w-full max-w-5xl mx-auto px-6 md:px-12 lg:px-24 pb-28">
-        {/* ✅ 링크 카드: 반응형 그리드(가로 스크롤 방지) */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-2 gap-3 sm:gap-6">
           {contactLinks.map((link) => (
             <a
               key={link.label}
@@ -94,19 +99,18 @@ const ContactSection = () => {
               target="_blank"
               rel="noreferrer"
               className="
-                group relative
-                w-full
-                rounded-[12px]
+                group relative w-full
+                rounded-[10px] sm:rounded-[12px]
                 bg-slate-900/40
                 border border-slate-800/60
-                shadow-[0_25px_80px_rgba(0,0,0,0.55)]
+                shadow-[0_18px_55px_rgba(0,0,0,0.50)] sm:shadow-[0_25px_80px_rgba(0,0,0,0.55)]
                 overflow-hidden
                 flex flex-col items-center justify-center
                 transition-all duration-300
                 hover:shadow-[0_35px_110px_rgba(0,0,0,0.7)]
                 hover:bg-slate-700/40
-                px-4 py-8
-                min-h-[140px] sm:min-h-[160px]
+                px-3 py-5 sm:px-4 sm:py-8
+                min-h-[110px] sm:min-h-[160px]
               "
             >
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.06] to-transparent" />
@@ -114,10 +118,12 @@ const ContactSection = () => {
               <div
                 className="
                   absolute right-2 top-2
-                  w-8 h-8 rounded-[8px]
+                  w-7 h-7 sm:w-8 sm:h-8
+                  rounded-[7px] sm:rounded-[8px]
                   bg-slate-900/50
                   border border-slate-700/50
                   flex items-center justify-center
+                  text-[12px] sm:text-base
                   text-slate-300
                   transition group-hover:text-slate-100
                 "
@@ -126,23 +132,23 @@ const ContactSection = () => {
                 ↗
               </div>
 
-              <div className="w-12 h-12 flex items-center justify-center">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center">
                 {link.icon ? (
                   <img
                     src={link.icon}
                     alt={link.label}
                     draggable={false}
                     className={`
-                      w-12 h-12 object-contain
+                      w-9 h-9 sm:w-12 sm:h-12 object-contain
                       ${link.type === "github" ? "invert" : ""}
                     `}
                   />
                 ) : (
-                  <span className="text-3xl">◎</span>
+                  <span className="text-2xl sm:text-3xl">◎</span>
                 )}
               </div>
 
-              <p className="mt-3 text-sm font-semibold text-slate-200">
+              <p className="mt-2 sm:mt-3 text-[12px] sm:text-sm font-semibold text-slate-200">
                 {link.label}
               </p>
             </a>
@@ -152,15 +158,15 @@ const ContactSection = () => {
         {/* 메일 폼 박스 */}
         <div
           className="
-            mt-12 md:mt-16
-            rounded-[12px]
+            mt-8 md:mt-16
+            rounded-[10px] md:rounded-[12px]
             bg-slate-900/30
             border border-slate-800/60
-            shadow-[0_35px_120px_rgba(0,0,0,0.6)]
-            p-6 md:p-8
+            shadow-[0_20px_70px_rgba(0,0,0,0.55)] md:shadow-[0_35px_120px_rgba(0,0,0,0.6)]
+            p-4 md:p-8
           "
         >
-          <p className="text-sm text-slate-400 text-center break-words">
+          <p className="text-[11px] mt-2 md:text-sm text-slate-400 text-center break-words">
             작성한 메시지는{" "}
             <span className="text-indigo-300 font-semibold break-all">
               wlgns6921@gmail.com
@@ -172,7 +178,11 @@ const ContactSection = () => {
           {status.text && (
             <div
               className={`
-                mt-4 rounded-lg border px-4 py-3 text-sm
+                mt-3 md:mt-4
+                rounded-lg
+                border
+                px-3 py-2 md:px-4 md:py-3
+                text-[11px] md:text-sm
                 ${
                   status.type === "success"
                     ? "border-emerald-500/30 text-emerald-200 bg-emerald-500/10"
@@ -186,16 +196,22 @@ const ContactSection = () => {
             </div>
           )}
 
-          <form className="mt-6 space-y-4" onSubmit={handleSubmit}>
+          <form
+            className="mt-5 md:mt-6 space-y-3 md:space-y-4"
+            onSubmit={handleSubmit}
+          >
             <input
               name="name"
               value={form.name}
               onChange={handleChange}
               className="
-                w-full rounded-[8px]
+                w-full
+                rounded-[8px]
                 bg-slate-950/40
                 border border-slate-800/70
-                px-5 py-4
+                px-4 md:px-5
+                py-3 md:py-4
+                text-[11px] md:text-base
                 text-slate-200
                 placeholder:text-slate-500
                 outline-none
@@ -210,10 +226,13 @@ const ContactSection = () => {
               value={form.email}
               onChange={handleChange}
               className="
-                w-full rounded-[8px]
+                w-full
+                rounded-[8px]
                 bg-slate-950/40
                 border border-slate-800/70
-                px-5 py-4
+                px-4 md:px-5
+                py-3 md:py-4
+                text-[11px] md:text-base
                 text-slate-200
                 placeholder:text-slate-500
                 outline-none
@@ -229,10 +248,13 @@ const ContactSection = () => {
               onChange={handleChange}
               rows={7}
               className="
-                w-full rounded-[8px]
+                w-full
+                rounded-[8px]
                 bg-slate-950/40
                 border border-slate-800/70
-                px-5 py-4
+                px-4 md:px-5
+                py-3 md:py-4
+                text-[11px] md:text-base
                 text-slate-200
                 placeholder:text-slate-500
                 outline-none
@@ -246,10 +268,13 @@ const ContactSection = () => {
               type="submit"
               disabled={!isValid || sending}
               className="
-                w-full rounded-[8px]
+                w-full
+                rounded-[8px]
                 bg-indigo-600
-                py-4 font-semibold text-white
-                shadow-[0_20px_60px_rgba(79,70,229,0.35)]
+                py-3 md:py-4
+                text-[14px] md:text-base
+                font-semibold text-white
+                shadow-[0_14px_40px_rgba(79,70,229,0.3)] md:shadow-[0_20px_60px_rgba(79,70,229,0.35)]
                 transition
                 hover:bg-indigo-500
                 active:scale-[0.99]

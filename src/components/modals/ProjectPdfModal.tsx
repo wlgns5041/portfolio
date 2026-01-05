@@ -18,21 +18,34 @@ const ProjectPdfModal = ({ open, onClose, title, pdfUrl, fileName }: Props) => {
     return safe.endsWith(".pdf") ? safe : `${safe}.pdf`;
   }, [fileName, title]);
 
+  const isMobile =
+  typeof window !== "undefined" &&
+  window.matchMedia("(max-width: 768px)").matches;
+
   const viewerUrl = useMemo(() => {
     const base = pdfUrl.includes("#") ? pdfUrl.split("#")[0] : pdfUrl;
     return `${base}#toolbar=0&navpanes=0&scrollbar=0&view=FitH`;
   }, [pdfUrl]);
 
-  useEffect(() => {
-    if (!open) return;
-    const onKeyDown = (e: KeyboardEvent) => e.key === "Escape" && onClose();
-    document.addEventListener("keydown", onKeyDown);
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.removeEventListener("keydown", onKeyDown);
-      document.body.style.overflow = "";
-    };
-  }, [open, onClose]);
+useEffect(() => {
+  if (!open) return;
+
+  const onKeyDown = (e: KeyboardEvent) => e.key === "Escape" && onClose();
+  document.addEventListener("keydown", onKeyDown);
+  document.body.style.overflow = "hidden";
+
+  // ✅ 모바일일 때만 로고 숨김 플래그 ON
+  const isMobile = window.matchMedia("(max-width: 768px)").matches;
+  if (isMobile) document.body.setAttribute("data-pdf-open", "true");
+
+  return () => {
+    document.removeEventListener("keydown", onKeyDown);
+    document.body.style.overflow = "";
+
+    // ✅ 플래그 OFF (다시 보이게)
+    document.body.removeAttribute("data-pdf-open");
+  };
+}, [open, onClose]);
 
   const handleDownload = async () => {
     const res = await fetch(pdfUrl);
@@ -64,7 +77,7 @@ const ProjectPdfModal = ({ open, onClose, title, pdfUrl, fileName }: Props) => {
           <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
 
           <motion.div
-            className="relative w-full max-w-6xl h-[90vh] rounded-2xl border border-slate-700/40 bg-slate-950 shadow-[0_40px_140px_rgba(0,0,0,0.75)] overflow-hidden"
+            className="relative w-full max-w-6xl h-[80vh] md:h-[90vh] rounded-2xl border border-slate-700/40 bg-slate-950 shadow-[0_40px_140px_rgba(0,0,0,0.75)] overflow-hidden"
             onMouseDown={(e) => e.stopPropagation()}
             initial={{ opacity: 0, y: 18, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -106,13 +119,35 @@ const ProjectPdfModal = ({ open, onClose, title, pdfUrl, fileName }: Props) => {
               </div>
             </div>
 
-            <div className="h-[calc(90vh-56px)] bg-black">
-              <iframe
-                title={`${title} PDF`}
-                src={viewerUrl}
-                className="w-full h-full"
-              />
-            </div>
+<div className="h-[calc(80vh-56px)] md:h-[calc(90vh-56px)] bg-black overflow-hidden">
+  {isMobile ? (
+    <div className="w-full h-full flex flex-col items-center justify-center gap-3 text-slate-200">
+      <p className="text-sm opacity-80">
+        모바일에서는 PDF 뷰어를 지원하지 않아요
+      </p>
+
+      <div className="flex gap-2">
+        <button
+          type="button"
+          onClick={() => window.open(viewerUrl, "_blank", "noreferrer")}
+          className="px-4 h-10 rounded-xl bg-slate-800/40 hover:bg-slate-700/50 transition text-sm font-semibold"
+        >
+          새 탭에서 보기
+        </button>
+
+        <button
+          type="button"
+          onClick={handleDownload}
+          className="px-4 h-10 rounded-xl bg-slate-800/40 hover:bg-slate-700/50 transition text-sm font-semibold"
+        >
+          다운로드
+        </button>
+      </div>
+    </div>
+  ) : (
+    <iframe title={`${title} PDF`} src={viewerUrl} className="w-full h-full" />
+  )}
+</div>
           </motion.div>
         </motion.div>
       )}

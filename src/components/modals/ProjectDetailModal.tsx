@@ -124,10 +124,14 @@ const ProjectDetailModal = ({ open, project, onClose }: Props) => {
 
           <motion.div
             className="
-              relative w-[92vw] max-w-6xl max-h-[88vh]
-              rounded-2xl border border-white/10
+              relative
+              w-[90vw] md:w-[92vw]
+              max-w-6xl
+              max-h-[80vh] md:max-h-[88vh]
+              rounded-xl md:rounded-2xl
+              border border-white/10
               bg-slate-950 overflow-hidden
-              shadow-[0_40px_160px_rgba(0,0,0,0.85)]
+              shadow-[0_30px_120px_rgba(0,0,0,0.85)]
             "
             initial={{ opacity: 0, y: 18, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -137,8 +141,8 @@ const ProjectDetailModal = ({ open, project, onClose }: Props) => {
               type="button"
               onClick={onClose}
               className="
-                absolute right-4 top-4 z-10
-                w-10 h-10 rounded-xl
+                absolute right-3 top-3 md:right-4 md:top-4 z-10
+                w-8 h-8 md:w-10 md:h-10 rounded-xl
                 bg-black/40 border border-white/10
                 text-white/80 hover:text-white hover:bg-black/55
               "
@@ -198,13 +202,13 @@ function ModalBody({
       className="max-h-[88vh] overflow-y-auto relative no-scrollbar"
     >
       {/* --- 위 갤러리 --- */}
-      <div className="p-6 md:p-8">
-        <h2 className="text-2xl md:text-3xl font-extrabold text-slate-50">
-          {project.title}
-        </h2>
+    <div className="p-4 md:p-8">
+      <h2 className="text-lg md:text-3xl font-extrabold text-slate-50">
+        {project.title}
+      </h2>
 
-        <div className="mt-6 rounded-2xl overflow-hidden border border-white/10 bg-black/20">
-          <div className="aspect-[16/9] w-full flex items-center justify-center">
+        <div className="mt-4 md:mt-6 rounded-xl md:rounded-2xl overflow-hidden border border-white/10 bg-black/20">
+          <div className="aspect-[16/12] md:aspect-[16/9] w-full flex items-center justify-center">
             {mainImage ? (
               <img
                 src={mainImage}
@@ -219,20 +223,20 @@ function ModalBody({
         </div>
 
         {images.length > 0 && (
-          <div className="mt-4 grid grid-cols-4 gap-3">
+          <div className="mt-3 md:mt-4 grid grid-cols-4 md:grid-cols-4 gap-2 md:gap-3">
             {images.slice(0, 7).map((src, i) => (
               <button
                 key={src + i}
                 type="button"
                 onClick={() => onThumbClick(i)}
                 className={`
-                  aspect-[16/9] rounded-xl overflow-hidden border
-                  ${
-                    i === activeIdx
+                    aspect-[16/12] md:aspect-[16/9]
+                    rounded-lg md:rounded-xl
+                    overflow-hidden border
+                    ${i === activeIdx
                       ? "border-indigo-400/70 ring-2 ring-indigo-500/25"
-                      : "border-white/10 hover:border-white/25"
-                  }
-                `}
+                      : "border-white/10"}
+                  `}
               >
                 <img
                   src={src}
@@ -251,11 +255,15 @@ function ModalBody({
         <div className="sticky bottom-10 flex justify-center px-6 pointer-events-none">
           <div
             className="
-        rounded-full px-9 py-4
-        bg-slate-900/90 border border-white/10
-        text-sm text-slate-200
-        animate-float
-      "
+              rounded-full
+              px-5 md:px-9
+              py-2.5 md:py-4
+              bg-slate-900/90
+              border border-white/10
+              text-[11px] md:text-sm
+              text-slate-200
+              animate-float
+            "
           >
             스크롤을 내리면 프로젝트 정보를 확인할 수 있어요
           </div>
@@ -263,12 +271,12 @@ function ModalBody({
       )}
 
       {/* --- 상세 정보 --- */}
-      <div className="px-6 md:px-8 pb-10">
+      <div className="px-4 md:px-8 pb-10">
         {/* INTRO */}
         {(project.detail?.intro || project.role) && (
-          <div className="mt-10 rounded-2xl border border-white/10 bg-slate-900/25 p-6 md:p-8">
+          <div className="mt-4 rounded-2xl border border-white/10 bg-slate-900/25 p-4 md:p-8">
             <h3 className="text-lg font-extrabold text-slate-50">INTRO.</h3>
-            <p className="mt-3 text-sm md:text-[15px] leading-relaxed text-slate-300 whitespace-pre-line">
+            <p className="mt-3 text-[11px] md:text-[15px] leading-relaxed text-slate-300 whitespace-pre-line">
               {project.detail?.intro ?? project.role ?? ""}
             </p>
           </div>
@@ -278,15 +286,21 @@ function ModalBody({
         {(project.detail?.duration ||
           project.detail?.team ||
           project.detail?.contribution?.length) && (
-          <div className="mt-6 rounded-2xl border border-white/10 bg-slate-900/15 p-6 md:p-8">
+          <div className="
+            mt-4 md:mt-6
+            rounded-xl md:rounded-2xl
+            border border-white/10
+            bg-slate-900/15
+            p-4 md:p-8
+          ">
             <div className="grid gap-5">
               {project.detail?.duration && (
                 <div>
-                  <div className="text-sm font-bold text-slate-100 flex items-center gap-2">
+                  <div className="text-sm md:text-sm font-bold text-slate-100 flex items-center gap-2">
                     <ScheduleRoundedIcon fontSize="small" />
                     개발 기간
                   </div>
-                  <div className="mt-1 text-sm text-slate-300">
+                  <div className="mt-1 text-[12px] md:text-sm text-slate-300">
                     {project.detail.duration}
                   </div>
                 </div>
@@ -294,11 +308,11 @@ function ModalBody({
 
               {project.detail?.team && (
                 <div>
-                  <div className="text-sm font-bold text-slate-100 flex items-center gap-2">
+                  <div className="text-sm md:text-sm font-bold text-slate-100 flex items-center gap-2">
                     <GroupRoundedIcon fontSize="small" />
                     구성원
                   </div>
-                  <div className="mt-1 text-sm text-slate-300">
+                  <div className="mt-1 text-[12px] md:text-sm text-slate-300">
                     {project.detail.team}
                   </div>
                 </div>
@@ -306,7 +320,7 @@ function ModalBody({
 
               {project.detail?.contribution?.length ? (
                 <div>
-                  <div className="text-sm font-bold text-slate-100 flex items-center gap-2">
+                  <div className="text-sm md:text-sm font-bold text-slate-100 flex items-center gap-2">
                     <BuildRoundedIcon fontSize="small" />
                     기여도
                   </div>
@@ -314,7 +328,16 @@ function ModalBody({
                     {project.detail.contribution.map((c) => (
                       <span
                         key={c}
-                        className="px-3 py-1 rounded-full text-xs font-semibold bg-rose-200/15 text-rose-100 border border-rose-200/20"
+                          className="
+                            px-2.5 md:px-3
+                            py-1 md:py-1
+                            rounded-full
+                            text-[11px] md:text-xs
+                            font-semibold
+                            bg-rose-200/15
+                            text-rose-100
+                            border border-rose-200/20
+                          "
                       >
                         {c}
                       </span>
@@ -328,8 +351,8 @@ function ModalBody({
 
         {/* 사용 기술 스택(텍스트 배지) */}
         {project.techStack?.length ? (
-          <div className="mt-6 rounded-2xl border border-white/10 bg-slate-900/15 p-6 md:p-8">
-            <div className="text-sm font-bold text-slate-100 flex items-center gap-2">
+          <div className="mt-4 md:mt-6 rounded-2xl border border-white/10 bg-slate-900/15 p-4 md:p-8">
+            <div className="text-sm md:text-sm font-bold text-slate-100 flex items-center gap-2">
               <BuildRoundedIcon fontSize="small" />
               사용된 기술 스택
             </div>
@@ -342,13 +365,13 @@ function ModalBody({
                   <div
                     key={tech}
                     className="
-              flex items-center gap-3
-              px-4 py-2
-              rounded-xl
-              bg-slate-900/60
-              border border-white/10
-              shadow-[0_10px_30px_rgba(0,0,0,0.35)]
-            "
+                      flex items-center gap-2
+                      px-3 md:px-4
+                      py-1.5 md:py-2
+                      rounded-lg md:rounded-xl
+                      bg-slate-900/60
+                      border border-white/10
+                    "
                   >
                     {logo && (
                       <img
@@ -361,7 +384,7 @@ function ModalBody({
                         draggable={false}
                       />
                     )}
-                    <span className="text-sm font-semibold text-slate-200">
+                    <span className="text-[12px] md:text-sm font-semibold text-slate-200">
                       {tech}
                     </span>
                   </div>
@@ -373,12 +396,12 @@ function ModalBody({
 
         {/* 주요 기능 */}
         {project.detail?.features?.length ? (
-          <div className="mt-6 rounded-2xl border border-white/10 bg-slate-900/15 p-6 md:p-8">
-            <div className="text-sm font-bold text-slate-100 flex items-center gap-2">
+          <div className="mt-4 md:mt-6 rounded-2xl border border-white/10 bg-slate-900/15 p-4 md:p-8">
+            <div className="text-sm md:text-sm font-bold text-slate-100 flex items-center gap-2">
               <BoltRoundedIcon fontSize="small" />
               주요 기능
             </div>
-            <ul className="mt-3 space-y-2 text-sm text-slate-300 list-disc pl-5">
+            <ul className="mt-3 space-y-2 text-[11px] md:text-sm text-slate-300 list-disc pl-5">
               {project.detail.features.map((f) => (
                 <li key={f}>{f}</li>
               ))}
@@ -388,8 +411,8 @@ function ModalBody({
 
         {/* ✅ 핵심 하이라이트 */}
         {project.detail?.highlights?.length ? (
-          <div className="mt-6 rounded-2xl border border-white/10 bg-slate-900/15 p-6 md:p-8">
-            <div className="text-sm font-bold text-slate-100 flex items-center gap-2">
+          <div className="mt-4 md:mt-6 rounded-2xl border border-white/10 bg-slate-900/15 p-4 md:p-8">
+            <div className="text-sm md:text-sm font-bold text-slate-100 flex items-center gap-2">
               <BoltRoundedIcon fontSize="small" />
               핵심 포인트
             </div>
@@ -399,13 +422,13 @@ function ModalBody({
                 <div
                   key={h}
                   className="
-            flex items-start gap-3
-            rounded-xl border border-white/10
-            bg-black/20 p-4
-          "
+                    flex items-start gap-3
+                    rounded-xl border border-white/10
+                    bg-black/20 p-4
+                  "
                 >
                   <span className="mt-[6px] h-2 w-2 rounded-full bg-teal-400/80 shrink-0" />
-                  <p className="text-sm text-slate-300 leading-relaxed">{h}</p>
+                  <p className="text-[11px] md:text-sm text-slate-300 leading-relaxed">{h}</p>
                 </div>
               ))}
             </div>
@@ -414,21 +437,21 @@ function ModalBody({
 
         {/* 기술 선정 이유 */}
         {project.detail?.techReasons ? (
-          <div className="mt-6 rounded-2xl border border-white/10 bg-slate-900/15 p-6 md:p-8">
-            <div className="text-sm font-bold text-slate-100 flex items-center gap-2">
+          <div className="mt-4 md:mt-6 rounded-2xl border border-white/10 bg-slate-900/15 p-4 md:p-8">
+            <div className="text-sm md:text-sm font-bold text-slate-100 flex items-center gap-2">
               <EmojiObjectsRoundedIcon fontSize="small" />
               기술 선정 이유
             </div>
-            <p className="mt-3 text-sm text-slate-300 leading-relaxed whitespace-pre-line">
-              {project.detail.techReasons}
-            </p>
+              <p className="mt-3 text-[11px] md:text-sm text-slate-300 leading-relaxed whitespace-pre-line">
+                {project.detail.techReasons}
+              </p>
           </div>
         ) : null}
 
         {/* 개발 이슈 (문제/해결) */}
         {project.detail?.issues?.length ? (
-          <div className="mt-6 rounded-2xl border border-white/10 bg-slate-900/15 p-6 md:p-8">
-            <div className="text-sm font-bold text-slate-100 flex items-center gap-2">
+          <div className="mt-4 md:mt-6 rounded-2xl border border-white/10 bg-slate-900/15 p-4 md:p-8">
+            <div className="text-sm md:text-sm font-bold text-slate-100 flex items-center gap-2">
               <BugReportRoundedIcon fontSize="small" />
               개발 이슈
             </div>
@@ -439,17 +462,17 @@ function ModalBody({
                   key={idx}
                   className="rounded-xl border border-white/10 bg-black/20 p-4"
                 >
-                  <div className="text-sm font-semibold text-rose-200">
+                  <div className="text-[13px] md:text-sm font-semibold text-rose-200">
                     문제
                   </div>
-                  <div className="mt-1 text-sm text-slate-300 whitespace-pre-line">
+                  <div className="mt-1 text-[11px] md:text-sm text-slate-300 whitespace-pre-line">
                     {it.problem}
                   </div>
 
-                  <div className="mt-3 text-sm font-semibold text-emerald-200">
+                  <div className="mt-4 text-[13px] md:text-sm font-semibold text-emerald-200">
                     해결
                   </div>
-                  <div className="mt-1 text-sm text-slate-300 whitespace-pre-line">
+                  <div className="mt-1 text-[11px] md:text-sm text-slate-300 whitespace-pre-line">
                     {it.solution}
                   </div>
                 </div>
@@ -460,12 +483,12 @@ function ModalBody({
 
         {/* 느낀점 */}
         {project.detail?.takeaway ? (
-          <div className="mt-6 rounded-2xl border border-white/10 bg-slate-900/15 p-6 md:p-8">
-            <div className="text-sm font-bold text-slate-100 flex items-center gap-2">
+          <div className="mt-4 md:mt-6 rounded-2xl border border-white/10 bg-slate-900/15 p-4 md:p-8">
+            <div className="text-sm md:text-sm font-bold text-slate-100 flex items-center gap-2">
               <CloudRoundedIcon fontSize="small" />
               개발 후 느낀점
             </div>
-            <p className="mt-3 text-sm text-slate-300 leading-relaxed whitespace-pre-line">
+            <p className="mt-3 text-[11px] md:text-sm text-slate-300 leading-relaxed whitespace-pre-line">
               {project.detail.takeaway}
             </p>
           </div>

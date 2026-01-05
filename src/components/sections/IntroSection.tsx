@@ -123,7 +123,7 @@ const IntroSection = () => {
     <LayoutGroup>
       <section
         id="intro"
-        className="bg-slate-950 text-slate-100 [overflow-x:clip] pb-32 md:pb-80"
+        className="bg-slate-950 text-slate-100 [overflow-x:clip] pb-20 md:pb-80"
       >
         {/* ================== INTRO HERO ================== */}
         <div
@@ -237,65 +237,66 @@ const IntroSection = () => {
             </div>
 
             {/* RIGHT : LOGO (인트로 위치) */}
-            {createPortal(
-              <motion.div
-                className="fixed pointer-events-none z-[2147483647]"
-                style={{ isolation: "isolate" }}
-                initial={false}
-                animate={
-                  isMobile
-                    ? isDocked
+            {!(isMobile && pdfOpen) &&
+              createPortal(
+                <motion.div
+                  className="fixed pointer-events-none z-[2147483647]"
+                  style={{ isolation: "isolate" }}
+                  initial={false}
+                  animate={
+                    isMobile
+                      ? isDocked
+                        ? {
+                            top: -2,
+                            left: -12,
+                            width: 100,
+                            height: 100,
+                            opacity: 0.9,
+                            x: 0,
+                            y: 0,
+                          }
+                        : {
+                            top: 64,
+                            left: "calc(100vw - 24px - 130px)",
+                            width: 130,
+                            height: 130,
+                            opacity: 1,
+                            x: 0,
+                            y: 0,
+                          }
+                      : isDocked
                       ? {
-                          top: -2,
-                          left: -12,
-                          width: 100,
-                          height: 100,
+                          top: 12,
+                          left: 24,
+                          width: 120,
+                          height: 120,
                           opacity: 0.9,
                           x: 0,
                           y: 0,
                         }
                       : {
-                          top: 64,
-                          left: "calc(100vw - 24px - 130px)",
-                          width: 130,
-                          height: 130,
+                          top: "50%",
+                          left: "50%",
+                          width: 320,
+                          height: 320,
                           opacity: 1,
-                          x: 0,
-                          y: 0,
+                          x: "10vw",
+                          y: "-50%",
                         }
-                    : isDocked
-                    ? {
-                        top: 12,
-                        left: 24,
-                        width: 120,
-                        height: 120,
-                        opacity: 0.9,
-                        x: 0,
-                        y: 0,
-                      }
-                    : {
-                        top: "50%",
-                        left: "50%",
-                        width: 320,
-                        height: 320,
-                        opacity: 1,
-                        x: "10vw",
-                        y: "-50%",
-                      }
-                }
-                transition={{ type: "spring", stiffness: 260, damping: 25 }}
-              >
-                <motion.div
-                  animate={{ scale: isDocked ? (isMobile ? 0.45 : 1) : 1 }}
+                  }
                   transition={{ type: "spring", stiffness: 260, damping: 25 }}
-                  style={{ transformOrigin: "center" }}
-                  className="w-full h-full"
                 >
-                  <LogoLottie />
-                </motion.div>
-              </motion.div>,
-              document.body
-            )}
+                  <motion.div
+                    animate={{ scale: isDocked ? (isMobile ? 0.45 : 1) : 1 }}
+                    transition={{ type: "spring", stiffness: 260, damping: 25 }}
+                    style={{ transformOrigin: "center" }}
+                    className="w-full h-full"
+                  >
+                    <LogoLottie />
+                  </motion.div>
+                </motion.div>,
+                document.body
+              )}
           </motion.div>
         </div>
 
