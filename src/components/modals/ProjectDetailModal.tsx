@@ -92,6 +92,18 @@ const ProjectDetailModal = ({ open, project, onClose }: Props) => {
   }, [open]);
 
   useEffect(() => {
+  if (!open) return;
+
+  // ✅ 모달 열리면 로고 숨김 플래그 ON
+  document.body.setAttribute("data-modal-open", "true");
+
+  return () => {
+    // ✅ 모달 닫히면 플래그 OFF
+    document.body.removeAttribute("data-modal-open");
+  };
+}, [open]);
+
+  useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();

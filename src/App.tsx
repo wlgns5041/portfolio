@@ -8,6 +8,7 @@ import ExperienceSection from "./components/sections/ExperienceSection";
 import ProjectsSection from "./components/sections/ProjectsSection";
 import ContactSection from "./components/sections/ContactSection";
 
+
 function App() {
   return (
     <div className="font-pretendard scroll-smooth bg-slate-950 text-slate-100">

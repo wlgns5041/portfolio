@@ -16,7 +16,7 @@ import PhoneRoundedIcon from "@mui/icons-material/PhoneRounded";
 import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
 import EditNoteRoundedIcon from "@mui/icons-material/EditNoteRounded";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState} from "react";
 import galaxyImg from "../../assets/images/galaxy.jpg";
 import LogoLottie from "../common/LogoLottie";
 
@@ -65,6 +65,40 @@ const IntroSection = () => {
 
   const [isDocked, setIsDocked] = useState(false);
 
+  const [isMobile, setIsMobile] = useState(false);
+
+  const [isAnyModalOpen, setIsAnyModalOpen] = useState(false);
+
+useEffect(() => {
+  const el = document.body;
+
+  const update = () => {
+    setIsAnyModalOpen(el.getAttribute("data-modal-open") === "true");
+  };
+
+  update();
+
+  const mo = new MutationObserver(update);
+  mo.observe(el, { attributes: true, attributeFilter: ["data-modal-open"] });
+
+  return () => mo.disconnect();
+}, []);
+
+    useEffect(() => {
+    const mq = window.matchMedia("(max-width: 767px)");
+
+    const apply = () => setIsMobile(mq.matches);
+    apply();
+
+    if (mq.addEventListener) mq.addEventListener("change", apply);
+    else mq.addListener(apply);
+
+    return () => {
+      if (mq.removeEventListener) mq.removeEventListener("change", apply);
+      else mq.removeListener(apply);
+    };
+  }, []);
+
   useMotionValueEvent(heroProgress, "change", (v) => {
     if (!isMobile) setIsDocked(v > 0.02);
   });
@@ -86,26 +120,7 @@ const IntroSection = () => {
   const RESUME_PDF = "/pdfs/resume.pdf";
   const COVERLETTER_PDF = "/pdfs/coverletter.pdf";
 
-  // ✅ 모바일 대응(PC 영향 X): md 이상은 기존 그대로 유지
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const mq = window.matchMedia("(max-width: 767px)");
-
-    const apply = () => setIsMobile(mq.matches);
-    apply();
-
-    // 구형/신형 브라우저 대응
-    if (mq.addEventListener) mq.addEventListener("change", apply);
-    else mq.addListener(apply);
-
-    return () => {
-      if (mq.removeEventListener) mq.removeEventListener("change", apply);
-      else mq.removeListener(apply);
-    };
-  }, []);
-
-  useEffect(() => {
+ useEffect(() => {
     if (!isMobile) return;
 
     const onScroll = () => {
@@ -113,7 +128,7 @@ const IntroSection = () => {
       setIsDocked(y > 10);
     };
 
-    onScroll(); // 초기 동기화
+    onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
 
     return () => window.removeEventListener("scroll", onScroll);
@@ -237,10 +252,10 @@ const IntroSection = () => {
             </div>
 
             {/* RIGHT : LOGO (인트로 위치) */}
-            {!(isMobile && pdfOpen) &&
+            {!isAnyModalOpen &&
               createPortal(
                 <motion.div
-                  className="fixed pointer-events-none z-[2147483647]"
+                  className="logo-lottie-wrapper fixed pointer-events-none z-[2147483647]"
                   style={{ isolation: "isolate" }}
                   initial={false}
                   animate={

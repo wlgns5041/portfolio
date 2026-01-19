@@ -286,7 +286,7 @@ const ContactSection = () => {
           </form>
         </div>
 
-        <p className="mt-12 md:mt-16 text-sm text-slate-600 text-center">
+        <p className="mt-12 md:mt-16 text-[10px] sm:text-xs md:text-sm text-slate-500 text-center">
           © {new Date().getFullYear()} Jihoon Kim
         </p>
       </div>

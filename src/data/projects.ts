@@ -1,6 +1,6 @@
 import type { Project } from "../types/types";
-import petoryThumb from "../assets/images/petory.svg";
-import portfolioThumb from "../assets/images/portfolio.svg";
+import petoryThumb from "../assets/images/petory-logo.png";
+import portfolioThumb from "../assets/images/portfolio-logo.png";
 
 import p1 from "../assets/images/portfolio_1.png";
 import p2 from "../assets/images/portfolio_2.png";
