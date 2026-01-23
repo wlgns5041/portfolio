@@ -1,12 +1,7 @@
 import { motion } from "framer-motion";
 import { projects } from "../../data/projects";
 import { SectionTitle } from "../common/SectionTitle";
-import { useState } from "react";
-
-import ProjectPdfModal from "../modals/ProjectPdfModal";
-import ProjectDetailModal, {
-  type ProjectItem as ModalProjectItem,
-} from "../modals/ProjectDetailModal";
+import { useState, lazy, Suspense } from "react";
 
 import { projectDetails } from "../../data/projectDetails";
 
@@ -23,6 +18,10 @@ import tailwindLogo from "../../assets/logos/tailwild.png";
 import vercelLogo from "../../assets/logos/vercel.png";
 
 type ProjectItem = (typeof projects)[number];
+
+const ProjectPdfModal = lazy(() => import("../modals/ProjectPdfModal"));
+const ProjectDetailModal = lazy(() => import("../modals/ProjectDetailModal"));
+import type { ProjectItem as ModalProjectItem } from "../modals/ProjectDetailModal";
 
 const TECH_LOGOS: Record<string, string> = {
   JavaScript: jsLogo,
@@ -91,16 +90,13 @@ const highlightPeople = (text?: string) => {
 };
 
 const ProjectsSection = () => {
-  // ✅ PDF 모달
   const [selectedPdf, setSelectedPdf] = useState<ProjectItem | null>(null);
 
-  // ✅ Detail 모달
   const [openDetail, setOpenDetail] = useState(false);
   const [activeProject, setActiveProject] = useState<ModalProjectItem | null>(
     null
   );
 
-  // ✅ “카드용 Project” -> “모달용 ProjectItem” 변환 (여기서만 합치기)
   const toModalProject = (p: ProjectItem): ModalProjectItem => {
     return {
       id: p.id,
@@ -146,7 +142,6 @@ const ProjectsSection = () => {
           description={`현재까지 개발한 프로젝트입니다\n프로젝트를 클릭하면 자세히 볼 수 있습니다`}
         />
 
-        {/* ✅ 모바일: 2열 / PC: 기존 2열 유지 */}
         <div className="mt-10 md:mt-16 grid grid-cols-2 md:grid-cols-2 gap-4 md:gap-14">
           {projects.map((project, idx) => (
             <motion.article
@@ -160,32 +155,35 @@ const ProjectsSection = () => {
                 ease: [0.16, 1, 0.3, 1],
               }}
             >
-              {/* ✅ 카드 */}
               <div
                 onClick={() => openProject(project)}
                 role="button"
                 tabIndex={0}
                 className="
-              group relative w-full aspect-[16/12]
-              rounded-[10px] md:rounded-[12px]
-              overflow-hidden
+                  group relative w-full aspect-[16/12]
+                  rounded-[10px] md:rounded-[12px]
+                  overflow-hidden
 
-              bg-slate-50
-              cursor-pointer
-              will-change-transform
-              transition-transform duration-300 ease-out
-              hover:-translate-y-1 md:hover:-translate-y-4
-              hover:ring-slate-100/100
-              flex items-center justify-center
-              [transform:translateZ(0)] [backface-visibility:hidden]
-            "
+                  bg-slate-50
+                  cursor-pointer
+                  will-change-transform
+                  transition-transform duration-300 ease-out
+                  hover:-translate-y-1 md:hover:-translate-y-4
+                  hover:ring-slate-100/100
+                  flex items-center justify-center
+                  [transform:translateZ(0)] [backface-visibility:hidden]
+                "
                 style={{ backgroundColor: idx === 1 ? "#2DD4BF" : "#F8FAFC" }}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" || e.key === " ") openProject(project);
                 }}
+                onMouseEnter={() => {
+                  if (project.status === "WIP") return;
+                  if (project.pdfUrl) import("../modals/ProjectPdfModal");
+                  else import("../modals/ProjectDetailModal");
+                }}
               >
                 {project.image ? (
-                  // ProjectsSection 내부 img 태그 부분
                   <img
                     src={project.image}
                     alt={project.title}
@@ -208,7 +206,6 @@ const ProjectsSection = () => {
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.08] to-transparent" />
               </div>
 
-              {/* ✅ 텍스트 영역 */}
               <div className="mt-2.5 md:mt-4">
                 <div className="flex items-start justify-between gap-2 md:gap-6">
                   <h3 className="text-[12px] sm:text-[15px] md:text-xl font-extrabold text-slate-100 leading-snug">
@@ -223,16 +220,21 @@ const ProjectsSection = () => {
                     }}
                     disabled={project.status === "WIP"}
                     className={`
-                  shrink-0
-                  text-[8px] sm:text-xs md:text-sm
-                  font-bold
-                  transition
-                  ${
-                    project.status === "WIP"
-                      ? "text-slate-600 cursor-not-allowed"
-                      : "text-slate-400 hover:text-slate-200"
-                  }
-                `}
+                      shrink-0
+                      text-[8px] sm:text-xs md:text-sm
+                      font-bold
+                      transition
+                      ${
+                        project.status === "WIP"
+                          ? "text-slate-600 cursor-not-allowed"
+                          : "text-slate-400 hover:text-slate-200"
+                      }
+                    `}
+                    onMouseEnter={() => {
+                      if (project.status === "WIP") return;
+                      if (project.pdfUrl) import("../modals/ProjectPdfModal");
+                      else import("../modals/ProjectDetailModal");
+                    }}
                   >
                     자세히 보기 →
                   </button>
@@ -250,7 +252,6 @@ const ProjectsSection = () => {
                   </p>
                 )}
 
-                {/* ✅ 링크 버튼: 모바일 더 작게 */}
                 <div className="mt-3 md:mt-4 flex flex-wrap items-center gap-2 md:gap-4">
                   {project.links?.demo && (
                     <a
@@ -258,17 +259,17 @@ const ProjectsSection = () => {
                       target="_blank"
                       rel="noreferrer"
                       className="
-                    inline-flex items-center gap-1
-                    px-3 py-2 md:px-4 md:py-2
-                    rounded-lg md:rounded-xl
-                    bg-slate-800/60
-                    text-[11px] sm:text-xs md:text-sm text-slate-200
-                    shadow-[0_8px_20px_rgba(0,0,0,0.35)]
-                    md:shadow-[0_10px_30px_rgba(0,0,0,0.4)]
-                    transition-all
-                    hover:bg-slate-700/60
-                    md:hover:-translate-y-0.5
-                  "
+                        inline-flex items-center gap-1
+                        px-3 py-2 md:px-4 md:py-2
+                        rounded-lg md:rounded-xl
+                        bg-slate-800/60
+                        text-[11px] sm:text-xs md:text-sm text-slate-200
+                        shadow-[0_8px_20px_rgba(0,0,0,0.35)]
+                        md:shadow-[0_10px_30px_rgba(0,0,0,0.4)]
+                        transition-all
+                        hover:bg-slate-700/60
+                        md:hover:-translate-y-0.5
+                      "
                     >
                       서비스 <span className="opacity-70">↗</span>
                     </a>
@@ -280,22 +281,21 @@ const ProjectsSection = () => {
                       target="_blank"
                       rel="noreferrer"
                       className="
-                    inline-flex items-center gap-1
-                    px-3 py-2 md:px-4 md:py-2
-                    rounded-lg md:rounded-xl
-                    bg-slate-800/40
-                    text-[11px] sm:text-xs md:text-sm text-slate-300
-                    transition-all
-                    hover:bg-slate-700/50
-                    md:hover:-translate-y-0.5
-                  "
+                        inline-flex items-center gap-1
+                        px-3 py-2 md:px-4 md:py-2
+                        rounded-lg md:rounded-xl
+                        bg-slate-800/40
+                        text-[11px] sm:text-xs md:text-sm text-slate-300
+                        transition-all
+                        hover:bg-slate-700/50
+                        md:hover:-translate-y-0.5
+                      "
                     >
                       GitHub <span className="opacity-70">↗</span>
                     </a>
                   )}
                 </div>
 
-                {/* ✅ TechBox: 모바일 간격/크기 축소 */}
                 <div className="mt-3 md:mt-4 flex flex-wrap gap-1.5 sm:gap-2 md:gap-3">
                   {project.techStack?.slice(0, 9).map((tech) => (
                     <TechBox key={tech} label={tech} />
@@ -307,20 +307,30 @@ const ProjectsSection = () => {
         </div>
       </div>
 
-      {selectedPdf?.pdfUrl && (
-        <ProjectPdfModal
-          open={!!selectedPdf}
-          onClose={closePdf}
-          title={selectedPdf.title}
-          pdfUrl={selectedPdf.pdfUrl}
-        />
-      )}
+      <Suspense
+        fallback={
+          <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/40">
+            <div className="rounded-xl bg-slate-900/80 px-4 py-3 text-sm font-semibold text-slate-100">
+              불러오는 중...
+            </div>
+          </div>
+        }
+      >
+        {selectedPdf?.pdfUrl && (
+          <ProjectPdfModal
+            open={!!selectedPdf}
+            onClose={closePdf}
+            title={selectedPdf.title}
+            pdfUrl={selectedPdf.pdfUrl}
+          />
+        )}
 
-      <ProjectDetailModal
-        open={openDetail}
-        project={activeProject}
-        onClose={closeDetail}
-      />
+        <ProjectDetailModal
+          open={openDetail}
+          project={activeProject}
+          onClose={closeDetail}
+        />
+      </Suspense>
     </section>
   );
 };
