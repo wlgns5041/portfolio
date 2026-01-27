@@ -42,10 +42,10 @@ UI 구현에 그치지 않고,
 ## 🛠 사용된 주요 기술 스택
 
 <p>
-  <img src="https://skillicons.dev/icons?i=ts" height="36" />
-  <img src="https://skillicons.dev/icons?i=react" height="36" />
-  <img src="https://skillicons.dev/icons?i=tailwind" height="36" />
-  <img src="https://skillicons.dev/icons?i=vercel" height="36" />
+  <img src="https://skillicons.dev/icons?i=ts" height="60" />
+  <img src="https://skillicons.dev/icons?i=react" height="60" />
+  <img src="https://skillicons.dev/icons?i=tailwind" height="60" />
+  <img src="https://skillicons.dev/icons?i=vercel" height="60" />
 </p>
 
 ---
@@ -101,7 +101,7 @@ motion value 활용으로 스크롤/애니메이션 처리
 
 ---
 
-🔴 **문제** 
+🔴 **문제**  
 PDF 로딩 실패
 
 🟢 **해결**  
@@ -109,7 +109,7 @@ worker 경로 고정 + 대체 UX 제공
 
 ---
 
-🔴 **문제** 
+🔴 **문제**  
 초기 번들 증가로 첫 진입 체감 속도 저하
 
 🟢 **해결**   
