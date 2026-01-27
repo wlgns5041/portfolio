@@ -5,7 +5,7 @@ export const projectDetails: Record<string, ProjectItem["detail"]> = {
     statusLabel: "서비스 중",
     duration: "2025.12",
     team: "개인 프로젝트",
-    contribution: ["개발 100%", "디자인 100%", "기획 100%"],
+    contribution: ["개발 100%", "디자인 100%", "기획 100%", "배포 100%"],
 
     intro: `TypeScript + React + Tailwind CSS로 개발한 웹 기반 개인 포트폴리오입니다.
 단순 정적 페이지가 아니라 “프로덕트처럼 운영 가능한 포트폴리오”를 목표로, 컴포넌트 단위 설계/타입 안정성/성능/배포까지 전체 흐름을 직접 구성했습니다.`,
@@ -18,7 +18,7 @@ export const projectDetails: Record<string, ProjectItem["detail"]> = {
     ],
 
     techReasons: `
-                • **TypeScript**
+                • TypeScript
                 포트폴리오는 시간이 지나며 섹션/데이터 구조가 계속 변경되기 때문에, props·데이터 모델 변경 시 런타임에서 오류가 발생하기 쉽습니다.
                 ProjectItem, ProjectDetail 등 도메인 타입을 먼저 정의해 데이터 구조를 고정하고,
                 컴포넌트 간 계약(Props)을 타입으로 관리함으로써 리팩터링 시 안정성을 확보했습니다.
@@ -26,7 +26,7 @@ export const projectDetails: Record<string, ProjectItem["detail"]> = {
                 또한 모달, 프로젝트 상세 화면처럼 UI 상태가 복잡한 영역에서도
                 잘못된 타입 전달을 컴파일 단계에서 차단할 수 있어 유지보수성이 크게 향상되었습니다.
 
-                • **Tailwind CSS**
+                • Tailwind CSS
                 페이지 전반에 카드, 배지, 버튼, 모달, 그라데이션 등 공통 UI 패턴이 반복되기 때문에
                 전통적인 CSS 방식에서는 스타일 스코프 충돌과 관리 비용이 빠르게 증가할 수 있었습니다.
 
@@ -34,15 +34,17 @@ export const projectDetails: Record<string, ProjectItem["detail"]> = {
                 컴포넌트 단위로 동일한 규칙을 확장할 수 있어 선택했습니다.
                 빠른 프로토타이핑 이후 고정 UI 컴포넌트로 정리하는 흐름에서도 높은 생산성을 보였습니다.
 
-                • **React + Framer Motion**
+                • React
                 섹션 단위 레이아웃 분리와 모달, 탭, 스크롤 기반 인터랙션을 상태로 관리하기에
                 React의 컴포넌트 구조가 적합했습니다.
+
+                • Framer Motion
 
                 Framer Motion은 모달 오픈·클로즈, 스크롤 기반 애니메이션을
                 CSS만으로 구현할 때 발생하는 복잡도를 줄이고,
                 motion value 기반의 자연스러운 전환을 구현할 수 있어 채택했습니다.
 
-                • **Vercel**
+                • Vercel
                 정적 배포에 최적화되어 있으며,
                 PR 단위 Preview 배포, 빌드 로그 확인, 환경변수 관리가 간편해
                 운영 관점에서 비용 대비 효율이 가장 높다고 판단했습니다.
@@ -69,9 +71,8 @@ export const projectDetails: Record<string, ProjectItem["detail"]> = {
       },
     ],
 
-    takeaway: `실무에서 자주 겪는 “기능 추가 → 구조 복잡도 증가 → 성능/유지보수 리스크 증가” 흐름을, 작은 규모의 포트폴리오에서도 동일하게 경험했습니다.
-               기능을 만들기만 하는 것이 아니라, 상태 흐름/렌더링 비용/배포 운영까지 함께 설계해야 결과물이 안정적으로 유지된다는 점을 체감했습니다.
-               특히 PDF/리소스 용량/번들링 같은 문제는 실제 서비스 환경에서 그대로 발생하는 이슈라, 트러블슈팅 경험을 쌓는 데 도움이 되었습니다.`,
+    takeaway: `기능 구현보다 구조, 상태 흐름, 렌더 비용을 먼저 설계해야 서비스가 안정적으로 유지된다는 것을 경험했습니다.
+               이후에는 기능 추가 시에도 확장성과 유지보수를 기준으로 설계하는 습관을 갖게 되었습니다.`,
 
     highlights: [
       "도메인 타입(ProjectItem/Detail) 기반 설계로 리팩터링 안정성 확보",
