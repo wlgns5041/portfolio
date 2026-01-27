@@ -219,15 +219,15 @@ export const experienceCases: ExperienceCase[] = [
     project: "Portfolio",
     title: "코드 스플리팅을 통한 초기 로딩 성능 개선",
     items: [
-      { label: "문제", text: "초기 로딩 리소스가 커지며 첫 화면 진입 비용 증가" },
+      { label: "문제", text: "상세 모달(PDF/이미지)이 초기 번들에 포함되어, 사용하지 않는 코드가 초기 로딩 단계에서 메인 스레드를 점유" },
       {
         label: "해결",
-        text: "React.lazy/Suspense 기반 코드 스플리팅 + 이미지 지연 로딩 적용",
+        text: "프로젝트 상세 모달과 PDF 뷰어를 Lazy + Suspense로 분리해, 사용자 인터랙션 시점에만 로드되도록 개선",
       },
-      { label: "성과", text: "초기 로딩 부담 감소로 체감 속도 개선" },
+      { label: "성과", text: "Lighthouse 기준 Total Blocking Time을 30ms → 20ms로 약 33% 감소시켜 초기 메인 스레드 차단 시간 감소" },
       {
         label: "배운점",
-        text: "디자인/애니메이션을 유지하면서도 성능을 동시에 설계할 수 있다",
+        text: "전체 성능에 큰 영향을 주지는 않았지만, 작은 최적화도 수치로 검증하며 반복하는 과정이 성능 개선의 기본임을 배웠다",
       },
     ],
   },
