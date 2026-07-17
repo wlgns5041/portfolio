@@ -956,7 +956,7 @@ useEffect(() => {
                   title: "유지보수와 확장성을 우선하는 개발자",
                   desc: "기존 기능의 안정성을 지키면서 중복과 결합도를 줄이고, 변경하기 쉬운 구조로 점진적으로 개선합니다.",
                   details: [
-                    "jQuery 기반 노후 프로젝트를 React 컴포넌트 구조로 단계적으로 전환하며 컴포넌트화와 유지보수성 마이그레이션",
+                    "jQuery 기반 노후 프로젝트를 React 컴포넌트 구조로 단계적으로 전환한 마이그레이션 경험",
                     "반복되는 UI와 라이브러리 사용 로직을 공통 컴포넌트·유틸리티로 분리해 변경 범위를 축소",
                     "화면별로 분산된 API 예외 처리 약 80개 유형을 공통 정책으로 통합",
                   ],
@@ -1316,196 +1316,6 @@ useEffect(() => {
                     </p>
                   </motion.section>
 
-                  {/* 역량/프로젝트 */}
-                  <motion.section
-                    variants={itemVariants}
-                    className="
-                      intro-story-section-capability
-                      relative
-                      pl-1
-                      md:pl-0
-                      bg-slate-950/35
-                      p-4
-                      md:p-6
-                      border-t
-                      border-dashed
-                      border-slate-700
-                      backdrop-blur-sm
-                    "
-                  >
-                    <p
-                      className="
-                        text-[9px]
-                        md:text-sm
-                        tracking-[0.12em]
-                        md:tracking-[0.18em]
-                        uppercase
-                        text-slate-500
-                      "
-                    >
-                      <span
-                        className="
-                          font-extrabold
-                          text-slate-300
-                        "
-                      >
-                        02
-                      </span>{" "}
-                      Capability & Projects
-                    </p>
-                    <h4
-                      className="
-                        mt-2
-                        text-[12px]
-                        md:text-xl
-                        font-extrabold
-                        text-slate-100
-                        text-teal-400
-                      "
-                    >
-                      작은 개선을 통해 큰 사용자 경험을 만듭니다
-                    </h4>
-
-                    <ul
-                      className="
-                        intro-story-capability-list
-                        mt-4
-                        space-y-3
-                        text-[9px]
-                        md:text-sm
-                        text-slate-300
-                      "
-                    >
-                      <li
-                        className="
-                          intro-story-capability-item
-                          flex
-                          items-start
-                          gap-3
-                        "
-                      >
-                        <span
-                          className="
-                            mt-1.5
-                            md:mt-2
-                            h-2
-                            w-2
-                            rounded-full
-                            bg-teal-400/80
-                            shrink-0
-                          "
-                        />
-                        <span>
-                          프로젝트를 진행하며{" "}
-                          <span
-                            className="
-                              font-semibold
-                              text-slate-100
-                            "
-                          >
-                            컴포넌트 구조 분리, 상태 관리, 인증 흐름, 에러 처리
-                          </span>{" "}
-                          등 프론트엔드 서비스의 핵심 동작을 직접 설계·구현하며,{" "}
-                          <span
-                            className="
-                              font-semibold
-                              text-slate-100
-                            "
-                          >
-                            안정적인 애플리케이션 구조
-                          </span>
-                          에 대한 이해를 쌓았습니다.
-                        </span>
-                      </li>
-
-                      <li
-                        className="
-                          intro-story-capability-item
-                          flex
-                          items-start
-                          gap-3
-                        "
-                      >
-                        <span
-                          className="
-                            mt-1.5
-                            md:mt-2
-                            h-2
-                            w-2
-                            rounded-full
-                            bg-teal-400/80
-                            shrink-0
-                          "
-                        />
-                        <span>
-                          <span
-                            className="
-                              font-semibold
-                              text-slate-100
-                            "
-                          >
-                            React Query
-                          </span>
-                          로 불필요한 네트워크 요청을 줄이고 화면 응답성을
-                          개선하며,
-                          <br />
-                          <span
-                            className="
-                              font-semibold
-                              text-slate-100
-                            "
-                          >
-                            작은 기술적 개선이 UX 차이를 만든다
-                          </span>
-                          는 점을 체감했습니다.
-                        </span>
-                      </li>
-
-                      <li
-                        className="
-                          intro-story-capability-item
-                          flex
-                          items-start
-                          gap-3
-                        "
-                      >
-                        <span
-                          className="
-                            mt-1.5
-                            md:mt-2
-                            h-2
-                            w-2
-                            rounded-full
-                            bg-teal-400/80
-                            shrink-0
-                          "
-                        />
-                        <span>
-                          다양한 브라우저와 디바이스 환경에서 발생하는{" "}
-                          <span
-                            className="
-                              font-semibold
-                              text-slate-100
-                            "
-                          >
-                            렌더링·레이아웃 차이
-                          </span>
-                          를 분석하고,
-                          <br />
-                          <span
-                            className="
-                              font-semibold
-                              text-slate-100
-                            "
-                          >
-                            뷰포트·스크롤·주소창 동작까지 고려한 UI 대응
-                          </span>
-                          으로 일관된 사용자 경험을 구현했습니다.
-                        </span>
-                      </li>
-                    </ul>
-                  </motion.section>
-
                   {/* 문제 해결 */}
                   <motion.section
                     variants={itemVariants}
@@ -1539,7 +1349,7 @@ useEffect(() => {
                           text-slate-300
                         "
                       >
-                        03
+                        02
                       </span>{" "}
                       Problem Solving
                     </p>
@@ -1554,7 +1364,7 @@ useEffect(() => {
                         text-teal-400
                       "
                     >
-                      해결할 때 까지 절대 포기하지 않는 책임감
+                      원인을 구조적으로 파고드는 문제 해결력
                     </h4>
 
                     <div
@@ -1584,7 +1394,7 @@ useEffect(() => {
                             text-slate-400
                           "
                         >
-                          불필요한 API 호출 감소
+                          API 호출 감소 · 재방문 로딩 개선
                         </p>
                         <p
                           className="
@@ -1595,7 +1405,7 @@ useEffect(() => {
                             text-slate-100
                           "
                         >
-                          70~80%
+                          70~80% · 35~40ms
                         </p>
                       </div>
 
@@ -1617,7 +1427,7 @@ useEffect(() => {
                             text-slate-400
                           "
                         >
-                          재방문 로딩 시간
+                          jQuery → React 전환 마이그레이션
                         </p>
                         <p
                           className="
@@ -1628,32 +1438,10 @@ useEffect(() => {
                             text-slate-100
                           "
                         >
-                          35~40ms 개선
+                          페이지 15개 +
                         </p>
                       </div>
                     </div>
-
-                    <p
-                      className="
-                        mt-4
-                        text-[9px]
-                        md:text-sm
-                        text-slate-300
-                        leading-relaxed
-                      "
-                    >
-                      <span
-                        className="
-                          font-semibold
-                          text-slate-100
-                        "
-                      >
-                        React Query
-                      </span>
-                      의 쿼리 키 규칙과 캐싱·무효화 기준을 정리해 중복 요청을
-                      줄이고,
-                      <br /> 화면 전환과 재방문 UX를 수치적으로 개선했습니다.
-                    </p>
 
                     <ul
                       className="
@@ -1685,25 +1473,18 @@ useEffect(() => {
                           "
                         />
                         <span>
+                          jQuery 기반으로 실제 운영되던 노후 프로젝트를
+                          {" "}
                           <span
                             className="
                               font-semibold
                               text-slate-100
                             "
                           >
-                            Axios 응답 인터셉터
+                            React 컴포넌트 구조
                           </span>
-                          로 네트워크/서버 오류를 한 곳에서 처리하고,
-                          <br />
-                          <span
-                            className="
-                              font-semibold
-                              text-slate-100
-                            "
-                          >
-                            Alert·Toast 패턴을 표준화
-                          </span>
-                          하여 에러 대응 UX와 디버깅 흐름을 안정화했습니다.
+                          로 단계적으로 전환하며, 유지보수 가능한
+                          애플리케이션 구조로 개선했습니다.
                         </span>
                       </li>
 
@@ -1727,19 +1508,18 @@ useEffect(() => {
                           "
                         />
                         <span>
-                          401/403 등 에러를 전역에서 감지하고{" "}
                           <span
                             className="
                               font-semibold
                               text-slate-100
                             "
                           >
-                            보호 라우팅
+                            React Query
                           </span>
-                          을 통해 미인증 접근을 차단해,
+                          의 쿼리 키 규칙과 캐싱·무효화 기준을 정리해 중복
+                          요청을 줄이고,
                           <br />
-                          인증 처리와 사용자 화면 전환 과정에서 불필요한 접근을
-                          줄였습니다.
+                          화면 전환과 재방문 UX를 수치적으로 개선했습니다.
                         </span>
                       </li>
 
@@ -1830,11 +1610,11 @@ useEffect(() => {
                     </ul>
                   </motion.section>
 
-                  {/* 협업 */}
+                  {/* 경험 */}
                   <motion.section
                     variants={itemVariants}
                     className="
-                      intro-story-section-collaboration
+                      intro-story-section-experience
                       relative
                       pl-1
                       md:pl-0
@@ -1863,9 +1643,9 @@ useEffect(() => {
                           text-slate-300
                         "
                       >
-                        04
+                        03
                       </span>{" "}
-                      Collaboration
+                      Experience
                     </p>
                     <h4
                       className="
@@ -1877,61 +1657,164 @@ useEffect(() => {
                         text-teal-400
                       "
                     >
-                      팀의 성공을 위해, 제가 먼저 움직입니다
+                      프론트엔드에 머무르지 않고 경험을 넓힙니다
                     </h4>
-                    <p
+
+                    <ul
                       className="
-                        mt-3
+                        intro-story-experience-list
+                        mt-4
+                        space-y-3
                         text-[9px]
                         md:text-sm
                         text-slate-300
-                        leading-relaxed
                       "
                     >
-                      프론트엔드를 맡아 구현 과정에서 발생할 수 있는{" "}
-                      <span
+                      <li
                         className="
-                          font-semibold
-                          text-slate-100
+                          intro-story-experience-item
+                          flex
+                          items-start
+                          gap-3
                         "
                       >
-                        예외와 영향 범위
-                      </span>
-                      를 먼저 점검하며,
-                      <br />
-                      팀원들의 작업에 문제가 생기지 않도록{" "}
-                      <span
+                        <span
+                          className="
+                            mt-1.5
+                            md:mt-2
+                            h-2
+                            w-2
+                            rounded-full
+                            bg-teal-400/80
+                            shrink-0
+                          "
+                        />
+                        <span>
+                          Spring, Java 기반{" "}
+                          <span
+                            className="
+                              font-semibold
+                              text-slate-100
+                            "
+                          >
+                            백엔드 개발
+                          </span>
+                          에 참여해 API를 설계·구현하고, 간단한{" "}
+                          <span
+                            className="
+                              font-semibold
+                              text-slate-100
+                            "
+                          >
+                            SQL 쿼리
+                          </span>{" "}
+                          작성 능력을 키우며 프론트-백엔드 전 구간에 대한
+                          이해를 넓혔습니다.
+                        </span>
+                      </li>
+
+                      <li
                         className="
-                          font-semibold
-                          text-slate-100
+                          intro-story-experience-item
+                          flex
+                          items-start
+                          gap-3
                         "
                       >
-                        적극적으로 소통하며 조율
-                      </span>
-                      해 왔습니다.
-                      <br />
-                      <br />
-                      이슈가 발생하면 문제를 점검하고{" "}
-                      <span
+                        <span
+                          className="
+                            mt-1.5
+                            md:mt-2
+                            h-2
+                            w-2
+                            rounded-full
+                            bg-teal-400/80
+                            shrink-0
+                          "
+                        />
+                        <span>
+                          <span
+                            className="
+                              font-semibold
+                              text-slate-100
+                            "
+                          >
+                            데이터베이스 설계 및 운영
+                          </span>
+                          에 참여해 테이블 구조를 설계하고 직접 운영하며,
+                          데이터 관점에서 서비스를 이해하는 시야를
+                          넓혔습니다.
+                        </span>
+                      </li>
+
+                      <li
                         className="
-                          font-semibold
-                          text-slate-100
+                          intro-story-experience-item
+                          flex
+                          items-start
+                          gap-3
                         "
                       >
-                        능동적으로 해결책을 찾고,
-                        <br />
-                      </span>
-                      원인과 대응 과정을 공유해{" "}
-                      <span
+                        <span
+                          className="
+                            mt-1.5
+                            md:mt-2
+                            h-2
+                            w-2
+                            rounded-full
+                            bg-teal-400/80
+                            shrink-0
+                          "
+                        />
+                        <span>
+                          AI 워크플로우 도구로 Git 브랜치 관리·PR 정책·문서화 등
+                          반복 작업을 커맨드화하고,{" "}
+                          <span
+                            className="
+                              font-semibold
+                              text-slate-100
+                            "
+                          >
+                            Playwright MCP 기반 E2E 테스트
+                          </span>
+                          를 직접 설계·운영하며 개발 프로세스를
+                          개선했습니다.
+                        </span>
+                      </li>
+
+                      <li
                         className="
-                          font-semibold
-                          text-slate-100
+                          intro-story-experience-item
+                          flex
+                          items-start
+                          gap-3
                         "
                       >
-                        같은 문제가 반복되지 않도록{" "}
-                      </span>
-                      했습니다.
-                    </p>
+                        <span
+                          className="
+                            mt-1.5
+                            md:mt-2
+                            h-2
+                            w-2
+                            rounded-full
+                            bg-teal-400/80
+                            shrink-0
+                          "
+                        />
+                        <span>
+                          협업 툴 기반으로 기능 개선·버그 요청이{" "}
+                          <span
+                            className="
+                              font-semibold
+                              text-slate-100
+                            "
+                          >
+                            체계화된 요구사항 처리 프로세스
+                          </span>
+                          로 관리되는 흐름을 경험했습니다.
+                        </span>
+                      </li>
+                    </ul>
                   </motion.section>
 
                   {/* 포부 */}
@@ -1967,7 +1850,7 @@ useEffect(() => {
                           text-slate-300
                         "
                       >
-                        05
+                        04
                       </span>{" "}
                       Goal
                     </p>
