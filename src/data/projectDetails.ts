@@ -39,7 +39,6 @@ export const projectDetails: Record<string, ProjectItem["detail"]> = {
                 React의 컴포넌트 구조가 적합했습니다.
 
                 • Framer Motion
-
                 Framer Motion은 모달 오픈·클로즈, 스크롤 기반 애니메이션을
                 CSS만으로 구현할 때 발생하는 복잡도를 줄이고,
                 motion value 기반의 자연스러운 전환을 구현할 수 있어 채택했습니다.
