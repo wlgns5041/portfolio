@@ -15,6 +15,9 @@ import LocationOnRoundedIcon from "@mui/icons-material/LocationOnRounded";
 import PhoneRoundedIcon from "@mui/icons-material/PhoneRounded";
 import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
 import EditNoteRoundedIcon from "@mui/icons-material/EditNoteRounded";
+import PaletteRoundedIcon from "@mui/icons-material/PaletteRounded";
+import AutoAwesomeRoundedIcon from "@mui/icons-material/AutoAwesomeRounded";
+import UpgradeRoundedIcon from "@mui/icons-material/UpgradeRounded";
 
 import { useEffect, useRef, useState} from "react";
 import galaxyImg from "../../assets/images/galaxy.jpg";
@@ -45,6 +48,20 @@ const itemVariants: Variants = {
     },
   },
 };
+
+const STRENGTH_HIGHLIGHT_RE =
+  /(Figma|Claude Design|Playwright MCP 기반 E2E 테스트|Git 브랜치 관리|PR 정책|jQuery|React 컴포넌트 구조|80개|\d+(?:\.\d+)?%|\d+시간|\d+건)/g;
+
+const highlightStrengthDetail = (text: string) =>
+  text.split(STRENGTH_HIGHLIGHT_RE).map((part, i) =>
+    i % 2 === 1 ? (
+      <strong key={i} className="font-bold text-teal-300">
+        {part}
+      </strong>
+    ) : (
+      part
+    )
+  );
 
 const IntroSection = () => {
   const visualWrapperRef = useRef<HTMLDivElement>(null);
@@ -400,7 +417,7 @@ useEffect(() => {
                     위치
                   </p>
                   <p className="mt-1 md:mt-2 text-xs md:text-base text-slate-400">
-                    인천광역시 서구
+                    인천광역시 서해구
                   </p>
                 </div>
               </motion.div>
@@ -457,10 +474,112 @@ useEffect(() => {
                   </p>
                   <div className="mt-1 md:mt-2 text-[9px] md:text-base text-slate-400 leading-snug break-words">
                     <div>성결대학교 정보통신공학과</div>
-                    <div>2025.02 졸업</div>
+                    <div className="text-[7px] md:text-xs">
+                      2025.02 졸업 · 학점 3.69
+                    </div>
                   </div>
                 </div>
               </motion.div>
+            </motion.div>
+          </div>
+        </div>
+
+        {/* ================== STRENGTHS ================== */}
+        <div className="relative z-20">
+          <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24 pt-0 md:pt-0 pb-24 md:pb-[20rem]">
+            <motion.p
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-120px" }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              className="text-xs md:text-sm font-extrabold tracking-[0.12em] md:tracking-[0.18em] uppercase text-teal-400"
+            >
+              Strengths
+            </motion.p>
+
+            <motion.h3
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-120px" }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.05 }}
+              className="mt-2 md:mt-4 text-xl md:text-4xl font-extrabold text-slate-100"
+            >
+              저를 가장 잘 설명하는 3가지 강점입니다
+            </motion.h3>
+
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-120px" }}
+              className="mt-8 md:mt-12 grid gap-4 md:gap-5"
+            >
+              {[
+                {
+                  icon: <PaletteRoundedIcon sx={{ fontSize: 22 }} />,
+                  title: "디자인 감각을 갖춘 개발자",
+                  desc: "평소 웹 디자인에 관심이 많아, 사용자 친화적인 UI/UX로 서비스를 전달하는 것을 중요하게 생각합니다.",
+                  details: [
+                    "Figma 기반 와이어프레임 시안 및 프로젝트 제작",
+                    "반응형 레이아웃을 적용해 주요 화면의 모바일 사용 경험 개선",
+                    "디자인 시안·기존 UI를 바탕으로 Claude Design을 활용해 노후 UI/UX 개선 경험",
+                  ],
+                },
+                {
+                  icon: <AutoAwesomeRoundedIcon sx={{ fontSize: 22 }} />,
+                  title: "AI를 활용하는 개발자 - 개발 워크플로우 설계 경험",
+                  desc: "반복적인 구현·검증 작업은 자동화하고, 요구사항 해석과 기술적 의사결정에 집중하는 개발 방식을 설계합니다.",
+                  details: [
+                    "AI 활용 워크플로우 문서화로 개발 프로세스 개선, Playwright MCP 기반 E2E 테스트 개발·운영",
+                    "Git 브랜치 관리, PR 정책 등 반복 작업을 커맨드화해 소요 시간 80% 이상 단축",
+                    "AI 기반 코드 리뷰 및 에러 분석으로 원인 파악 및 디버깅 시간 단축",
+                  ],
+                },
+                {
+                  icon: <UpgradeRoundedIcon sx={{ fontSize: 22 }} />,
+                  title: "유지보수와 확장성을 우선하는 개발자",
+                  desc: "기존 기능의 안정성을 지키면서 중복과 결합도를 줄이고, 변경하기 쉬운 구조로 점진적으로 개선합니다.",
+                  details: [
+                    "jQuery 기반 노후 프로젝트를 React 컴포넌트 구조로 단계적으로 전환하며 컴포넌트화와 유지보수성 마이그레이션",
+                    "반복되는 UI와 라이브러리 사용 로직을 공통 컴포넌트·유틸리티로 분리해 변경 범위를 축소",
+                    "화면별로 분산된 API 예외 처리 약 80개 유형을 공통 정책으로 통합",
+                  ],
+                },
+              ].map((item) => (
+                <motion.div
+                  key={item.title}
+                  variants={itemVariants}
+                  className="rounded-2xl bg-slate-900/60 border border-slate-800 p-5 md:p-7 flex items-center gap-4 md:gap-6"
+                >
+                  <div className="w-11 h-11 md:w-14 md:h-14 shrink-0 rounded-xl bg-slate-800 flex items-center justify-center text-teal-400">
+                    {item.icon}
+                  </div>
+
+                  <div className="w-px self-stretch bg-slate-700/70" />
+
+                  <div className="min-w-0">
+                    <p className="text-sm md:text-lg font-bold text-slate-100">
+                      {item.title}
+                    </p>
+                    <p className="mt-1 md:mt-2 text-xs md:text-base text-slate-400 leading-relaxed whitespace-pre-line">
+                      {item.desc}
+                    </p>
+                    {item.details && (
+                      <ul className="mt-2 md:mt-3 space-y-1 md:space-y-1.5">
+                        {item.details.map((d) => (
+                          <li
+                            key={d}
+                            className="flex items-start gap-2 text-xs md:text-base text-slate-300"
+                          >
+                            <span className="mt-1.5 md:mt-2.5 h-1.5 w-1.5 rounded-full bg-teal-400/80 shrink-0" />
+                            <span>{highlightStrengthDetail(d)}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                </motion.div>
+              ))}
             </motion.div>
           </div>
         </div>
