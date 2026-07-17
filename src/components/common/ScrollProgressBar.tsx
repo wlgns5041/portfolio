@@ -4,6 +4,7 @@ import { SECTIONS } from "../../data/sections";
 const ScrollProgressBar = () => {
   const [progress, setProgress] = useState(0);
   const [activeId, setActiveId] = useState("intro");
+  const [sectionFracs, setSectionFracs] = useState<Record<string, number>>({});
 
   const rafId = useRef<number | null>(null);
   const sectionMetaRef = useRef<{ id: string; start: number; end: number }[]>(
@@ -31,6 +32,11 @@ const ScrollProgressBar = () => {
       }
 
       sectionMetaRef.current = next;
+
+      const total = next.length ? next[next.length - 1].end : 1;
+      const fracs: Record<string, number> = {};
+      for (const meta of next) fracs[meta.id] = meta.start / total;
+      setSectionFracs(fracs);
     };
 
     const update = () => {
@@ -64,11 +70,16 @@ const ScrollProgressBar = () => {
     calculateSections();
     update();
 
-    window.addEventListener("resize", calculateSections);
+    const resizeObserver = new ResizeObserver(() => {
+      calculateSections();
+      update();
+    });
+    resizeObserver.observe(document.body);
+
     window.addEventListener("scroll", onScroll, { passive: true });
 
     return () => {
-      window.removeEventListener("resize", calculateSections);
+      resizeObserver.disconnect();
       window.removeEventListener("scroll", onScroll);
       if (rafId.current != null) cancelAnimationFrame(rafId.current);
     };
@@ -85,13 +96,15 @@ const ScrollProgressBar = () => {
           />
         </div>
 
-        <ul className="flex flex-col justify-between h-[70vh] text-xs tracking-widest">
-          {SECTIONS.map((section) => {
+        <ul className="relative h-[70vh] text-xs tracking-widest">
+          {SECTIONS.map((section, i) => {
             const isActive = section.id === activeId;
+            const frac = sectionFracs[section.id] ?? i / (SECTIONS.length - 1);
             return (
               <li
                 key={section.id}
-                className={`flex items-center gap-3 transition-colors ${
+                style={{ top: `${frac * 100}%` }}
+                className={`absolute left-0 -translate-y-1/2 flex items-center gap-3 whitespace-nowrap transition-colors ${
                   isActive ? "text-teal-400" : "text-slate-500"
                 }`}
               >
