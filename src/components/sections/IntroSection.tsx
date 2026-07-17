@@ -1,5 +1,6 @@
 import {
   motion,
+  AnimatePresence,
   useScroll,
   useTransform,
   LayoutGroup,
@@ -21,6 +22,10 @@ import UpgradeRoundedIcon from "@mui/icons-material/UpgradeRounded";
 
 import { useEffect, useRef, useState} from "react";
 import galaxyImg from "../../assets/images/galaxy.jpg";
+import strengthImg1 from "../../assets/images/portfolio_1.png";
+import strengthImg2 from "../../assets/images/portfolio_2.png";
+import strengthImg3 from "../../assets/images/portfolio_3.png";
+import strengthImg4 from "../../assets/images/portfolio_4.png";
 import LogoLottie from "../common/LogoLottie";
 
 import { createPortal } from "react-dom";
@@ -69,6 +74,123 @@ const highlightStrengthDetail = (text: string) =>
     )
   );
 
+const StrengthImageStack = ({
+  images,
+  alt,
+  onOpen,
+}: {
+  images: (string | undefined)[];
+  alt: string;
+  onOpen: (images: string[], index: number) => void;
+}) => {
+  const [frontIdx, setFrontIdx] = useState(0);
+  const validImages = images.filter((s): s is string => !!s);
+
+  if (images.length <= 1) {
+    return (
+      <div
+        onClick={() => images[0] && onOpen(validImages, 0)}
+        className="
+          intro-strength-image
+          hidden
+          sm:block
+          self-stretch
+          shrink-0
+          ml-auto
+          w-28
+          md:w-40
+          rounded-xl
+          bg-slate-800/60
+          border
+          border-slate-700/60
+          overflow-hidden
+          cursor-pointer
+        "
+      >
+        {images[0] && (
+          <img
+            src={images[0]}
+            alt={alt}
+            className="
+              w-full
+              h-full
+              object-cover
+            "
+          />
+        )}
+      </div>
+    );
+  }
+
+  return (
+    <div
+      className="
+        intro-strength-image-stack
+        hidden
+        sm:block
+        relative
+        self-stretch
+        shrink-0
+        ml-auto
+        mr-3
+        md:mr-4
+        w-28
+        md:w-40
+      "
+    >
+      {images.map((src, i) => {
+        const isFront = i === frontIdx;
+
+        return (
+          <div
+            key={i}
+            onClick={() => {
+              if (!isFront) {
+                setFrontIdx(i);
+                return;
+              }
+              if (src) onOpen(validImages, validImages.indexOf(src));
+            }}
+            className="
+              intro-strength-image-stack-item
+              absolute
+              inset-0
+              rounded-xl
+              bg-slate-800/60
+              border
+              border-slate-700/60
+              overflow-hidden
+              cursor-pointer
+              transition-transform
+              duration-300
+              ease-out
+            "
+            style={{
+              zIndex: isFront ? 2 : 1,
+              transform: isFront
+                ? "translate(0px, 0px) rotate(0deg)"
+                : "translate(10px, 10px) rotate(-3deg)",
+            }}
+          >
+            {src && (
+              <img
+                src={src}
+                alt={alt}
+                className="
+                  w-full
+                  h-full
+                  object-cover
+                "
+                draggable={false}
+              />
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
 const IntroSection = () => {
   const visualWrapperRef = useRef<HTMLDivElement>(null);
 
@@ -91,6 +213,44 @@ const IntroSection = () => {
   const [isMobile, setIsMobile] = useState(false);
 
   const [isAnyModalOpen, setIsAnyModalOpen] = useState(false);
+
+  const [lightbox, setLightbox] = useState<{
+    images: string[];
+    index: number;
+  } | null>(null);
+
+  const openLightbox = (images: string[], index: number) =>
+    setLightbox({ images, index });
+
+  const closeLightbox = () => setLightbox(null);
+
+  const showPrevImage = () =>
+    setLightbox((prev) =>
+      prev
+        ? {
+            ...prev,
+            index: (prev.index - 1 + prev.images.length) % prev.images.length,
+          }
+        : prev
+    );
+
+  const showNextImage = () =>
+    setLightbox((prev) =>
+      prev ? { ...prev, index: (prev.index + 1) % prev.images.length } : prev
+    );
+
+  useEffect(() => {
+    if (!lightbox) return;
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeLightbox();
+      if (e.key === "ArrowLeft") showPrevImage();
+      if (e.key === "ArrowRight") showNextImage();
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [lightbox]);
 
 useEffect(() => {
   const el = document.body;
@@ -188,11 +348,11 @@ useEffect(() => {
             className="
               intro-hero-container
               w-full
-              max-w-7xl
+              max-w-[1480px]
               mx-auto
               px-6
-              md:px-12
-              lg:px-24
+              md:px-10
+              lg:px-[4rem]
               grid
               grid-cols-1
               lg:grid-cols-2
@@ -435,61 +595,57 @@ useEffect(() => {
         >
           <div
             className="
-              max-w-7xl
+              max-w-[1480px]
               mx-auto
               px-6
-              md:px-12
-              lg:px-24
+              md:px-10
+              lg:px-[4rem]
               py-0
               md:py-24
             "
           >
             {/* Title */}
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-120px" }}
-              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            <div
               className="
                 intro-about-header
-                flex
-                flex-col
-                items-center
-                text-center
               "
             >
-              <div
+              <motion.p
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-120px" }}
+                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
                 className="
-                  flex
-                  items-center
-                  gap-4
+                  text-xs
+                  md:text-sm
+                  font-extrabold
+                  tracking-[0.12em]
+                  md:tracking-[0.18em]
+                  uppercase
+                  text-teal-400
                 "
               >
-                <h2
-                  className="
-                    text-3xl
-                    md:text-6xl
-                    font-extrabold
-                    tracking-tight
-                    text-slate-100
-                  "
-                >
-                  ABOUT ME
-                </h2>
-              </div>
+                Profile
+              </motion.p>
 
-              <div
+              <motion.h2
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-120px" }}
+                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.05 }}
                 className="
                   mt-2
-                  md:mt-6
-                  w-40
-                  md:w-80
-                  max-w-xl
-                  h-px
-                  bg-slate-800
+                  md:mt-4
+                  text-3xl
+                  md:text-6xl
+                  font-extrabold
+                  tracking-tight
+                  text-slate-100
                 "
-              />
-            </motion.div>
+              >
+                ABOUT ME
+              </motion.h2>
+            </div>
 
             {/* Grid */}
             <motion.div
@@ -503,17 +659,12 @@ useEffect(() => {
                 md:mt-16
                 mb-20
                 md:mb-72
-                ml-2
-                md:ml-12
-                mr-2
-                md:mr-0
                 grid
                 grid-cols-2
                 md:grid-cols-2
                 lg:grid-cols-3
-                gap-x-2
-                gap-y-6
-                md:gap-10
+                gap-3
+                md:gap-5
               "
             >
               {/* 1 */}
@@ -521,52 +672,63 @@ useEffect(() => {
                 variants={itemVariants}
                 className="
                   intro-about-card
-                  flex
-                  gap-3
-                  md:gap-5
+                  rounded-2xl
+                  border
+                  border-slate-800/60
+                  bg-slate-950/25
+                  p-4
+                  md:p-6
                 "
               >
                 <div
                   className="
-                    w-10
-                    h-10
-                    md:w-14
-                    md:h-14
-                    rounded-xl
-                    md:rounded-2xl
-                    bg-slate-900
                     flex
                     items-center
-                    justify-center
-                    text-slate-200
+                    gap-2
+                    md:gap-3
                   "
                 >
-                  <PersonRoundedIcon sx={{ fontSize: 22 }} />
-                </div>
-
-                <div>
+                  <div
+                    className="
+                      w-8
+                      h-8
+                      md:w-10
+                      md:h-10
+                      rounded-lg
+                      md:rounded-xl
+                      bg-slate-900
+                      flex
+                      items-center
+                      justify-center
+                      text-slate-300
+                      shrink-0
+                    "
+                  >
+                    <PersonRoundedIcon sx={{ fontSize: 18 }} />
+                  </div>
                   <p
                     className="
-                      text-sm
-                      md:text-lg
-                      font-semibold
-                      text-slate-100
+                      text-xs
+                      md:text-sm
+                      text-slate-500
                     "
                   >
                     이름
                   </p>
-                  <p
-                    className="
-                      mt-1
-                      md:mt-2
-                      text-xs
-                      md:text-base
-                      text-slate-400
-                    "
-                  >
-                    김지훈
-                  </p>
                 </div>
+
+                <p
+                  className="
+                    mt-3
+                    md:mt-4
+                    text-base
+                    md:text-xl
+                    font-bold
+                    text-slate-100
+                  "
+                >
+                  김지훈
+                </p>
               </motion.div>
 
               {/* 2 */}
@@ -574,51 +736,63 @@ useEffect(() => {
                 variants={itemVariants}
                 className="
                   intro-about-card
-                  flex
-                  gap-3
-                  md:gap-5
+                  rounded-2xl
+                  border
+                  border-slate-800/60
+                  bg-slate-950/25
+                  p-4
+                  md:p-6
                 "
               >
                 <div
                   className="
-                    w-10
-                    h-10
-                    md:w-14
-                    md:h-14
-                    rounded-xl
-                    md:rounded-2xl
-                    bg-slate-900
                     flex
                     items-center
-                    justify-center
-                    text-slate-200
+                    gap-2
+                    md:gap-3
                   "
                 >
-                  <CalendarMonthRoundedIcon sx={{ fontSize: 22 }} />
-                </div>
-                <div>
+                  <div
+                    className="
+                      w-8
+                      h-8
+                      md:w-10
+                      md:h-10
+                      rounded-lg
+                      md:rounded-xl
+                      bg-slate-900
+                      flex
+                      items-center
+                      justify-center
+                      text-slate-300
+                      shrink-0
+                    "
+                  >
+                    <CalendarMonthRoundedIcon sx={{ fontSize: 18 }} />
+                  </div>
                   <p
                     className="
-                      text-sm
-                      md:text-lg
-                      font-semibold
-                      text-slate-100
+                      text-xs
+                      md:text-sm
+                      text-slate-500
                     "
                   >
                     생년월일
                   </p>
-                  <p
-                    className="
-                      mt-1
-                      md:mt-2
-                      text-xs
-                      md:text-base
-                      text-slate-400
-                    "
-                  >
-                    2001.01.20
-                  </p>
                 </div>
+
+                <p
+                  className="
+                    mt-3
+                    md:mt-4
+                    text-base
+                    md:text-xl
+                    font-bold
+                    text-slate-100
+                  "
+                >
+                  2001.01.20
+                </p>
               </motion.div>
 
               {/* 3 */}
@@ -626,51 +800,63 @@ useEffect(() => {
                 variants={itemVariants}
                 className="
                   intro-about-card
-                  flex
-                  gap-3
-                  md:gap-5
+                  rounded-2xl
+                  border
+                  border-slate-800/60
+                  bg-slate-950/25
+                  p-4
+                  md:p-6
                 "
               >
                 <div
                   className="
-                    w-10
-                    h-10
-                    md:w-14
-                    md:h-14
-                    rounded-xl
-                    md:rounded-2xl
-                    bg-slate-900
                     flex
                     items-center
-                    justify-center
-                    text-slate-200
+                    gap-2
+                    md:gap-3
                   "
                 >
-                  <LocationOnRoundedIcon sx={{ fontSize: 22 }} />
-                </div>
-                <div>
-                  <p
+                  <div
                     className="
-                      text-sm
-                      md:text-lg
-                      font-semibold
-                      text-slate-100
+                      w-8
+                      h-8
+                      md:w-10
+                      md:h-10
+                      rounded-lg
+                      md:rounded-xl
+                      bg-slate-900
+                      flex
+                      items-center
+                      justify-center
+                      text-slate-300
+                      shrink-0
                     "
                   >
-                    위치
-                  </p>
+                    <LocationOnRoundedIcon sx={{ fontSize: 18 }} />
+                  </div>
                   <p
                     className="
-                      mt-1
-                      md:mt-2
                       text-xs
-                      md:text-base
-                      text-slate-400
+                      md:text-sm
+                      text-slate-500
                     "
                   >
-                    인천광역시 서해구
+                    주소
                   </p>
                 </div>
+
+                <p
+                  className="
+                    mt-3
+                    md:mt-4
+                    text-base
+                    md:text-xl
+                    font-bold
+                    text-slate-100
+                  "
+                >
+                  인천광역시 서해구
+                </p>
               </motion.div>
 
               {/* 4 */}
@@ -678,51 +864,63 @@ useEffect(() => {
                 variants={itemVariants}
                 className="
                   intro-about-card
-                  flex
-                  gap-3
-                  md:gap-5
+                  rounded-2xl
+                  border
+                  border-slate-800/60
+                  bg-slate-950/25
+                  p-4
+                  md:p-6
                 "
               >
                 <div
                   className="
-                    w-10
-                    h-10
-                    md:w-14
-                    md:h-14
-                    rounded-xl
-                    md:rounded-2xl
-                    bg-slate-900
                     flex
                     items-center
-                    justify-center
-                    text-slate-200
+                    gap-2
+                    md:gap-3
                   "
                 >
-                  <PhoneRoundedIcon sx={{ fontSize: 22 }} />
-                </div>
-                <div>
+                  <div
+                    className="
+                      w-8
+                      h-8
+                      md:w-10
+                      md:h-10
+                      rounded-lg
+                      md:rounded-xl
+                      bg-slate-900
+                      flex
+                      items-center
+                      justify-center
+                      text-slate-300
+                      shrink-0
+                    "
+                  >
+                    <PhoneRoundedIcon sx={{ fontSize: 18 }} />
+                  </div>
                   <p
                     className="
-                      text-sm
-                      md:text-lg
-                      font-semibold
-                      text-slate-100
+                      text-xs
+                      md:text-sm
+                      text-slate-500
                     "
                   >
                     연락처
                   </p>
-                  <p
-                    className="
-                      mt-1
-                      md:mt-2
-                      text-xs
-                      md:text-base
-                      text-slate-400
-                    "
-                  >
-                    010-5664-5041
-                  </p>
                 </div>
+
+                <p
+                  className="
+                    mt-3
+                    md:mt-4
+                    text-base
+                    md:text-xl
+                    font-bold
+                    text-slate-100
+                  "
+                >
+                  010-5664-5041
+                </p>
               </motion.div>
 
               {/* 5 */}
@@ -730,59 +928,65 @@ useEffect(() => {
                 variants={itemVariants}
                 className="
                   intro-about-card
-                  flex
-                  gap-3
-                  md:gap-5
-                  items-start
+                  rounded-2xl
+                  border
+                  border-slate-800/60
+                  bg-slate-950/25
+                  p-4
+                  md:p-6
+                  min-w-0
                 "
               >
                 <div
                   className="
-                    w-10
-                    h-10
-                    md:w-14
-                    md:h-14
-                    shrink-0
-                    rounded-xl
-                    md:rounded-2xl
-                    bg-slate-900
                     flex
                     items-center
-                    justify-center
-                    text-slate-200
+                    gap-2
+                    md:gap-3
                   "
                 >
-                  <EmailRoundedIcon sx={{ fontSize: 22 }} />
-                </div>
-
-                <div
-                  className="
-                    min-w-0
-                  "
-                >
+                  <div
+                    className="
+                      w-8
+                      h-8
+                      md:w-10
+                      md:h-10
+                      rounded-lg
+                      md:rounded-xl
+                      bg-slate-900
+                      flex
+                      items-center
+                      justify-center
+                      text-slate-300
+                      shrink-0
+                    "
+                  >
+                    <EmailRoundedIcon sx={{ fontSize: 18 }} />
+                  </div>
                   <p
                     className="
-                      text-sm
-                      md:text-lg
-                      font-semibold
-                      text-slate-100
+                      text-xs
+                      md:text-sm
+                      text-slate-500
                     "
                   >
                     이메일
                   </p>
-                  <p
-                    className="
-                      mt-1
-                      md:mt-2
-                      text-[9px]
-                      md:text-base
-                      text-slate-400
-                      break-all
-                    "
-                  >
-                    wlgns6921@gmail.com
-                  </p>
                 </div>
+
+                <p
+                  className="
+                    mt-3
+                    md:mt-4
+                    text-sm
+                    md:text-xl
+                    font-bold
+                    text-slate-100
+                    break-all
+                  "
+                >
+                  wlgns6921@gmail.com
+                </p>
               </motion.div>
 
               {/* 6 */}
@@ -790,71 +994,75 @@ useEffect(() => {
                 variants={itemVariants}
                 className="
                   intro-about-card
-                  flex
-                  gap-3
-                  md:gap-5
-                  items-start
+                  rounded-2xl
+                  border
+                  border-slate-800/60
+                  bg-slate-950/25
+                  p-4
+                  md:p-6
+                  min-w-0
                 "
               >
                 <div
                   className="
-                    w-10
-                    h-10
-                    md:w-14
-                    md:h-14
-                    shrink-0
-                    rounded-xl
-                    md:rounded-2xl
-                    bg-slate-900
-                    mt-0.5
-                    md:mt-1
                     flex
                     items-center
-                    justify-center
-                    text-slate-200
+                    gap-2
+                    md:gap-3
                   "
                 >
-                  <EditNoteRoundedIcon sx={{ fontSize: 22, opacity: 0.85 }} />
-                </div>
-
-                <div
-                  className="
-                    min-w-0
-                  "
-                >
+                  <div
+                    className="
+                      w-8
+                      h-8
+                      md:w-10
+                      md:h-10
+                      rounded-lg
+                      md:rounded-xl
+                      bg-slate-900
+                      flex
+                      items-center
+                      justify-center
+                      text-slate-300
+                      shrink-0
+                    "
+                  >
+                    <EditNoteRoundedIcon sx={{ fontSize: 18, opacity: 0.85 }} />
+                  </div>
                   <p
                     className="
-                      text-sm
-                      md:text-lg
-                      font-semibold
-                      text-slate-100
-                      leading-none
+                      text-xs
+                      md:text-sm
+                      text-slate-500
                     "
                   >
                     학력
                   </p>
-                  <div
-                    className="
-                      mt-1
-                      md:mt-2
-                      text-[9px]
-                      md:text-base
-                      text-slate-400
-                      leading-snug
-                      break-words
-                    "
-                  >
-                    <div>성결대학교 정보통신공학과</div>
-                    <div
-                      className="
-                        text-[7px]
-                        md:text-xs
-                      "
-                    >
-                      2025.02 졸업 · 학점 3.69
-                    </div>
-                  </div>
                 </div>
+
+                <p
+                  className="
+                    mt-3
+                    md:mt-4
+                    text-sm
+                    md:text-xl
+                    font-bold
+                    text-slate-100
+                    break-words
+                  "
+                >
+                  성결대학교 정보통신공학과
+                </p>
+                <p
+                  className="
+                    mt-1
+                    text-[10px]
+                    md:text-sm
+                    text-slate-500
+                  "
+                >
+                  2025.02 졸업 · 학점 3.71
+                </p>
               </motion.div>
             </motion.div>
           </div>
@@ -870,11 +1078,11 @@ useEffect(() => {
         >
           <div
             className="
-              max-w-7xl
+              max-w-[1480px]
               mx-auto
               px-6
-              md:px-12
-              lg:px-24
+              md:px-10
+              lg:px-[4rem]
               pt-0
               md:pt-0
               pb-24
@@ -913,7 +1121,7 @@ useEffect(() => {
                 text-slate-100
               "
             >
-              저를 가장 잘 설명하는 3가지 강점입니다
+              저를 대표하는 3가지 강점입니다
             </motion.h3>
 
             <motion.div
@@ -934,7 +1142,7 @@ useEffect(() => {
                 {
                   icon: <PaletteRoundedIcon sx={{ fontSize: 22 }} />,
                   title: "디자인 감각을 갖춘 개발자",
-                  desc: "평소 웹 디자인에 관심이 많아, 사용자 친화적인 UI/UX로 서비스를 전달하는 것을 중요하게 생각합니다.",
+                  images: [strengthImg1, strengthImg2] as (string | undefined)[],
                   details: [
                     "Figma 기반 와이어프레임 시안 및 프로젝트 제작",
                     "반응형 레이아웃을 적용해 주요 화면의 모바일 사용 경험 개선",
@@ -944,7 +1152,7 @@ useEffect(() => {
                 {
                   icon: <AutoAwesomeRoundedIcon sx={{ fontSize: 22 }} />,
                   title: "AI를 활용하는 개발자 - 개발 워크플로우 설계 경험",
-                  desc: "반복적인 구현·검증 작업은 자동화하고, 요구사항 해석과 기술적 의사결정에 집중하는 개발 방식을 설계합니다.",
+                  images: [strengthImg3] as (string | undefined)[],
                   details: [
                     "AI 활용 워크플로우로 개발 프로세스 개선, Playwright MCP 기반 E2E 테스트 개발·운영",
                     "Git 브랜치 관리, PR 정책, 문서화 등 반복 작업을 커맨드화해 소요 시간 80% 이상 단축",
@@ -954,7 +1162,7 @@ useEffect(() => {
                 {
                   icon: <UpgradeRoundedIcon sx={{ fontSize: 22 }} />,
                   title: "유지보수와 확장성을 우선하는 개발자",
-                  desc: "기존 기능의 안정성을 지키면서 중복과 결합도를 줄이고, 변경하기 쉬운 구조로 점진적으로 개선합니다.",
+                  images: [strengthImg4] as (string | undefined)[],
                   details: [
                     "jQuery 기반 노후 프로젝트를 React 컴포넌트 구조로 단계적으로 전환한 마이그레이션 경험",
                     "반복되는 UI와 라이브러리 사용 로직을 공통 컴포넌트·유틸리티로 분리해 변경 범위를 축소",
@@ -1013,26 +1221,13 @@ useEffect(() => {
                   >
                     <p
                       className="
-                        text-sm
-                        md:text-lg
+                        text-base
+                        md:text-xl
                         font-bold
                         text-slate-100
                       "
                     >
                       {item.title}
-                    </p>
-                    <p
-                      className="
-                        mt-1
-                        md:mt-2
-                        text-xs
-                        md:text-base
-                        text-slate-400
-                        leading-relaxed
-                        whitespace-pre-line
-                      "
-                    >
-                      {item.desc}
                     </p>
                     {item.details && (
                       <ul
@@ -1074,6 +1269,12 @@ useEffect(() => {
                       </ul>
                     )}
                   </div>
+
+                  <StrengthImageStack
+                    images={item.images}
+                    alt={item.title}
+                    onOpen={openLightbox}
+                  />
                 </motion.div>
               ))}
             </motion.div>
@@ -1101,11 +1302,11 @@ useEffect(() => {
               ref={detailGridRef}
               className="
                 intro-story-grid
-                max-w-7xl
+                max-w-[1480px]
                 mx-auto
                 px-6
-                md:px-12
-                lg:px-24
+                md:px-10
+                lg:px-[4rem]
                 grid
                 grid-cols-1
                 lg:grid-cols-2
@@ -1372,7 +1573,7 @@ useEffect(() => {
                         intro-story-stat-grid
                         mt-4
                         grid
-                        grid-cols-2
+                        grid-cols-3
                         gap-3
                       "
                     >
@@ -1394,7 +1595,7 @@ useEffect(() => {
                             text-slate-400
                           "
                         >
-                          API 호출 감소 · 재방문 로딩 개선
+                          jQuery → React 전환 경험
                         </p>
                         <p
                           className="
@@ -1405,7 +1606,7 @@ useEffect(() => {
                             text-slate-100
                           "
                         >
-                          70~80% · 35~40ms
+                          15 페이지 +
                         </p>
                       </div>
 
@@ -1427,7 +1628,7 @@ useEffect(() => {
                             text-slate-400
                           "
                         >
-                          jQuery → React 전환 마이그레이션
+                          API 호출 감소
                         </p>
                         <p
                           className="
@@ -1438,7 +1639,40 @@ useEffect(() => {
                             text-slate-100
                           "
                         >
-                          페이지 15개 +
+                          70~80%
+                        </p>
+                      </div>
+
+                      <div
+                        className="
+                          intro-story-stat-card
+                          rounded-xl
+                          bg-slate-900/40
+                          border
+                          border-slate-800/60
+                          p-3
+                          md:p-4
+                        "
+                      >
+                        <p
+                          className="
+                            text-[9px]
+                            md:text-xs
+                            text-slate-400
+                          "
+                        >
+                          재방문 로딩 개선
+                        </p>
+                        <p
+                          className="
+                            mt-1
+                            text-sm
+                            md:text-lg
+                            font-extrabold
+                            text-slate-100
+                          "
+                        >
+                          35~40ms
                         </p>
                       </div>
                     </div>
@@ -1986,6 +2220,178 @@ useEffect(() => {
           pdfUrl={pdfUrl}
           fileName={pdfFileName}
         />
+
+        <AnimatePresence>
+          {lightbox && (
+            <motion.div
+              key="strength-lightbox"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              onClick={closeLightbox}
+              className="
+                fixed
+                inset-0
+                z-[9999]
+                flex
+                items-center
+                justify-center
+                bg-black/80
+                p-6
+              "
+            >
+              <motion.div
+                initial={{ scale: 0.95, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.95, opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                onClick={(e) => e.stopPropagation()}
+                className="
+                  relative
+                  flex
+                  flex-col
+                  items-center
+                  max-w-3xl
+                  md:max-w-5xl
+                  max-h-[90vh]
+                "
+              >
+                <button
+                  type="button"
+                  onClick={closeLightbox}
+                  aria-label="닫기"
+                  className="
+                    absolute
+                    -top-4
+                    -right-4
+                    w-9
+                    h-9
+                    rounded-full
+                    bg-slate-100
+                    text-slate-900
+                    flex
+                    items-center
+                    justify-center
+                    text-lg
+                    font-bold
+                    shadow-lg
+                    cursor-pointer
+                    z-10
+                  "
+                >
+                  ×
+                </button>
+
+                {lightbox.images.length > 1 && (
+                  <button
+                    type="button"
+                    onClick={showPrevImage}
+                    aria-label="이전 이미지"
+                    className="
+                      absolute
+                      top-1/2
+                      -left-2
+                      md:-left-16
+                      -translate-y-1/2
+                      w-9
+                      h-9
+                      md:w-11
+                      md:h-11
+                      rounded-full
+                      bg-slate-100
+                      text-slate-900
+                      flex
+                      items-center
+                      justify-center
+                      text-xl
+                      font-bold
+                      shadow-lg
+                      cursor-pointer
+                    "
+                  >
+                    ‹
+                  </button>
+                )}
+
+                {lightbox.images.length > 1 && (
+                  <button
+                    type="button"
+                    onClick={showNextImage}
+                    aria-label="다음 이미지"
+                    className="
+                      absolute
+                      top-1/2
+                      -right-2
+                      md:-right-16
+                      -translate-y-1/2
+                      w-9
+                      h-9
+                      md:w-11
+                      md:h-11
+                      rounded-full
+                      bg-slate-100
+                      text-slate-900
+                      flex
+                      items-center
+                      justify-center
+                      text-xl
+                      font-bold
+                      shadow-lg
+                      cursor-pointer
+                    "
+                  >
+                    ›
+                  </button>
+                )}
+
+                <img
+                  src={lightbox.images[lightbox.index]}
+                  alt=""
+                  className="
+                    max-w-full
+                    max-h-[90vh]
+                    rounded-xl
+                    object-contain
+                  "
+                />
+
+                {lightbox.images.length > 1 && (
+                  <div
+                    className="
+                      mt-4
+                      flex
+                      gap-2
+                    "
+                  >
+                    {lightbox.images.map((_, i) => (
+                      <button
+                        key={i}
+                        type="button"
+                        onClick={() =>
+                          setLightbox((prev) => (prev ? { ...prev, index: i } : prev))
+                        }
+                        aria-label={`${i + 1}번째 이미지`}
+                        className={`
+                          w-2
+                          h-2
+                          rounded-full
+                          transition-colors
+                          cursor-pointer
+                          ${
+                            i === lightbox.index
+                              ? "bg-teal-400"
+                              : "bg-slate-500/60 hover:bg-slate-300/80"
+                          }
+                        `}
+                      />
+                    ))}
+                  </div>
+                )}
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </section>
     </LayoutGroup>
   );

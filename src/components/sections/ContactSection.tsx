@@ -91,11 +91,11 @@ const ContactSection = () => {
         className="
           contact-section-header
           w-full
-          max-w-7xl
+          max-w-[1480px]
           mx-auto
           px-6
-          md:px-12
-          lg:px-24
+          md:px-10
+          lg:px-[4rem]
           pt-28
         "
       >

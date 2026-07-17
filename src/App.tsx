@@ -18,6 +18,7 @@ function App() {
         scroll-smooth
         bg-slate-950
         text-slate-100
+        md:pl-[180px]
       "
     >
       <ScrollProgressBar />

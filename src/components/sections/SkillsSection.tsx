@@ -14,12 +14,15 @@ import cursorLogo from "../../assets/logos/cursor.svg";
 import dockerLogo from "../../assets/logos/docker.png";
 import figmaLogo from "../../assets/logos/figma.png";
 import gitLogo from "../../assets/logos/git.png";
+import javaLogo from "../../assets/logos/java.svg";
 import jenkinsLogo from "../../assets/logos/jenkins.png";
 import nginxLogo from "../../assets/logos/nginx.png";
+import mysqlLogo from "../../assets/logos/mysql.png";
 import notionLogo from "../../assets/logos/notion.png";
-import reactqueryLogo from "../../assets/logos/reactquery.png";
+import postgresqlLogo from "../../assets/logos/postgresql.svg";
 import reactLogo from "../../assets/logos/react.png";
 import redmineLogo from "../../assets/logos/redmine.svg";
+import springLogo from "../../assets/logos/spring.svg";
 import tailwindLogo from "../../assets/logos/tailwild.png";
 import vercelLogo from "../../assets/logos/vercel.png";
 
@@ -34,42 +37,53 @@ type SkillGroup = {
 
 const skillGroups: SkillGroup[] = [
   {
-    title: "Frontend",
+    title: "FRONTEND",
     dot: "bg-blue-400",
     iconBg: "bg-blue-400/10",
     bar: "bg-blue-400",
     items: [
+      { name: "JavaScript", logo: jsLogo, proficiency: 80 },
       { name: "TypeScript", logo: tsLogo, proficiency: 50 },
-      { name: "JavaScript", logo: jsLogo, proficiency: 90 },
       { name: "React", logo: reactLogo, proficiency: 80 },
-      { name: "React Query", logo: reactqueryLogo, proficiency: 40 },
-      { name: "Tailwind CSS", logo: tailwindLogo, proficiency: 60 },
       { name: "CSS (Responsive)", logo: cssLogo, proficiency: 80 },
+      { name: "Tailwind CSS", logo: tailwindLogo, proficiency: 60 },
     ],
   },
   {
-    title: "Deployment",
+    title: "BACKEND / DB",
+    dot: "bg-rose-400",
+    iconBg: "bg-rose-400/10",
+    bar: "bg-rose-400",
+    items: [
+      { name: "Java", logo: javaLogo, proficiency: 20 },
+      { name: "Spring", logo: springLogo, proficiency: 20 },
+      { name: "PostgreSQL", logo: postgresqlLogo, proficiency: 60 },
+      { name: "MySQL", logo: mysqlLogo, proficiency: 60 },
+    ],
+  },
+  {
+    title: "DEPLOYMENT",
     dot: "bg-orange-400",
     iconBg: "bg-orange-400/10",
     bar: "bg-orange-400",
     items: [
-      { name: "Nginx", logo: nginxLogo, proficiency: 90 },
+      { name: "Nginx", logo: nginxLogo, proficiency: 50 },
       { name: "Vercel", logo: vercelLogo, proficiency: 80 },
-      { name: "Docker", logo: dockerLogo, proficiency: 70 },
-      { name: "Jenkins", logo: jenkinsLogo, proficiency: 60 },
+      { name: "Docker", logo: dockerLogo, proficiency: 80 },
+      { name: "Jenkins", logo: jenkinsLogo, proficiency: 50 },
       { name: "AWS", logo: awsLogo, proficiency: 50 },
     ],
   },
   {
-    title: "Tools",
+    title: "TOOLS",
     dot: "bg-emerald-400",
     iconBg: "bg-emerald-400/10",
     bar: "bg-emerald-400",
     items: [
-      { name: "Git", logo: gitLogo, proficiency: 90 },
-      { name: "Figma", logo: figmaLogo, proficiency: 80 },
-      { name: "Notion", logo: notionLogo, proficiency: 70 },
-      { name: "Redmine", logo: redmineLogo, proficiency: 60 },
+      { name: "Git", logo: gitLogo, proficiency: 80 },
+      { name: "Figma", logo: figmaLogo, proficiency: 70 },
+      { name: "Notion", logo: notionLogo, proficiency: 90 },
+      { name: "Redmine", logo: redmineLogo, proficiency: 90 },
     ],
   },
   {
@@ -80,8 +94,8 @@ const skillGroups: SkillGroup[] = [
     items: [
       { name: "Claude Code", logo: claudecodeLogo, proficiency: 90 },
       { name: "Claude Design", logo: claudedesignLogo, proficiency: 80 },
-      { name: "Codex", logo: codexLogo, proficiency: 70 },
-      { name: "Cursor", logo: cursorLogo, proficiency: 60 },
+      { name: "Codex", logo: codexLogo, proficiency: 90 },
+      { name: "Cursor", logo: cursorLogo, proficiency: 20 },
     ],
   },
 ];
@@ -89,7 +103,6 @@ const skillGroups: SkillGroup[] = [
 const PROJECT_TECH_TO_SKILL_NAME: Record<string, string> = {
   JavaScript: "JavaScript",
   React: "React",
-  "React Query": "React Query",
   CSS: "CSS (Responsive)",
   Nginx: "Nginx",
   Docker: "Docker",
@@ -124,7 +137,7 @@ const SkillBar = ({
   const trackRef = useRef<HTMLDivElement>(null);
   const [tooltipX, setTooltipX] = useState(50);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+  const updateTooltipX = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = trackRef.current?.getBoundingClientRect();
     if (!rect) return;
     const x = ((e.clientX - rect.left) / rect.width) * 100;
@@ -134,7 +147,8 @@ const SkillBar = ({
   return (
     <div
       ref={trackRef}
-      onMouseMove={handleMouseMove}
+      onMouseEnter={updateTooltipX}
+      onMouseMove={updateTooltipX}
       className="
         skill-chip-bar-track
         group/bar
@@ -190,7 +204,7 @@ const SkillBar = ({
           whitespace-nowrap
           opacity-0
           scale-90
-          transition-all
+          transition-[opacity,transform]
           duration-200
           group-hover/bar:opacity-100
           group-hover/bar:scale-100
@@ -228,12 +242,12 @@ const SkillsSection = () => {
       <div
         className="
           w-full
-          max-w-7xl
+          max-w-[1480px]
           mx-auto
           px-5
           sm:px-6
-          md:px-12
-          lg:px-24
+          md:px-10
+          lg:px-[4rem]
           py-16
           md:py-28
         "
@@ -338,12 +352,12 @@ const SkillsSection = () => {
                 className="
                   skill-category-grid
                   grid
-                  grid-cols-2
-                  gap-3
-                  sm:grid-cols-3
-                  lg:grid-cols-4
-                  sm:gap-4
-                  md:gap-6
+                  grid-cols-3
+                  gap-2
+                  sm:grid-cols-4
+                  lg:grid-cols-5
+                  sm:gap-3
+                  md:gap-4
                 "
               >
                 {group.items.map((item, i) => {
@@ -372,13 +386,13 @@ const SkillsSection = () => {
                         will-change-transform
                         transition-all
                         duration-300
-                        p-3
-                        sm:p-4
-                        md:p-5
+                        p-2
+                        sm:p-3
+                        md:p-4
                         flex
                         flex-col
-                        gap-3
-                        md:gap-4
+                        gap-2
+                        md:gap-3
                       "
                     >
                       <div
@@ -391,13 +405,14 @@ const SkillsSection = () => {
                       >
                         <div
                           className={`
-                            w-9
-                            h-9
-                            sm:w-11
-                            sm:h-11
-                            md:w-14
-                            md:h-14
-                            rounded-xl
+                            w-7
+                            h-7
+                            sm:w-9
+                            sm:h-9
+                            md:w-11
+                            md:h-11
+                            rounded-lg
+                            sm:rounded-xl
                             flex
                             items-center
                             justify-center
@@ -411,12 +426,12 @@ const SkillsSection = () => {
                               alt={item.name}
                               draggable={false}
                               className={`
-                                w-5
-                                h-5
-                                sm:w-6
-                                sm:h-6
-                                md:w-8
-                                md:h-8
+                                w-4
+                                h-4
+                                sm:w-5
+                                sm:h-5
+                                md:w-6
+                                md:h-6
                                 object-contain
                                 ${INVERT_LOGO_SET.has(item.name) ? "invert" : ""}
                               `}

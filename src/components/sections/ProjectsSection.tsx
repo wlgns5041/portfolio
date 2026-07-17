@@ -12,7 +12,6 @@ import cssLogo from "../../assets/logos/css.png";
 import dockerLogo from "../../assets/logos/docker.png";
 import jenkinsLogo from "../../assets/logos/jenkins.png";
 import nginxLogo from "../../assets/logos/nginx.png";
-import reactqueryLogo from "../../assets/logos/reactquery.png";
 import reactLogo from "../../assets/logos/react.png";
 import tailwindLogo from "../../assets/logos/tailwild.png";
 import vercelLogo from "../../assets/logos/vercel.png";
@@ -27,7 +26,6 @@ const TECH_LOGOS: Record<string, string> = {
   JavaScript: jsLogo,
   TypeScript: tsLogo,
   React: reactLogo,
-  "React Query": reactqueryLogo,
   "Tailwind CSS": tailwindLogo,
   CSS: cssLogo,
   Nginx: nginxLogo,
@@ -175,12 +173,12 @@ const ProjectsSection = () => {
         className="
           projects-container
           w-full
-          max-w-7xl
+          max-w-[1480px]
           mx-auto
           px-5
           sm:px-6
-          md:px-12
-          lg:px-24
+          md:px-10
+          lg:px-[4rem]
           py-16
           md:py-28
         "
@@ -199,8 +197,9 @@ const ProjectsSection = () => {
             grid
             grid-cols-2
             md:grid-cols-2
+            lg:grid-cols-3
             gap-4
-            md:gap-14
+            md:gap-10
           "
         >
           {projects.map((project, idx) => (

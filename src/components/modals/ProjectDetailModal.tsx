@@ -16,7 +16,6 @@ import cssLogo from "../../assets/logos/css.png";
 import dockerLogo from "../../assets/logos/docker.png";
 import jenkinsLogo from "../../assets/logos/jenkins.png";
 import nginxLogo from "../../assets/logos/nginx.png";
-import reactqueryLogo from "../../assets/logos/reactquery.png";
 import reactLogo from "../../assets/logos/react.png";
 import tailwindLogo from "../../assets/logos/tailwild.png";
 import vercelLogo from "../../assets/logos/vercel.png";
@@ -63,7 +62,6 @@ const TECH_LOGOS: Record<string, string> = {
   JavaScript: jsLogo,
   TypeScript: tsLogo,
   React: reactLogo,
-  "React Query": reactqueryLogo,
   "Tailwind CSS": tailwindLogo,
   CSS: cssLogo,
   Nginx: nginxLogo,
