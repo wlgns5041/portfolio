@@ -170,36 +170,65 @@ const TopNav = () => {
 
   return (
 <nav
-  className={`fixed left-1/2 -translate-x-1/2 z-50 transition-all duration-500
-    top-6 md:top-6
+  className={`
+    top-nav
+    fixed
+    left-1/2
+    -translate-x-1/2
+    z-50
+    transition-all
+    duration-500
+    top-6
+    md:top-6
     max-md:ml-[20px]
     ${
       visible
         ? "opacity-100 translate-y-0"
         : "opacity-0 -translate-y-3 pointer-events-none"
-    }`}
+    }
+  `}
 >
       <div
         ref={navRef}
         className="
-          relative flex items-center gap-1 md:gap-3
-          px-1.5 py-2 md:px-10 md:py-4
+          top-nav-pill-container
+          relative
+          flex
+          items-center
+          gap-1
+          md:gap-3
+          px-1.5
+          py-2
+          md:px-10
+          md:py-4
           rounded-full
           bg-white/10
           backdrop-blur-[28px]
-          border border-white/5
+          border
+          border-white/5
           shadow-[0_8px_28px_rgba(0,0,0,0.22)]
-          max-w-[94vw] md:max-w-none
-          overflow-x-auto whitespace-nowrap scrollbar-hide
+          max-w-[94vw]
+          md:max-w-none
+          overflow-x-auto
+          whitespace-nowrap
+          scrollbar-hide
         "
       >
         <span
           className="
+            top-nav-active-pill
             pointer-events-none
-            absolute top-1/2 -translate-y-1/2 rounded-full
-            bg-slate-950 shadow-inner
-            transition-all duration-300 ease-out
-            h-8 md:h-12
+            absolute
+            top-1/2
+            -translate-y-1/2
+            rounded-full
+            bg-slate-950
+            shadow-inner
+            transition-all
+            duration-300
+            ease-out
+            h-8
+            md:h-12
           "
           style={{ left: pillStyle.left, width: pillStyle.width }}
         />
@@ -217,10 +246,18 @@ const TopNav = () => {
                 itemRefs.current[id] = el;
               }}
               className={`
-                relative z-10 rounded-full
-                px-2.5 py-2 md:px-7 md:py-2.5
-                text-[10px] md:text-base
-                font-black md:font-extrabold
+                top-nav-item
+                relative
+                z-10
+                rounded-full
+                px-2.5
+                py-2
+                md:px-7
+                md:py-2.5
+                text-[10px]
+                md:text-base
+                font-black
+                md:font-extrabold
                 tracking-normal
                 transition-colors
                 ${isActive ? "text-white" : "text-slate-300 hover:text-white"}

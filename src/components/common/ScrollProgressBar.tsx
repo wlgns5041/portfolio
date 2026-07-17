@@ -88,15 +88,54 @@ const ScrollProgressBar = () => {
   return (
     <>
       {/* PC: 기존 세로 */}
-      <div className="hidden md:flex fixed left-8 top-1/2 -translate-y-1/2 z-40 gap-6">
-        <div className="relative w-[2px] h-[70vh] bg-slate-700/60 rounded-full overflow-hidden">
+      <div
+        className="
+          scroll-progress-nav
+          hidden
+          md:flex
+          fixed
+          left-8
+          top-1/2
+          -translate-y-1/2
+          z-40
+          gap-6
+        "
+      >
+        <div
+          className="
+            scroll-progress-track
+            relative
+            w-[2px]
+            h-[70vh]
+            bg-slate-700/60
+            rounded-full
+            overflow-hidden
+          "
+        >
           <div
-            className="absolute inset-0 bg-teal-400 origin-top transition-transform duration-200 ease-out"
+            className="
+              scroll-progress-fill
+              absolute
+              inset-0
+              bg-teal-400
+              origin-top
+              transition-transform
+              duration-200
+              ease-out
+            "
             style={{ transform: `scaleY(${progress})` }}
           />
         </div>
 
-        <ul className="relative h-[70vh] text-xs tracking-widest">
+        <ul
+          className="
+            scroll-progress-dots
+            relative
+            h-[70vh]
+            text-xs
+            tracking-widest
+          "
+        >
           {SECTIONS.map((section, i) => {
             const isActive = section.id === activeId;
             const frac = sectionFracs[section.id] ?? i / (SECTIONS.length - 1);
@@ -104,14 +143,28 @@ const ScrollProgressBar = () => {
               <li
                 key={section.id}
                 style={{ top: `${frac * 100}%` }}
-                className={`absolute left-0 -translate-y-1/2 flex items-center gap-3 whitespace-nowrap transition-colors ${
-                  isActive ? "text-teal-400" : "text-slate-500"
-                }`}
+                className={`
+                  scroll-progress-dot
+                  absolute
+                  left-0
+                  -translate-y-1/2
+                  flex
+                  items-center
+                  gap-3
+                  whitespace-nowrap
+                  transition-colors
+                  ${isActive ? "text-teal-400" : "text-slate-500"}
+                `}
               >
                 <span
-                  className={`w-2 h-2 rounded-full transition-transform ${
-                    isActive ? "bg-teal-400 scale-125" : "bg-slate-500"
-                  }`}
+                  className={`
+                    scroll-progress-dot-marker
+                    w-2
+                    h-2
+                    rounded-full
+                    transition-transform
+                    ${isActive ? "bg-teal-400 scale-125" : "bg-slate-500"}
+                  `}
                 />
                 {section.label}
               </li>
@@ -121,18 +174,58 @@ const ScrollProgressBar = () => {
       </div>
 
       {/* Mobile: 진행바만 */}
-      <div className="md:hidden fixed top-0 left-0 right-0 z-50 pointer-events-none">
-        <div className="bg-slate-950/70 backdrop-blur-md px-4 pt-2 pb-2">
-          <div className="relative h-[3px] w-full bg-slate-700/60 rounded-full overflow-hidden">
+      <div
+        className="
+          scroll-progress-mobile
+          md:hidden
+          fixed
+          top-0
+          left-0
+          right-0
+          z-50
+          pointer-events-none
+        "
+      >
+        <div
+          className="
+            bg-slate-950/70
+            backdrop-blur-md
+            px-4
+            pt-2
+            pb-2
+          "
+        >
+          <div
+            className="
+              scroll-progress-track
+              relative
+              h-[3px]
+              w-full
+              bg-slate-700/60
+              rounded-full
+              overflow-hidden
+            "
+          >
             <div
-              className="absolute left-0 top-0 h-full bg-teal-400"
+              className="
+                scroll-progress-fill
+                absolute
+                left-0
+                top-0
+                h-full
+                bg-teal-400
+              "
               style={{ width: `${progress * 100}%` }}
             />
           </div>
         </div>
 
         {/* 상단바 높이만큼 밀어주기 */}
-        <div className="h-[44px]" />
+        <div
+          className="
+            h-[44px]
+          "
+        />
       </div>
     </>
   );

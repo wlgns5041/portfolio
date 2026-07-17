@@ -86,23 +86,75 @@ const SkillsSection = () => {
   return (
     <section
       id="skills"
-      className="min-h-screen bg-slate-950 flex items-start md:items-center"
+      className="
+        skills-section
+        min-h-screen
+        bg-slate-950
+        flex
+        items-start
+        md:items-center
+      "
     >
-      <div className="w-full max-w-7xl mx-auto px-5 sm:px-6 md:px-12 lg:px-24 py-16 md:py-28">
+      <div
+        className="
+          w-full
+          max-w-7xl
+          mx-auto
+          px-5
+          sm:px-6
+          md:px-12
+          lg:px-24
+          py-16
+          md:py-28
+        "
+      >
         <SectionTitle
           eyebrow="Skills"
           title="기술 스택"
           description="실제 프로젝트에 적용해본 기술들입니다"
         />
 
-        <div className="mt-10 md:mt-16 space-y-8 md:space-y-20">
+        <div
+          className="
+            mt-10
+            md:mt-16
+            space-y-8
+            md:space-y-20
+          "
+        >
           {skillGroups.map((group) => (
-            <div key={group.title}>
-              <h3 className="mb-4 text-sm md:text-base font-semibold tracking-[0.08em] text-slate-100">
+            <div
+              key={group.title}
+              className="
+                skill-category-group
+              "
+            >
+              <h3
+                className="
+                  skill-category-title
+                  mb-4
+                  text-sm
+                  md:text-base
+                  font-semibold
+                  tracking-[0.08em]
+                  text-slate-100
+                "
+              >
                 # {group.title}
               </h3>
 
-              <div className="grid grid-cols-4 gap-2 sm:grid-cols-3 lg:grid-cols-6 sm:gap-4 md:gap-6">
+              <div
+                className="
+                  skill-category-grid
+                  grid
+                  grid-cols-4
+                  gap-2
+                  sm:grid-cols-3
+                  lg:grid-cols-6
+                  sm:gap-4
+                  md:gap-6
+                "
+              >
                 {group.items.map((item, i) => {
                   const count = usageCount[item.name] ?? 0;
 
@@ -118,33 +170,63 @@ const SkillsSection = () => {
                         ease: [0.16, 1, 0.3, 1],
                       }}
                       className="
+                        skill-chip
                         relative
-                        rounded-lg sm:rounded-2xl
+                        rounded-lg
+                        sm:rounded-2xl
                         bg-slate-800/70
-                        border border-slate-800/60
+                        border
+                        border-slate-800/60
                         shadow-[0_20px_50px_rgba(0,0,0,0.6)]
                         will-change-transform
-                        transition-all duration-300
+                        transition-all
+                        duration-300
                         h-[72px]
                         sm:h-[100px]
                         md:h-[150px]
                         md:shadow-[0_35px_90px_rgba(0,0,0,0.65)]
-                        flex flex-col items-center justify-center
+                        flex
+                        flex-col
+                        items-center
+                        justify-center
                       "
                     >
-                      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.06] to-transparent" />
+                      <div
+                        className="
+                          pointer-events-none
+                          absolute
+                          inset-0
+                          bg-gradient-to-b
+                          from-white/[0.06]
+                          to-transparent
+                        "
+                      />
 
                       {count > 0 && (
                         <div
                           className="
-                            absolute -top-1 -right-1 sm:-top-2 sm:-right-2
-                            w-4 h-4 sm:w-6 sm:h-6 md:w-7 md:h-7
+                            skill-chip-count-badge
+                            absolute
+                            -top-1
+                            -right-1
+                            sm:-top-2
+                            sm:-right-2
+                            w-4
+                            h-4
+                            sm:w-6
+                            sm:h-6
+                            md:w-7
+                            md:h-7
                             rounded-full
                             bg-white
                             text-black
-                            text-[8px] sm:text-[12px] md:text-[14px]
+                            text-[8px]
+                            sm:text-[12px]
+                            md:text-[14px]
                             font-bold
-                            flex items-center justify-center
+                            flex
+                            items-center
+                            justify-center
                             select-none
                             z-10
                           "
@@ -159,14 +241,36 @@ const SkillsSection = () => {
                           alt={item.name}
                           draggable={false}
                           className={`
-                            w-6 h-6 sm:w-10 sm:h-10 md:w-14 md:h-14
+                            w-6
+                            h-6
+                            sm:w-10
+                            sm:h-10
+                            md:w-14
+                            md:h-14
                             object-contain
                             ${INVERT_LOGO_SET.has(item.name) ? "invert" : ""}
                           `}
                         />
                       )}
 
-                      <p className="mt-2 sm:mt-3 md:mt-4 text-[7.5px] sm:text-xs md:text-sm font-semibold text-slate-200 text-center leading-none sm:leading-normal truncate w-full px-1">
+                      <p
+                        className="
+                          mt-2
+                          sm:mt-3
+                          md:mt-4
+                          text-[7.5px]
+                          sm:text-xs
+                          md:text-sm
+                          font-semibold
+                          text-slate-200
+                          text-center
+                          leading-none
+                          sm:leading-normal
+                          truncate
+                          w-full
+                          px-1
+                        "
+                      >
                         {item.name}
                       </p>
                     </motion.div>

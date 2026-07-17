@@ -11,7 +11,15 @@ import ContactSection from "./components/sections/ContactSection";
 
 function App() {
   return (
-    <div className="font-pretendard scroll-smooth bg-slate-950 text-slate-100">
+    <div
+      className="
+        app-root
+        font-pretendard
+        scroll-smooth
+        bg-slate-950
+        text-slate-100
+      "
+    >
       <ScrollProgressBar />
       <TopNav />
 

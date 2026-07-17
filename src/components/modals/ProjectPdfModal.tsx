@@ -146,7 +146,17 @@ const ProjectPdfModal = ({ open, onClose, title, pdfUrl, fileName }: Props) => {
     <AnimatePresence>
       {open && (
         <motion.div
-          className="fixed inset-0 z-[9999] flex items-center justify-center px-4 py-6"
+          className="
+            project-pdf-modal-overlay
+            fixed
+            inset-0
+            z-[9999]
+            flex
+            items-center
+            justify-center
+            px-4
+            py-6
+          "
           role="dialog"
           aria-modal="true"
           initial={{ opacity: 0 }}
@@ -154,10 +164,31 @@ const ProjectPdfModal = ({ open, onClose, title, pdfUrl, fileName }: Props) => {
           exit={{ opacity: 0 }}
           onMouseDown={handleClose}
         >
-          <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
+          <div
+            className="
+              project-pdf-modal-backdrop
+              absolute
+              inset-0
+              bg-black/70
+              backdrop-blur-sm
+            "
+          />
 
           <motion.div
-            className="relative w-full max-w-6xl h-[80vh] md:h-[90vh] rounded-2xl border border-slate-700/40 bg-slate-950 shadow-[0_40px_140px_rgba(0,0,0,0.75)] overflow-hidden"
+            className="
+              project-pdf-modal-panel
+              relative
+              w-full
+              max-w-6xl
+              h-[80vh]
+              md:h-[90vh]
+              rounded-2xl
+              border
+              border-slate-700/40
+              bg-slate-950
+              shadow-[0_40px_140px_rgba(0,0,0,0.75)]
+              overflow-hidden
+            "
             onMouseDown={(e) => e.stopPropagation()}
             initial={{ opacity: 0, y: 18, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -165,20 +196,66 @@ const ProjectPdfModal = ({ open, onClose, title, pdfUrl, fileName }: Props) => {
             transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
           >
             {/* top bar */}
-            <div className="h-14 px-4 flex items-center border-b border-slate-800/60 bg-slate-950/70">
+            <div
+              className="
+                project-pdf-modal-toolbar
+                h-14
+                px-4
+                flex
+                items-center
+                border-b
+                border-slate-800/60
+                bg-slate-950/70
+              "
+            >
               {/* 제목 영역: 남는 공간만 사용 + 말줄임 */}
-              <div className="flex-1 min-w-0 pr-2">
-                <div className="text-sm md:text-base font-semibold text-slate-100 truncate">
+              <div
+                className="
+                  flex-1
+                  min-w-0
+                  pr-2
+                "
+              >
+                <div
+                  className="
+                    project-pdf-modal-title
+                    text-sm
+                    md:text-base
+                    font-semibold
+                    text-slate-100
+                    truncate
+                  "
+                >
                   {title}
                 </div>
               </div>
 
               {/* 버튼 영역: 크기 고정, 줄어들지 않음 */}
-              <div className="flex items-center gap-2 shrink-0">
+              <div
+                className="
+                  project-pdf-modal-actions
+                  flex
+                  items-center
+                  gap-2
+                  shrink-0
+                "
+              >
                 <button
                   type="button"
                   onClick={openInNewTabWithLoading}
-                  className="px-3 h-10 rounded-xl bg-slate-800/40 text-slate-100 hover:bg-slate-700/50 transition text-xs font-semibold whitespace-nowrap"
+                  className="
+                    project-pdf-modal-open-new-tab-button
+                    px-3
+                    h-10
+                    rounded-xl
+                    bg-slate-800/40
+                    text-slate-100
+                    hover:bg-slate-700/50
+                    transition
+                    text-xs
+                    font-semibold
+                    whitespace-nowrap
+                  "
                 >
                   새 탭에서 열기
                 </button>
@@ -186,7 +263,19 @@ const ProjectPdfModal = ({ open, onClose, title, pdfUrl, fileName }: Props) => {
                 <button
                   type="button"
                   onClick={handleDownload}
-                  className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-slate-800/40 text-slate-100 hover:bg-slate-700/50 transition"
+                  className="
+                    project-pdf-modal-download-button
+                    inline-flex
+                    items-center
+                    justify-center
+                    w-10
+                    h-10
+                    rounded-xl
+                    bg-slate-800/40
+                    text-slate-100
+                    hover:bg-slate-700/50
+                    transition
+                  "
                   aria-label="다운로드"
                 >
                   <DownloadRoundedIcon fontSize="small" />
@@ -195,7 +284,19 @@ const ProjectPdfModal = ({ open, onClose, title, pdfUrl, fileName }: Props) => {
                 <button
                   type="button"
                   onClick={handleClose}
-                  className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-slate-800/40 text-slate-100 hover:bg-slate-700/50 transition"
+                  className="
+                    project-pdf-modal-close-button
+                    inline-flex
+                    items-center
+                    justify-center
+                    w-10
+                    h-10
+                    rounded-xl
+                    bg-slate-800/40
+                    text-slate-100
+                    hover:bg-slate-700/50
+                    transition
+                  "
                   aria-label="닫기"
                 >
                   <CloseRoundedIcon fontSize="small" />
@@ -204,20 +305,51 @@ const ProjectPdfModal = ({ open, onClose, title, pdfUrl, fileName }: Props) => {
             </div>
 
             {/* body */}
-            <div className="h-[calc(80vh-56px)] md:h-[calc(90vh-56px)] bg-black overflow-hidden">
+            <div
+              className="
+                project-pdf-modal-body
+                h-[calc(80vh-56px)]
+                md:h-[calc(90vh-56px)]
+                bg-black
+                overflow-hidden
+              "
+            >
               {/* ✅ PC: 기존 그대로 iframe */}
               {!isMobile ? (
                 <iframe
                   title={`${title} PDF`}
                   src={viewerUrl}
-                  className="w-full h-full"
+                  className="
+                    project-pdf-modal-iframe
+                    w-full
+                    h-full
+                  "
                 />
               ) : (
                 <>
                   {/* ✅ 모바일: 프로젝트 PDF는 "지원하지 않음" + 버튼(클릭해야 새탭) */}
                   {isProjectPdf ? (
-                    <div className="w-full h-full flex flex-col items-center justify-center px-6 text-slate-200">
-                      <p className="text-sm opacity-90 text-center leading-relaxed">
+                    <div
+                      className="
+                        project-pdf-modal-unsupported-notice
+                        w-full
+                        h-full
+                        flex
+                        flex-col
+                        items-center
+                        justify-center
+                        px-6
+                        text-slate-200
+                      "
+                    >
+                      <p
+                        className="
+                          text-sm
+                          opacity-90
+                          text-center
+                          leading-relaxed
+                        "
+                      >
                         PDF의 용량이 커서 모바일에서는 지원하지 않습니다.
                         <br />
                         용량에 따라 로딩 시간이 길어질 수 있습니다.
@@ -225,15 +357,48 @@ const ProjectPdfModal = ({ open, onClose, title, pdfUrl, fileName }: Props) => {
                         아래 버튼을 눌러 새 탭에서 열어주세요.
                       </p>
 
-                      <div className="mt-4 flex gap-2">
+                      <div
+                        className="
+                          mt-4
+                          flex
+                          gap-2
+                        "
+                      >
                         <button
                           type="button"
                           onClick={openInNewTabWithLoading}
-                          className="px-4 h-10 rounded-xl bg-slate-800/50 hover:bg-slate-700/60 transition text-sm font-semibold"
+                          className="
+                            project-pdf-modal-mobile-open-new-tab-button
+                            px-4
+                            h-10
+                            rounded-xl
+                            bg-slate-800/50
+                            hover:bg-slate-700/60
+                            transition
+                            text-sm
+                            font-semibold
+                          "
                         >
                           {openingNewTab ? (
-                            <span className="inline-flex items-center gap-2">
-                              <span className="inline-block w-4 h-4 rounded-full border-2 border-slate-200/40 border-t-slate-200 animate-spin" />
+                            <span
+                              className="
+                                inline-flex
+                                items-center
+                                gap-2
+                              "
+                            >
+                              <span
+                                className="
+                                  inline-block
+                                  w-4
+                                  h-4
+                                  rounded-full
+                                  border-2
+                                  border-slate-200/40
+                                  border-t-slate-200
+                                  animate-spin
+                                "
+                              />
                               여는 중...
                             </span>
                           ) : (
@@ -244,7 +409,17 @@ const ProjectPdfModal = ({ open, onClose, title, pdfUrl, fileName }: Props) => {
                         <button
                           type="button"
                           onClick={handleDownload}
-                          className="px-4 h-10 rounded-xl bg-slate-800/50 hover:bg-slate-700/60 transition text-sm font-semibold"
+                          className="
+                            project-pdf-modal-mobile-download-button
+                            px-4
+                            h-10
+                            rounded-xl
+                            bg-slate-800/50
+                            hover:bg-slate-700/60
+                            transition
+                            text-sm
+                            font-semibold
+                          "
                         >
                           다운로드
                         </button>
@@ -252,31 +427,72 @@ const ProjectPdfModal = ({ open, onClose, title, pdfUrl, fileName }: Props) => {
                     </div>
                   ) : (
                     // ✅ 모바일: 다른 PDF는 pdfjs 렌더 (가장자리 둥근효과 제거)
-                    <div className="w-full h-full overflow-y-auto overscroll-contain">
+                    <div
+                      className="
+                        project-pdf-modal-viewer
+                        w-full
+                        h-full
+                        overflow-y-auto
+                        overscroll-contain
+                      "
+                    >
                       <Document
                         file={pdfFile}
                         options={pdfOptions}
                         onLoadSuccess={({ numPages: n }) => setNumPages(n)}
                         loading={
-                          <div className="text-slate-200 text-sm opacity-80 text-center py-10">
+                          <div
+                            className="
+                              project-pdf-modal-loading
+                              text-slate-200
+                              text-sm
+                              opacity-80
+                              text-center
+                              py-10
+                            "
+                          >
                             PDF 로딩 중...
                           </div>
                         }
                         error={
-                          <div className="text-slate-200 text-sm opacity-80 text-center py-10">
+                          <div
+                            className="
+                              project-pdf-modal-error
+                              text-slate-200
+                              text-sm
+                              opacity-80
+                              text-center
+                              py-10
+                            "
+                          >
                             PDF를 불러오지 못했어요. “새 탭에서 열기”를 이용해
                             주세요.
                           </div>
                         }
                       >
-                        <div className="flex flex-col gap-4 items-center px-0 py-0">
+                        <div
+                          className="
+                            project-pdf-modal-pages
+                            flex
+                            flex-col
+                            gap-4
+                            items-center
+                            px-0
+                            py-0
+                          "
+                        >
                           {Array.from(
                             { length: numPages },
                             (_, i) => i + 1
                           ).map((pageNum) => (
                             <div
                               key={`p-${pageNum}`}
-                              className="w-full flex justify-center"
+                              className="
+                                project-pdf-modal-page
+                                w-full
+                                flex
+                                justify-center
+                              "
                             >
                               {/* ✅ 둥근/테두리/카드 효과 제거 */}
                               <Page
