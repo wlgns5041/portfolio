@@ -50,7 +50,7 @@ const itemVariants: Variants = {
 };
 
 const STRENGTH_HIGHLIGHT_RE =
-  /(Figma|Claude Design|Playwright MCP 기반 E2E 테스트|Git 브랜치 관리|PR 정책|jQuery|React 컴포넌트 구조|80개|\d+(?:\.\d+)?%|\d+시간|\d+건)/g;
+  /(Figma|Claude Design|Playwright MCP 기반 E2E 테스트|Git 브랜치 관리|PR 정책|문서화|jQuery|React 컴포넌트 구조|80개|\d+(?:\.\d+)?%|\d+시간|\d+건)/g;
 
 const highlightStrengthDetail = (text: string) =>
   text.split(STRENGTH_HIGHLIGHT_RE).map((part, i) =>
@@ -946,8 +946,8 @@ useEffect(() => {
                   title: "AI를 활용하는 개발자 - 개발 워크플로우 설계 경험",
                   desc: "반복적인 구현·검증 작업은 자동화하고, 요구사항 해석과 기술적 의사결정에 집중하는 개발 방식을 설계합니다.",
                   details: [
-                    "AI 활용 워크플로우 문서화로 개발 프로세스 개선, Playwright MCP 기반 E2E 테스트 개발·운영",
-                    "Git 브랜치 관리, PR 정책 등 반복 작업을 커맨드화해 소요 시간 80% 이상 단축",
+                    "AI 활용 워크플로우로 개발 프로세스 개선, Playwright MCP 기반 E2E 테스트 개발·운영",
+                    "Git 브랜치 관리, PR 정책, 문서화 등 반복 작업을 커맨드화해 소요 시간 80% 이상 단축",
                     "AI 기반 코드 리뷰 및 에러 분석으로 원인 파악 및 디버깅 시간 단축",
                   ],
                 },
