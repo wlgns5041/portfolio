@@ -9,8 +9,6 @@ import awsLogo from "../../assets/logos/aws.png";
 import claudecodeLogo from "../../assets/logos/claudecode-color.svg";
 import claudedesignLogo from "../../assets/logos/claudedesign.png";
 import codexLogo from "../../assets/logos/codex.svg";
-import cssLogo from "../../assets/logos/css.png";
-import cursorLogo from "../../assets/logos/cursor.svg";
 import dockerLogo from "../../assets/logos/docker.png";
 import figmaLogo from "../../assets/logos/figma.png";
 import gitLogo from "../../assets/logos/git.png";
@@ -45,7 +43,6 @@ const skillGroups: SkillGroup[] = [
       { name: "JavaScript", logo: jsLogo, proficiency: 80 },
       { name: "TypeScript", logo: tsLogo, proficiency: 50 },
       { name: "React", logo: reactLogo, proficiency: 80 },
-      { name: "CSS (Responsive)", logo: cssLogo, proficiency: 80 },
       { name: "Tailwind CSS", logo: tailwindLogo, proficiency: 60 },
     ],
   },
@@ -95,7 +92,6 @@ const skillGroups: SkillGroup[] = [
       { name: "Claude Code", logo: claudecodeLogo, proficiency: 90 },
       { name: "Claude Design", logo: claudedesignLogo, proficiency: 80 },
       { name: "Codex", logo: codexLogo, proficiency: 90 },
-      { name: "Cursor", logo: cursorLogo, proficiency: 20 },
     ],
   },
 ];
@@ -103,7 +99,6 @@ const skillGroups: SkillGroup[] = [
 const PROJECT_TECH_TO_SKILL_NAME: Record<string, string> = {
   JavaScript: "JavaScript",
   React: "React",
-  CSS: "CSS (Responsive)",
   Nginx: "Nginx",
   Docker: "Docker",
   Jenkins: "Jenkins",
@@ -123,7 +118,7 @@ const buildUsageCount = () => {
   return counts;
 };
 
-const INVERT_LOGO_SET = new Set(["Vercel", "Git", "Notion", "Cursor"]);
+const INVERT_LOGO_SET = new Set(["Vercel", "Git", "Notion"]);
 
 const ALL_FILTER = "전체";
 
@@ -153,7 +148,7 @@ const SkillBar = ({
         skill-chip-bar-track
         group/bar
         relative
-        mt-2
+        mt-1.5
         sm:mt-3
         h-1
         sm:h-1.5
@@ -265,7 +260,7 @@ const SkillsSection = () => {
             md:mt-10
             flex
             flex-wrap
-            gap-2
+            gap-1.5
             md:gap-3
           "
         >
@@ -276,12 +271,12 @@ const SkillsSection = () => {
               onClick={() => setActiveFilter(tab)}
               className={`
                 skill-filter-tab
-                px-3
+                px-2.5
                 md:px-5
-                py-1.5
+                py-1
                 md:py-2.5
                 rounded-full
-                text-xs
+                text-[10px]
                 md:text-sm
                 font-semibold
                 transition-colors
@@ -316,11 +311,12 @@ const SkillsSection = () => {
               <h3
                 className="
                   skill-category-title
-                  mb-4
+                  mb-2
+                  md:mb-4
                   flex
                   items-center
                   gap-2
-                  text-sm
+                  text-xs
                   md:text-base
                   font-semibold
                   tracking-[0.08em]
@@ -338,7 +334,7 @@ const SkillsSection = () => {
                 {group.title.toUpperCase()}
                 <span
                   className="
-                    text-xs
+                    text-[10px]
                     md:text-sm
                     font-normal
                     text-slate-500
@@ -352,8 +348,8 @@ const SkillsSection = () => {
                 className="
                   skill-category-grid
                   grid
-                  grid-cols-3
-                  gap-2
+                  grid-cols-4
+                  gap-1.5
                   sm:grid-cols-4
                   lg:grid-cols-5
                   sm:gap-3
@@ -379,19 +375,17 @@ const SkillsSection = () => {
                         relative
                         rounded-xl
                         sm:rounded-2xl
-                        bg-slate-900/60
-                        border
-                        border-slate-800/60
+                        bg-slate-900
                         shadow-[0_20px_50px_rgba(0,0,0,0.6)]
                         will-change-transform
                         transition-all
                         duration-300
-                        p-2
+                        p-1.5
                         sm:p-3
                         md:p-4
                         flex
                         flex-col
-                        gap-2
+                        gap-1.5
                         md:gap-3
                       "
                     >
@@ -405,8 +399,8 @@ const SkillsSection = () => {
                       >
                         <div
                           className={`
-                            w-7
-                            h-7
+                            w-6
+                            h-6
                             sm:w-9
                             sm:h-9
                             md:w-11
@@ -426,8 +420,8 @@ const SkillsSection = () => {
                               alt={item.name}
                               draggable={false}
                               className={`
-                                w-4
-                                h-4
+                                w-3.5
+                                h-3.5
                                 sm:w-5
                                 sm:h-5
                                 md:w-6
@@ -443,12 +437,12 @@ const SkillsSection = () => {
                           <span
                             className="
                               skill-chip-count-badge
-                              px-2
+                              px-1.5
                               py-0.5
                               rounded-full
                               bg-slate-800
                               text-slate-300
-                              text-[9px]
+                              text-[8px]
                               sm:text-[11px]
                               md:text-xs
                               font-semibold
@@ -464,7 +458,7 @@ const SkillsSection = () => {
                       <div>
                         <p
                           className="
-                            text-[10px]
+                            text-[9px]
                             sm:text-sm
                             md:text-base
                             font-semibold

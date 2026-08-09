@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 import { SectionTitle } from "../common/SectionTitle";
@@ -6,43 +6,21 @@ import { capabilities, experienceCases } from "../../data/experiences";
 
 import BuildRoundedIcon from "@mui/icons-material/BuildRounded";
 import BugReportRoundedIcon from "@mui/icons-material/BugReportRounded";
-import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
 
 const badgeTone = (label: string) => {
   switch (label) {
     case "문제":
-      return "bg-rose-500/10 text-rose-200 border-rose-500/20";
+      return "bg-rose-500/10 text-rose-200";
     case "해결":
-      return "bg-teal-500/10 text-teal-200 border-teal-500/20";
+      return "bg-teal-500/10 text-teal-200";
     case "성과":
-      return "bg-indigo-500/10 text-indigo-200 border-indigo-500/20";
+      return "bg-indigo-500/10 text-indigo-200";
     case "배운점":
-      return "bg-amber-500/10 text-amber-200 border-amber-500/20";
+      return "bg-amber-500/10 text-amber-200";
     default:
-      return "bg-slate-500/10 text-slate-200 border-slate-500/20";
+      return "bg-slate-500/10 text-slate-200";
   }
 };
-
-// ✅ 모바일 감지 훅 (원하면 다른 파일로 빼도 됨)
-function useIsMobile(breakpoint = 767) {
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const mq = window.matchMedia(`(max-width: ${breakpoint}px)`);
-    const apply = () => setIsMobile(mq.matches);
-    apply();
-
-    if (mq.addEventListener) mq.addEventListener("change", apply);
-    else mq.addListener(apply);
-
-    return () => {
-      if (mq.removeEventListener) mq.removeEventListener("change", apply);
-      else mq.removeListener(apply);
-    };
-  }, [breakpoint]);
-
-  return isMobile;
-}
 
 // "01 React 구조 설계 · 컴포넌트 책임 분리" -> { num, main, sub }
 const CAP_TITLE_RE = /^(\d+)\s+(.+?)\s*·\s*(.+)$/;
@@ -56,26 +34,16 @@ const parseCapTitle = (title: string) => {
 type Tab = "cap" | "case";
 
 const ExperienceSection = () => {
-  const isMobile = useIsMobile(767);
-
   const [activeTab, setActiveTab] = useState<Tab>("cap");
 
-  // ✅ 단일 openKey → 다중 openKeys(Set)
-  const [openKeys, setOpenKeys] = useState<Set<string>>(() => new Set());
+  // ✅ 히어로(대표 카드) + 하단 요약 렬(rail) 패턴: 선택된 인덱스만 보관
+  const [selectedCapIdx, setSelectedCapIdx] = useState(0);
+  const [selectedCaseIdx, setSelectedCaseIdx] = useState(0);
 
-  // ✅ stable key 생성 (idx 기반이어도 ok / project+title이면 더 안전)
-  const caseKey = (idx: number) => `case-${idx}`;
-
-  // ✅ 토글: 모바일에서만 작동 + 여러 개 유지
-  const toggle = (key: string) => {
-    if (!isMobile) return;
-    setOpenKeys((prev) => {
-      const next = new Set(prev);
-      if (next.has(key)) next.delete(key);
-      else next.add(key);
-      return next;
-    });
-  };
+  const activeCap = capabilities[selectedCapIdx];
+  const { num: activeCapNum, main: activeCapMain, sub: activeCapSub } =
+    parseCapTitle(activeCap.title);
+  const activeCase = experienceCases[selectedCaseIdx];
 
   return (
     <section
@@ -129,12 +97,12 @@ const ExperienceSection = () => {
               experience-tab
               flex-1
               sm:flex-none
-              px-4
+              px-3
               md:px-8
-              py-2
+              py-1.5
               md:py-2.5
               rounded-xl
-              text-xs
+              text-[11px]
               md:text-sm
               font-semibold
               transition-colors
@@ -156,12 +124,12 @@ const ExperienceSection = () => {
               experience-tab
               flex-1
               sm:flex-none
-              px-4
+              px-3
               md:px-8
-              py-2
+              py-1.5
               md:py-2.5
               rounded-xl
-              text-xs
+              text-[11px]
               md:text-sm
               font-semibold
               transition-colors
@@ -192,7 +160,7 @@ const ExperienceSection = () => {
                 flex
                 items-center
                 gap-2
-                text-sm
+                text-xs
                 md:text-base
                 font-semibold
                 tracking-[0.08em]
@@ -225,274 +193,253 @@ const ExperienceSection = () => {
                 sm:text-xs
                 text-slate-500
                 leading-relaxed
-                md:hidden
               "
             >
-              각 카드를 클릭해 상세하게 볼 수 있습니다.
+              아래 목록에서 대표 카드를 변경할 수 있습니다.
             </p>
 
             <div
               className="
-                experience-capabilities-grid
+                experience-capability-hero
                 mt-4
                 md:mt-6
-                grid
-                gap-4
-                sm:gap-4
-                md:gap-6
-                md:grid-cols-2
               "
             >
-              {capabilities.map((cap, idx) => {
-                const key = `cap:${idx}`;
-                const opened = !isMobile ? true : openKeys.has(key);
-                const { num, main, sub } = parseCapTitle(cap.title);
-
-                return (
-                  <article
-                    key={idx}
-                    onClick={() => toggle(key)}
-                    role={isMobile ? "button" : undefined}
-                    tabIndex={isMobile ? 0 : -1}
-                    onKeyDown={(e) => {
-                      if (!isMobile) return;
-                      if (e.key === "Enter" || e.key === " ") toggle(key);
-                    }}
-                    className={`
-                      experience-capability-card
-                      group
-                      rounded-xl
-                      md:rounded-2xl
-                      border
-                      border-slate-800/70
-                      bg-slate-950/25
-                      p-4
-                      sm:p-5
-                      md:p-7
-                      h-full
+              <AnimatePresence mode="wait">
+                <motion.article
+                  key={selectedCapIdx}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                  className="
+                    experience-capability-card
+                    no-scrollbar
+                    rounded-xl
+                    md:rounded-2xl
+                    bg-slate-900
+                    shadow-lg
+                    shadow-black/20
+                    p-3
+                    sm:p-6
+                    md:p-8
+                    sm:min-h-[250px]
+                    md:min-h-[280px]
+                  "
+                >
+                  <div
+                    className="
+                      experience-capability-header
                       flex
-                      flex-col
-                      transition
-                      ${
-                        !isMobile
-                          ? "md:hover:border-slate-700/80 md:hover:bg-slate-950/35"
-                          : ""
-                      }
-                      ${isMobile ? "cursor-pointer" : "cursor-default"}
-                      select-none
-                    `}
+                      items-start
+                      gap-3
+                      md:gap-4
+                    "
                   >
-                    {/* ✅ 헤더(번호 + 타이틀 + 우측 아이콘) */}
-                    <div
+                    <span
                       className="
-                        experience-capability-header
+                        experience-card-number
+                        shrink-0
+                        w-8
+                        h-8
+                        md:w-14
+                        md:h-14
                         flex
-                        items-start
-                        justify-between
-                        gap-3
+                        items-center
+                        justify-center
+                        rounded-lg
+                        md:rounded-xl
+                        bg-slate-800
+                        text-teal-300
+                        font-extrabold
+                        text-sm
+                        md:text-xl
                       "
                     >
-                      <div
+                      {activeCapNum || String(selectedCapIdx + 1).padStart(2, "0")}
+                    </span>
+
+                    <div
+                      className="
+                        min-w-0
+                      "
+                    >
+                      <h4
                         className="
+                          experience-capability-title
+                          text-xs
+                          sm:text-base
+                          md:text-xl
+                          font-extrabold
+                          text-slate-100
+                          leading-snug
+                        "
+                      >
+                        {activeCapMain}
+                      </h4>
+
+                      {activeCapSub && (
+                        <p
+                          className="
+                            experience-capability-summary
+                            mt-1
+                            md:mt-1.5
+                            text-[11px]
+                            sm:text-sm
+                            leading-relaxed
+                            text-slate-500
+                          "
+                        >
+                          {activeCapSub}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+
+                  <ul
+                    className="
+                      experience-capability-points
+                      mt-4
+                      md:mt-6
+                      space-y-2
+                      md:space-y-3
+                    "
+                  >
+                    {activeCap.points.map((p, i) => (
+                      <li
+                        key={i}
+                        className="
+                          experience-capability-point
                           flex
+                          gap-2
+                          sm:gap-3
                           items-start
-                          gap-3
-                          md:gap-4
-                          min-w-0
                         "
                       >
                         <span
                           className="
-                            experience-card-number
+                            mt-[7px]
+                            md:mt-[9px]
+                            h-1.5
+                            w-1.5
+                            md:h-2
+                            md:w-2
+                            rounded-full
+                            bg-teal-400/80
                             shrink-0
-                            rounded-lg
-                            md:rounded-xl
-                            bg-slate-900/60
-                            text-teal-300
-                            font-extrabold
-                            text-base
-                            md:text-xl
-                            px-2.5
-                            py-1
-                            md:px-3.5
-                            md:py-1.5
+                          "
+                        />
+                        <p
+                          className="
+                            text-[10px]
+                            sm:text-sm
+                            md:text-base
+                            leading-relaxed
+                            text-slate-300
                           "
                         >
-                          {num || String(idx + 1).padStart(2, "0")}
+                          {p}
+                        </p>
+                      </li>
+                    ))}
+                  </ul>
+
+                  {activeCap.tags?.length ? (
+                    <div
+                      className="
+                        experience-capability-tags
+                        mt-4
+                        md:mt-6
+                        flex
+                        flex-wrap
+                        gap-1.5
+                        sm:gap-2
+                      "
+                    >
+                      {activeCap.tags.map((t) => (
+                        <span
+                          key={t}
+                          className="
+                            experience-capability-tag
+                            inline-flex
+                            items-center
+                            h-5
+                            md:h-7
+                            px-1.5
+                            md:px-3
+                            rounded-full
+                            text-[9px]
+                            md:text-xs
+                            font-semibold
+                            bg-slate-900/50
+                            border
+                            border-slate-800/60
+                            text-slate-300
+                          "
+                        >
+                          {t}
                         </span>
-
-                        <div
-                          className="
-                            min-w-0
-                          "
-                        >
-                          <h4
-                            className="
-                              experience-capability-title
-                              text-[12px]
-                              sm:text-[14px]
-                              md:text-[16px]
-                              font-extrabold
-                              text-slate-100
-                              leading-snug
-                            "
-                          >
-                            {main}
-                          </h4>
-
-                          {sub && (
-                            <p
-                              className="
-                                experience-capability-summary
-                                mt-1
-                                md:mt-1.5
-                                text-[9px]
-                                sm:text-xs
-                                leading-relaxed
-                                text-slate-500
-                              "
-                            >
-                              {sub}
-                            </p>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* ✅ 우측 끝 토글 표시 */}
-                      <div
-                        className="
-                          shrink-0
-                          pt-0.5
-                        "
-                      >
-                        {isMobile && (
-                          <motion.div
-                            animate={{
-                              rotate: opened ? 180 : 0,
-                              opacity: isMobile ? 1 : 0.35,
-                            }}
-                            transition={{ duration: 0.18, ease: "easeOut" }}
-                            className="
-                              experience-capability-toggle
-                              w-8
-                              h-8
-                              rounded-lg
-                              bg-slate-900/40
-                              flex
-                              items-center
-                              justify-center
-                              text-slate-200
-                            "
-                            aria-hidden="true"
-                          >
-                            <ExpandMoreRoundedIcon fontSize="small" />
-                          </motion.div>
-                        )}
-                      </div>
+                      ))}
                     </div>
+                  ) : null}
+                </motion.article>
+              </AnimatePresence>
+            </div>
 
-                    {/* ✅ 상세(모바일은 토글, PC는 항상 노출) */}
-                    <AnimatePresence initial={false}>
-                      {opened && (
-                        <motion.div
-                          key="cap-detail"
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: "auto", opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-                          className="
-                            experience-capability-detail
-                            overflow-hidden
-                          "
-                        >
-                          <ul
-                            className="
-                              experience-capability-points
-                              mt-3
-                              md:mt-4
-                              space-y-2
-                            "
-                          >
-                            {cap.points.map((p, i) => (
-                              <li
-                                key={i}
-                                className="
-                                  experience-capability-point
-                                  flex
-                                  gap-2
-                                  sm:gap-3
-                                  items-start
-                                "
-                              >
-                                <span
-                                  className="
-                                    mt-[7px]
-                                    md:mt-[9px]
-                                    h-1.5
-                                    w-1.5
-                                    md:h-2
-                                    md:w-2
-                                    rounded-full
-                                    bg-teal-400/80
-                                    shrink-0
-                                  "
-                                />
-                                <p
-                                  className="
-                                    text-[10px]
-                                    sm:text-sm
-                                    leading-relaxed
-                                    text-slate-300
-                                  "
-                                >
-                                  {p}
-                                </p>
-                              </li>
-                            ))}
-                          </ul>
-
-                          {cap.tags?.length ? (
-                            <div
-                              className="
-                                experience-capability-tags
-                                mt-4
-                                md:mt-6
-                                flex
-                                flex-wrap
-                                gap-1.5
-                                sm:gap-2
-                              "
-                            >
-                              {cap.tags.slice(0, isMobile ? 6 : 7).map((t) => (
-                                <span
-                                  key={t}
-                                  className="
-                                    experience-capability-tag
-                                    inline-flex
-                                    items-center
-                                    h-6
-                                    md:h-7
-                                    px-2
-                                    md:px-3
-                                    rounded-full
-                                    text-[10px]
-                                    md:text-xs
-                                    font-semibold
-                                    bg-slate-900/50
-                                    border
-                                    border-slate-800/60
-                                    text-slate-300
-                                  "
-                                >
-                                  {t}
-                                </span>
-                              ))}
-                            </div>
-                          ) : null}
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </article>
+            {/* ✅ 하단 요약 렬 — 클릭하면 위 대표 카드 교체 */}
+            <div
+              className="
+                experience-capability-rail
+                mt-4
+                md:mt-5
+                grid
+                grid-cols-2
+                sm:grid-cols-3
+                gap-2
+                md:gap-2.5
+              "
+            >
+              {capabilities.map((cap, idx) => {
+                const { num, main } = parseCapTitle(cap.title);
+                const active = idx === selectedCapIdx;
+                return (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => setSelectedCapIdx(idx)}
+                    className={`
+                      experience-capability-rail-item
+                      min-w-0
+                      flex
+                      items-center
+                      gap-1.5
+                      rounded-xl
+                      px-2.5
+                      py-1.5
+                      md:px-4
+                      md:py-2.5
+                      text-[10px]
+                      md:text-sm
+                      font-semibold
+                      transition-colors
+                      duration-200
+                      ${
+                        active
+                          ? "bg-slate-100 text-slate-900"
+                          : "bg-slate-900 text-slate-400 hover:text-slate-200 hover:bg-slate-800"
+                      }
+                    `}
+                  >
+                    <span
+                      className={`
+                        shrink-0
+                        ${active ? "text-slate-500" : "text-teal-300"}
+                      `}
+                    >
+                      {num || String(idx + 1).padStart(2, "0")}
+                    </span>
+                    <span className="truncate">{main}</span>
+                  </button>
                 );
               })}
             </div>
@@ -514,7 +461,7 @@ const ExperienceSection = () => {
                 flex
                 items-center
                 gap-2
-                text-sm
+                text-xs
                 md:text-base
                 font-semibold
                 tracking-[0.08em]
@@ -547,237 +494,223 @@ const ExperienceSection = () => {
                 sm:text-xs
                 text-slate-500
                 leading-relaxed
-                md:hidden
               "
             >
-              각 카드를 클릭해 상세하게 볼 수 있습니다.
+              아래 목록에서 대표 카드를 변경할 수 있습니다.
             </p>
 
-            {/* 내부 이슈 리스트 */}
+            {/* 대표(히어로) 카드 */}
             <div
               className="
-                experience-cases-grid
+                experience-case-hero
                 mt-4
                 md:mt-6
-                grid
-                gap-3
-                sm:gap-4
-                md:gap-6
-                md:grid-cols-2
               "
             >
-              {experienceCases.map((c, idx) => {
-                const key = caseKey(idx);
-                const opened = !isMobile ? true : openKeys.has(key);
-
-                return (
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={selectedCaseIdx}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                  className="
+                    experience-case-card
+                    rounded-xl
+                    md:rounded-2xl
+                    bg-slate-900
+                    shadow-lg
+                    shadow-black/20
+                    p-3
+                    sm:p-6
+                    md:p-8
+                  "
+                >
+                  {/* ✅ 번호 + 타이틀 */}
                   <div
-                    key={idx}
-                    onClick={() => toggle(key)}
-                    role={isMobile ? "button" : undefined}
-                    tabIndex={isMobile ? 0 : -1}
-                    onKeyDown={(e) => {
-                      if (!isMobile) return;
-                      if (e.key === "Enter" || e.key === " ") toggle(key);
-                    }}
-                    className={`
-                      experience-case-card
-                      rounded-xl
-                      md:rounded-2xl
-                      border
-                      border-slate-800/70
-                      bg-slate-950/30
-                      p-4
-                      sm:p-5
-                      md:p-7
-                      ${isMobile ? "cursor-pointer" : "cursor-default"}
-                      select-none
-                    `}
+                    className="
+                      experience-case-header
+                      flex
+                      items-start
+                      gap-3
+                      md:gap-4
+                    "
                   >
-                    {/* ✅ 번호 + 타이틀 + 우측 아이콘 */}
-                    <div
+                    <span
                       className="
-                        experience-case-header
+                        experience-card-number
+                        shrink-0
+                        w-8
+                        h-8
+                        md:w-14
+                        md:h-14
                         flex
-                        items-start
-                        justify-between
-                        gap-3
+                        items-center
+                        justify-center
+                        rounded-lg
+                        md:rounded-xl
+                        bg-slate-800
+                        text-indigo-300
+                        font-extrabold
+                        text-sm
+                        md:text-xl
                       "
                     >
-                      <div
+                      {String(selectedCaseIdx + 1).padStart(2, "0")}
+                    </span>
+
+                    <div
+                      className="
+                        min-w-0
+                      "
+                    >
+                      {activeCase.project && (
+                        <p
+                          className="
+                            experience-case-project
+                            text-[10px]
+                            md:text-xs
+                            tracking-[0.24em]
+                            uppercase
+                            text-teal-300
+                          "
+                        >
+                          {activeCase.project}
+                        </p>
+                      )}
+                      <h4
                         className="
+                          experience-case-title
+                          mt-1
+                          text-xs
+                          sm:text-base
+                          md:text-xl
+                          font-extrabold
+                          text-slate-100
+                          leading-snug
+                        "
+                      >
+                        {activeCase.title}
+                      </h4>
+                    </div>
+                  </div>
+
+                  <div
+                    className="
+                      experience-case-items
+                      mt-4
+                      md:mt-6
+                      grid
+                      gap-3
+                      md:gap-4
+                    "
+                  >
+                    {activeCase.items.map((it, i) => (
+                      <div
+                        key={i}
+                        className="
+                          experience-case-item
                           flex
                           items-start
                           gap-3
                           md:gap-4
-                          min-w-0
                         "
                       >
                         <span
-                          className="
-                            experience-card-number
+                          className={`
+                            experience-case-badge
+                            inline-flex
+                            items-center
+                            justify-center
                             shrink-0
-                            rounded-lg
-                            md:rounded-xl
-                            bg-slate-900/60
-                            text-indigo-300
-                            font-extrabold
-                            text-base
-                            md:text-xl
-                            px-2.5
-                            py-1
-                            md:px-3.5
-                            md:py-1.5
-                          "
+                            h-6
+                            md:h-7
+                            px-2
+                            md:px-3
+                            rounded-md
+                            md:rounded-[6px]
+                            text-[10px]
+                            md:text-xs
+                            font-semibold
+                            ${badgeTone(it.label)}
+                          `}
                         >
-                          {String(idx + 1).padStart(2, "0")}
+                          {it.label}
                         </span>
 
-                        <div
+                        <p
                           className="
-                            min-w-0
+                            experience-case-item-text
+                            text-[10px]
+                            sm:text-sm
+                            md:text-base
+                            leading-relaxed
+                            text-slate-300
+                            whitespace-pre-line
                           "
                         >
-                          {c.project && (
-                            <p
-                              className="
-                                experience-case-project
-                                text-[10px]
-                                md:text-xs
-                                tracking-[0.24em]
-                                uppercase
-                                text-teal-300
-                              "
-                            >
-                              {c.project}
-                            </p>
-                          )}
-                          <h4
-                            className="
-                              experience-case-title
-                              mt-1
-                              text-[12px]
-                              sm:text-[14px]
-                              md:text-[16px]
-                              font-extrabold
-                              text-slate-100
-                              leading-snug
-                            "
-                          >
-                            {c.title}
-                          </h4>
-                        </div>
+                          {it.text}
+                        </p>
                       </div>
-
-                      <div
-                        className="
-                          shrink-0
-                          pt-0.5
-                        "
-                      >
-                        {isMobile && (
-                          <motion.div
-                            animate={{
-                              rotate: opened ? 180 : 0,
-                              opacity: isMobile ? 1 : 0.35,
-                            }}
-                            transition={{ duration: 0.18, ease: "easeOut" }}
-                            className="
-                              experience-case-toggle
-                              w-8
-                              h-8
-                              rounded-lg
-                              bg-slate-900/40
-                              flex
-                              items-center
-                              justify-center
-                              text-slate-200
-                            "
-                            aria-hidden="true"
-                          >
-                            <ExpandMoreRoundedIcon fontSize="small" />
-                          </motion.div>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* ✅ 상세(모바일 토글 / PC 항상 노출) */}
-                    <AnimatePresence initial={false}>
-                      {opened && (
-                        <motion.div
-                          key="case-detail"
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: "auto", opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-                          className="
-                            experience-case-detail
-                            overflow-hidden
-                          "
-                        >
-                          <div
-                            className="
-                              experience-case-items
-                              mt-3
-                              md:mt-4
-                              grid
-                              gap-3
-                              md:gap-4
-                            "
-                          >
-                            {c.items.map((it, i) => (
-                              <div
-                                key={i}
-                                className="
-                                  experience-case-item
-                                  flex
-                                  items-start
-                                  gap-3
-                                  md:gap-4
-                                "
-                              >
-                                <span
-                                  className={`
-                                    experience-case-badge
-                                    inline-flex
-                                    items-center
-                                    justify-center
-                                    shrink-0
-                                    h-6
-                                    md:h-7
-                                    px-2
-                                    md:px-3
-                                    rounded-md
-                                    md:rounded-[6px]
-                                    text-[10px]
-                                    md:text-xs
-                                    font-semibold
-                                    border
-                                    ${badgeTone(it.label)}
-                                  `}
-                                >
-                                  {it.label}
-                                </span>
-
-                                <p
-                                  className="
-                                    experience-case-item-text
-                                    text-[10px]
-                                    sm:text-sm
-                                    leading-relaxed
-                                    text-slate-300
-                                    whitespace-pre-line
-                                  "
-                                >
-                                  {it.text}
-                                </p>
-                              </div>
-                            ))}
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
+                    ))}
                   </div>
+                </motion.div>
+              </AnimatePresence>
+            </div>
+
+            {/* ✅ 하단 요약 렬 — 클릭하면 위 대표 카드 교체 */}
+            <div
+              className="
+                experience-case-rail
+                mt-4
+                md:mt-5
+                grid
+                grid-cols-2
+                sm:grid-cols-4
+                gap-2
+                md:gap-2.5
+              "
+            >
+              {experienceCases.map((c, idx) => {
+                const active = idx === selectedCaseIdx;
+                return (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => setSelectedCaseIdx(idx)}
+                    className={`
+                      experience-case-rail-item
+                      min-w-0
+                      flex
+                      items-center
+                      gap-1.5
+                      rounded-xl
+                      px-2.5
+                      py-1.5
+                      md:px-4
+                      md:py-2.5
+                      text-[10px]
+                      md:text-sm
+                      font-semibold
+                      transition-colors
+                      duration-200
+                      ${
+                        active
+                          ? "bg-slate-100 text-slate-900"
+                          : "bg-slate-900 text-slate-400 hover:text-slate-200 hover:bg-slate-800"
+                      }
+                    `}
+                  >
+                    <span
+                      className={`
+                        shrink-0
+                        ${active ? "text-slate-500" : "text-indigo-300"}
+                      `}
+                    >
+                      {String(idx + 1).padStart(2, "0")}
+                    </span>
+                    <span className="truncate">{c.title}</span>
+                  </button>
                 );
               })}
             </div>

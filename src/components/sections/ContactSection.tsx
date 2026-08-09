@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import emailjs from "@emailjs/browser";
+import { motion } from "framer-motion";
 
 import { contactLinks } from "../../data/links";
 import { SectionTitle } from "../common/SectionTitle";
@@ -131,12 +132,20 @@ const ContactSection = () => {
             sm:gap-6
           "
         >
-          {contactLinks.map((link) => (
-            <a
+          {contactLinks.map((link, idx) => (
+            <motion.a
               key={link.label}
               href={link.href}
               target="_blank"
               rel="noreferrer"
+              initial={{ opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{
+                duration: 0.55,
+                delay: idx * 0.06,
+                ease: [0.16, 1, 0.3, 1],
+              }}
               className="
                 contact-link-card
                 group
@@ -144,11 +153,8 @@ const ContactSection = () => {
                 w-full
                 rounded-[10px]
                 sm:rounded-[12px]
-                bg-slate-900/40
-                border
-                border-slate-800/60
-                shadow-[0_18px_55px_rgba(0,0,0,0.50)]
-                sm:shadow-[0_25px_80px_rgba(0,0,0,0.55)]
+                bg-white/[0.09]
+                shadow-[0_20px_45px_-12px_rgba(0,0,0,0.55),inset_0_1px_0_0_rgba(255,255,255,0.06)]
                 overflow-hidden
                 flex
                 flex-col
@@ -156,8 +162,7 @@ const ContactSection = () => {
                 justify-center
                 transition-all
                 duration-300
-                hover:shadow-[0_35px_110px_rgba(0,0,0,0.7)]
-                hover:bg-slate-700/40
+                hover:bg-white/[0.14]
                 px-3
                 py-5
                 sm:px-4
@@ -189,9 +194,7 @@ const ContactSection = () => {
                   sm:h-8
                   rounded-[7px]
                   sm:rounded-[8px]
-                  bg-slate-900/50
-                  border
-                  border-slate-700/50
+                  bg-slate-800
                   flex
                   items-center
                   justify-center
@@ -257,23 +260,24 @@ const ContactSection = () => {
               >
                 {link.label}
               </p>
-            </a>
+            </motion.a>
           ))}
         </div>
 
         {/* 메일 폼 박스 */}
-        <div
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="
             contact-form-card
             mt-8
             md:mt-16
             rounded-[10px]
             md:rounded-[12px]
-            bg-slate-900/30
-            border
-            border-slate-800/60
-            shadow-[0_20px_70px_rgba(0,0,0,0.55)]
-            md:shadow-[0_35px_120px_rgba(0,0,0,0.6)]
+            bg-white/[0.09]
+            shadow-[0_20px_45px_-12px_rgba(0,0,0,0.55),inset_0_1px_0_0_rgba(255,255,255,0.06)]
             p-4
             md:p-8
           "
@@ -445,7 +449,7 @@ const ContactSection = () => {
               {sending ? "전송 중..." : "메시지 보내기"}
             </button>
           </form>
-        </div>
+        </motion.div>
 
         <p
           className="

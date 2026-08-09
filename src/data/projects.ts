@@ -1,4 +1,5 @@
 import type { Project } from "../types/types";
+import rtnetLogo from "../assets/images/logo_rtnetsol.svg";
 import petoryThumb from "../assets/images/petory-logo.png";
 import portfolioThumb from "../assets/images/portfolio-logo.png";
 
@@ -9,8 +10,25 @@ import p4 from "../assets/images/portfolio_4.png";
 import p5 from "../assets/images/portfolio_5.png";
 import p6 from "../assets/images/portfolio_6.png";
 import p7 from "../assets/images/portfolio_7.png";
+import p8 from "../assets/images/portfolio_8.png";
+import p9 from "../assets/images/portfolio_9.png";
 
 export const projects: Project[] = [
+  {
+    id: "rtnet-solution",
+    title: "알티넷솔루션 · 웹 개발자(풀스택)",
+    period: "2026.03 ~ 재직 중 (5개월)",
+    people: "사원 / 웹 개발자(풀스택)",
+    techStack: ["JavaScript", "React", "Java", "Spring", "PostgreSQL", "Docker"],
+    summary:
+      "레거시 jQuery 화면의 React 전환, 운영 중인 솔루션의 기능 개선·이슈 해결, AI 활용 자동화 워크플로우 신규 솔루션 기획을 담당하고 있습니다.",
+    role:
+      "jQuery 기반 레거시 화면의 React 전환\n기존 솔루션 기능 개선 및 운영 이슈 해결\nAI 활용 기반 자동화 워크플로우 신규 솔루션 제품 기획",
+    image: rtnetLogo,
+    status: "READY",
+    thumbnailBg: "#0B1220",
+  },
+
   {
     id: "petory",
     title: "PETORY - 반려동물 공유돌봄 웹서비스",
@@ -19,7 +37,6 @@ export const projects: Project[] = [
     techStack: [
       "JavaScript",
       "React",
-      "CSS",
       "Nginx",
       "Docker",
       "Jenkins",
@@ -42,7 +59,7 @@ export const projects: Project[] = [
     title: "개인 포트폴리오 웹사이트",
     period: "2025.12",
     people: "개인 프로젝트",
-    techStack: ["TypeScript", "React", "Tailwind CSS", "Vercel"],
+    techStack: ["JavaScript", "TypeScript", "React", "Tailwind CSS", "Vercel"],
     summary:
       "프론트엔드 개발 역량과 프로젝트 경험을 정리해 보여주는 웹 기반 포트폴리오.",
     role:
@@ -52,21 +69,7 @@ export const projects: Project[] = [
       demo: "https://jihoon.cloud",
       repo: "https://github.com/wlgns5041/portfolio",
     },
-    detailImages: [p1, p2, p3, p4, p5, p6, p7], 
+    detailImages: [p1, p2, p3, p4, p5, p6, p7, p8, p9],
     status: "READY",
-  },
-
-  {
-    id: "ai-platform",
-    title: "AI 코딩테스트 플랫폼 (준비 중)",
-    period: "2026 예정",
-    people: "3명 (Backend 2, Frontend 2)",
-    techStack: ["TypeScript", "React", "Tailwind CSS"],
-    summary:
-      "언어/레벨별로 하루 1문제 코딩테스트를 제공하고, 개발자 전용 채팅 기반으로 풀이·피드백이 가능한 웹 플랫폼.",
-    role:
-      "AI 문제 생성 · 정답/피드백 평가 · 정답률/통계 시스템\n프롬프트 기반 풀이 경험 설계 · 랭킹 및 출석체크/코인 시스템",
-    status: "WIP",
-    thumbnailBg: "#0B1220",
   },
 ];

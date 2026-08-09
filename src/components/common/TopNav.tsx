@@ -3,8 +3,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 const NAV_ITEMS = [
   { label: "기술 스택", href: "#skills" },
   { label: "역량 및 문제해결", href: "#problem" },
-  { label: "프로젝트", href: "#projects" },
-  { label: "추가 정보", href: "#contact" },
+  { label: "경력 및 프로젝트", href: "#projects" },
+  { label: "메일 발송", href: "#contact" },
 ];
 
 type SectionMeta = { id: string; top: number; bottom: number };
@@ -16,6 +16,7 @@ const TopNav = () => {
   const navRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<Record<string, HTMLAnchorElement | null>>({});
   const [pillStyle, setPillStyle] = useState({ left: 0, width: 0 });
+  const activeRef = useRef("skills");
 
   const ids = useMemo(() => NAV_ITEMS.map((i) => i.href.replace("#", "")), []);
 
@@ -37,7 +38,8 @@ const TopNav = () => {
     // 해시도 반영 (뒤로가기/공유 대응)
     history.replaceState(null, "", `#${id}`);
 
-    // active도 즉시 갱신 (UX)
+    // active도 즉시 갱신 (UX) + 스크롤 스파이 기준값도 동기화
+    activeRef.current = id;
     setActiveId(id);
   };
 
@@ -59,9 +61,6 @@ const TopNav = () => {
         })
         .filter(Boolean) as SectionMeta[];
     };
-
-    // ✅ active 흔들림 방지용: 직전 active를 ref로 들고 있음
-    const activeRef = { current: "skills" as string };
 
     const update = () => {
       ticking = false;

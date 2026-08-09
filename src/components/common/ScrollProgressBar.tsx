@@ -151,7 +151,7 @@ const ScrollProgressBar = () => {
                   flex
                   items-center
                   gap-3
-                  whitespace-nowrap
+                  whitespace-pre-line
                   transition-colors
                   ${isActive ? "text-teal-400" : "text-slate-500"}
                 `}

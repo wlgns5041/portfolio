@@ -1,3 +1,5 @@
+import { MotionConfig } from "framer-motion";
+
 import "./App.css";
 import TopNav from "./components/common/TopNav";
 import ScrollProgressBar from "./components/common/ScrollProgressBar";
@@ -11,25 +13,27 @@ import ContactSection from "./components/sections/ContactSection";
 
 function App() {
   return (
-    <div
-      className="
-        app-root
-        font-pretendard
-        scroll-smooth
-        bg-slate-950
-        text-slate-100
-        md:pl-[180px]
-      "
-    >
-      <ScrollProgressBar />
-      <TopNav />
+    <MotionConfig reducedMotion="user">
+      <div
+        className="
+          app-root
+          font-pretendard
+          scroll-smooth
+          bg-slate-950
+          text-slate-100
+          md:pl-[180px]
+        "
+      >
+        <ScrollProgressBar />
+        <TopNav />
 
-      <IntroSection />
-      <SkillsSection />
-      <ExperienceSection />
-      <ProjectsSection />
-      <ContactSection />
-    </div>
+        <IntroSection />
+        <SkillsSection />
+        <ExperienceSection />
+        <ProjectsSection />
+        <ContactSection />
+      </div>
+    </MotionConfig>
   );
 }
 

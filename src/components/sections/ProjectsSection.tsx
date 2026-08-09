@@ -10,9 +10,12 @@ import tsLogo from "../../assets/logos/typescript.png";
 import awsLogo from "../../assets/logos/aws.png";
 import cssLogo from "../../assets/logos/css.png";
 import dockerLogo from "../../assets/logos/docker.png";
+import javaLogo from "../../assets/logos/java.svg";
 import jenkinsLogo from "../../assets/logos/jenkins.png";
 import nginxLogo from "../../assets/logos/nginx.png";
+import postgresqlLogo from "../../assets/logos/postgresql.svg";
 import reactLogo from "../../assets/logos/react.png";
+import springLogo from "../../assets/logos/spring.svg";
 import tailwindLogo from "../../assets/logos/tailwild.png";
 import vercelLogo from "../../assets/logos/vercel.png";
 
@@ -33,6 +36,9 @@ const TECH_LOGOS: Record<string, string> = {
   Jenkins: jenkinsLogo,
   AWS: awsLogo,
   Vercel: vercelLogo,
+  Java: javaLogo,
+  Spring: springLogo,
+  PostgreSQL: postgresqlLogo,
 };
 
 const TechBox = ({ label }: { label: string }) => {
@@ -51,9 +57,7 @@ const TechBox = ({ label }: { label: string }) => {
         md:h-10
         rounded-lg
         md:rounded-xl
-        bg-slate-900/40
-        border
-        border-slate-800/60
+        bg-slate-900
         flex
         items-center
         justify-center
@@ -184,9 +188,9 @@ const ProjectsSection = () => {
         "
       >
         <SectionTitle
-          eyebrow="Projects"
-          title="프로젝트"
-          description={`현재까지 개발한 프로젝트입니다\n프로젝트를 클릭하면 자세히 볼 수 있습니다`}
+          eyebrow="Career & Projects"
+          title="경력 및 프로젝트"
+          description={`실무 경력과 그동안 진행한 프로젝트입니다\n항목을 클릭하면 자세히 볼 수 있습니다`}
         />
 
         <div
@@ -245,7 +249,10 @@ const ProjectsSection = () => {
                   [transform:translateZ(0)]
                   [backface-visibility:hidden]
                 "
-                style={{ backgroundColor: idx === 1 ? "#2DD4BF" : "#F8FAFC" }}
+                style={{
+                  backgroundColor:
+                    project.id === "portfolio" ? "#2DD4BF" : "#F8FAFC",
+                }}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" || e.key === " ") openProject(project);
                 }}

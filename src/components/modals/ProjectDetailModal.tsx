@@ -1,11 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
+import ChevronLeftRoundedIcon from "@mui/icons-material/ChevronLeftRounded";
+import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 import ScheduleRoundedIcon from "@mui/icons-material/ScheduleRounded";
 import GroupRoundedIcon from "@mui/icons-material/GroupRounded";
 import BuildRoundedIcon from "@mui/icons-material/BuildRounded";
 import BoltRoundedIcon from "@mui/icons-material/BoltRounded";
-import EmojiObjectsRoundedIcon from "@mui/icons-material/EmojiObjectsRounded";
 import BugReportRoundedIcon from "@mui/icons-material/BugReportRounded";
 import CloudRoundedIcon from "@mui/icons-material/CloudRounded";
 
@@ -14,9 +15,12 @@ import tsLogo from "../../assets/logos/typescript.png";
 import awsLogo from "../../assets/logos/aws.png";
 import cssLogo from "../../assets/logos/css.png";
 import dockerLogo from "../../assets/logos/docker.png";
+import javaLogo from "../../assets/logos/java.svg";
 import jenkinsLogo from "../../assets/logos/jenkins.png";
 import nginxLogo from "../../assets/logos/nginx.png";
+import postgresqlLogo from "../../assets/logos/postgresql.svg";
 import reactLogo from "../../assets/logos/react.png";
+import springLogo from "../../assets/logos/spring.svg";
 import tailwindLogo from "../../assets/logos/tailwild.png";
 import vercelLogo from "../../assets/logos/vercel.png";
 
@@ -34,10 +38,8 @@ type ProjectDetail = {
   contribution?: string[];
 
   features?: string[];
-  techReasons?: string;
   issues?: ProjectIssue[];
   takeaway?: string;
-  highlights?: string[];
 };
 
 export type ProjectItem = {
@@ -69,6 +71,9 @@ const TECH_LOGOS: Record<string, string> = {
   Jenkins: jenkinsLogo,
   AWS: awsLogo,
   Vercel: vercelLogo,
+  Java: javaLogo,
+  Spring: springLogo,
+  PostgreSQL: postgresqlLogo,
 };
 
 const ProjectDetailModal = ({ open, project, onClose }: Props) => {
@@ -228,6 +233,9 @@ function ModalBody({
   onThumbClick: (idx: number) => void;
 }) {
   const [showHint, setShowHint] = useState(true);
+  const [activeTab, setActiveTab] = useState<"overview" | "issues">(
+    "overview"
+  );
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -241,6 +249,19 @@ function ModalBody({
     el.addEventListener("scroll", onScroll, { passive: true });
     return () => el.removeEventListener("scroll", onScroll);
   }, []);
+
+  const hasOverview = Boolean(
+    project.detail?.intro ||
+      project.role ||
+      project.detail?.duration ||
+      project.detail?.team ||
+      project.detail?.contribution?.length ||
+      project.techStack?.length ||
+      project.detail?.features?.length
+  );
+  const hasIssues = Boolean(
+    project.detail?.issues?.length || project.detail?.takeaway
+  );
 
   return (
     <div
@@ -272,9 +293,11 @@ function ModalBody({
         {project.title}
       </h2>
 
+        {images.length > 0 && (
         <div
           className="
             project-detail-main-image
+            relative
             mt-4
             md:mt-6
             rounded-xl
@@ -295,75 +318,103 @@ function ModalBody({
               justify-center
             "
           >
-            {mainImage ? (
-              <img
-                src={mainImage}
-                alt={`${project.title} ${activeIdx + 1}`}
+            <img
+              src={mainImage}
+              alt={`${project.title} ${activeIdx + 1}`}
+              className="
+                w-full
+                h-full
+                object-contain
+              "
+              draggable={false}
+            />
+          </div>
+
+          {images.length > 1 && (
+            <>
+              <button
+                type="button"
+                onClick={() =>
+                  onThumbClick((activeIdx - 1 + images.length) % images.length)
+                }
                 className="
-                  w-full
-                  h-full
-                  object-contain
+                  project-detail-image-prev
+                  absolute
+                  left-2
+                  md:left-4
+                  top-1/2
+                  -translate-y-1/2
+                  w-8
+                  h-8
+                  md:w-10
+                  md:h-10
+                  rounded-full
+                  bg-black/50
+                  text-white/80
+                  hover:text-white
+                  hover:bg-black/70
+                  flex
+                  items-center
+                  justify-center
+                  transition
                 "
-                draggable={false}
-              />
-            ) : (
+                aria-label="이전 이미지"
+              >
+                <ChevronLeftRoundedIcon fontSize="small" />
+              </button>
+
+              <button
+                type="button"
+                onClick={() => onThumbClick((activeIdx + 1) % images.length)}
+                className="
+                  project-detail-image-next
+                  absolute
+                  right-2
+                  md:right-4
+                  top-1/2
+                  -translate-y-1/2
+                  w-8
+                  h-8
+                  md:w-10
+                  md:h-10
+                  rounded-full
+                  bg-black/50
+                  text-white/80
+                  hover:text-white
+                  hover:bg-black/70
+                  flex
+                  items-center
+                  justify-center
+                  transition
+                "
+                aria-label="다음 이미지"
+              >
+                <ChevronRightRoundedIcon fontSize="small" />
+              </button>
+
               <div
                 className="
-                  text-slate-200
+                  project-detail-image-counter
+                  absolute
+                  right-2
+                  bottom-2
+                  md:right-4
+                  md:bottom-4
+                  px-2.5
+                  py-1
+                  rounded-full
+                  bg-black/50
+                  text-white/80
+                  text-[11px]
+                  md:text-xs
+                  font-semibold
                 "
               >
-                이미지 없음
+                {activeIdx + 1} / {images.length}
               </div>
-            )}
-          </div>
+            </>
+          )}
         </div>
-
-        {images.length > 0 && (
-          <div
-            className="
-              project-detail-thumbnail-list
-              mt-3
-              md:mt-4
-              grid
-              grid-cols-4
-              md:grid-cols-4
-              gap-2
-              md:gap-3
-            "
-          >
-            {images.slice(0, 7).map((src, i) => (
-              <button
-                key={src + i}
-                type="button"
-                onClick={() => onThumbClick(i)}
-                className={`
-                  project-detail-thumbnail-button
-                  aspect-[16/12]
-                  md:aspect-[16/9]
-                  rounded-lg
-                  md:rounded-xl
-                  overflow-hidden
-                  border
-                  ${
-                    i === activeIdx
-                      ? "border-indigo-400/70 ring-2 ring-indigo-500/25"
-                      : "border-white/10"
-                  }
-                `}
-              >
-                <img
-                  src={src}
-                  alt={`thumb ${i + 1}`}
-                  className="
-                    w-full
-                    h-full
-                    object-cover
-                  "
-                  draggable={false}
-                />
-              </button>
-            ))}
-          </div>
         )}
       </div>
 
@@ -401,7 +452,7 @@ function ModalBody({
         </div>
       )}
 
-      {/* --- 상세 정보 --- */}
+      {/* --- 탭 + 상세 정보 --- */}
       <div
         className="
           project-detail-info
@@ -410,581 +461,588 @@ function ModalBody({
           pb-10
         "
       >
-        {/* INTRO */}
-        {(project.detail?.intro || project.role) && (
-          <div
-            className="
-              project-detail-intro
-              mt-4
-              rounded-2xl
-              border
-              border-white/10
-              bg-slate-900/25
-              p-4
-              md:p-8
-            "
-          >
-            <h3
-              className="
-                text-lg
-                font-extrabold
-                text-slate-50
-              "
+        {/* 탭 스위처 */}
+        <div
+          className="
+            project-detail-tabs
+            mt-4
+            inline-flex
+            w-full
+            sm:w-auto
+            gap-1
+            p-1.5
+            rounded-2xl
+            bg-slate-900/60
+            border
+            border-slate-800/60
+          "
+        >
+          {(
+            [
+              { key: "overview" as const, label: "개요" },
+              { key: "issues" as const, label: "이슈 및 해결" },
+            ]
+          ).map((tab) => (
+            <button
+              key={tab.key}
+              type="button"
+              onClick={() => setActiveTab(tab.key)}
+              className={`
+                flex-1
+                sm:flex-none
+                px-4
+                md:px-8
+                py-2
+                md:py-2.5
+                rounded-xl
+                text-xs
+                md:text-sm
+                font-semibold
+                transition-colors
+                duration-200
+                ${
+                  activeTab === tab.key
+                    ? "bg-slate-100 text-slate-900"
+                    : "bg-transparent text-slate-400 hover:text-slate-200"
+                }
+              `}
             >
-              INTRO.
-            </h3>
-            <p
-              className="
-                mt-3
-                text-[11px]
-                md:text-[15px]
-                leading-relaxed
-                text-slate-300
-                whitespace-pre-line
-              "
-            >
-              {project.detail?.intro ?? project.role ?? ""}
-            </p>
-          </div>
-        )}
+              {tab.label}
+            </button>
+          ))}
+        </div>
 
-        {/* META (개발기간/구성원/기여도) */}
-        {(project.detail?.duration ||
-          project.detail?.team ||
-          project.detail?.contribution?.length) && (
+        {/* 개요: INTRO + 개발기간·구성원·기여도 + 기술스택 + 주요기능 */}
+        {activeTab === "overview" && (
           <div
             className="
-              project-detail-meta
               mt-4
               md:mt-6
-              rounded-xl
-              md:rounded-2xl
-              border
-              border-white/10
-              bg-slate-900/15
-              p-4
-              md:p-8
+              space-y-4
+              md:space-y-6
             "
           >
-            <div
-              className="
-                grid
-                gap-5
-              "
-            >
-              {project.detail?.duration && (
-                <div>
-                  <div
-                    className="
-                      text-sm
-                      md:text-sm
-                      font-bold
-                      text-slate-100
-                      flex
-                      items-center
-                      gap-2
-                    "
-                  >
-                    <ScheduleRoundedIcon fontSize="small" />
-                    개발 기간
-                  </div>
-                  <div
-                    className="
-                      mt-1
-                      text-[12px]
-                      md:text-sm
-                      text-slate-300
-                    "
-                  >
-                    {project.detail.duration}
-                  </div>
-                </div>
-              )}
-
-              {project.detail?.team && (
-                <div>
-                  <div
-                    className="
-                      text-sm
-                      md:text-sm
-                      font-bold
-                      text-slate-100
-                      flex
-                      items-center
-                      gap-2
-                    "
-                  >
-                    <GroupRoundedIcon fontSize="small" />
-                    구성원
-                  </div>
-                  <div
-                    className="
-                      mt-1
-                      text-[12px]
-                      md:text-sm
-                      text-slate-300
-                    "
-                  >
-                    {project.detail.team}
-                  </div>
-                </div>
-              )}
-
-              {project.detail?.contribution?.length ? (
-                <div>
-                  <div
-                    className="
-                      text-sm
-                      md:text-sm
-                      font-bold
-                      text-slate-100
-                      flex
-                      items-center
-                      gap-2
-                    "
-                  >
-                    <BuildRoundedIcon fontSize="small" />
-                    기여도
-                  </div>
-                  <div
-                    className="
-                      project-detail-contribution-list
-                      mt-2
-                      flex
-                      flex-wrap
-                      gap-2
-                    "
-                  >
-                    {project.detail.contribution.map((c) => (
-                      <span
-                        key={c}
-                          className="
-                            project-detail-contribution-chip
-                            px-2.5
-                            md:px-3
-                            py-1
-                            md:py-1
-                            rounded-full
-                            text-[11px]
-                            md:text-xs
-                            font-semibold
-                            bg-rose-200/15
-                            text-rose-100
-                            border
-                            border-rose-200/20
-                          "
-                      >
-                        {c}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              ) : null}
-            </div>
-          </div>
-        )}
-
-        {/* 사용 기술 스택(텍스트 배지) */}
-        {project.techStack?.length ? (
-          <div
-            className="
-              project-detail-tech-stack
-              mt-4
-              md:mt-6
-              rounded-2xl
-              border
-              border-white/10
-              bg-slate-900/15
-              p-4
-              md:p-8
-            "
-          >
-            <div
-              className="
-                text-sm
-                md:text-sm
-                font-bold
-                text-slate-100
-                flex
-                items-center
-                gap-2
-              "
-            >
-              <BuildRoundedIcon fontSize="small" />
-              사용된 기술 스택
-            </div>
-
-            <div
-              className="
-                mt-4
-                flex
-                flex-wrap
-                gap-4
-              "
-            >
-              {project.techStack.map((tech) => {
-                const logo = TECH_LOGOS[tech];
-
-                return (
-                  <div
-                    key={tech}
-                    className="
-                      project-detail-tech-chip
-                      flex
-                      items-center
-                      gap-2
-                      px-3
-                      md:px-4
-                      py-1.5
-                      md:py-2
-                      rounded-lg
-                      md:rounded-xl
-                      bg-slate-900/60
-                      border
-                      border-white/10
-                    "
-                  >
-                    {logo && (
-                      <img
-                        src={logo}
-                        alt={tech}
-                        className={`
-                          w-6
-                          h-6
-                          object-contain
-                          ${tech === "Vercel" ? "invert" : ""}
-                        `}
-                        draggable={false}
-                      />
-                    )}
-                    <span
-                      className="
-                        text-[12px]
-                        md:text-sm
-                        font-semibold
-                        text-slate-200
-                      "
-                    >
-                      {tech}
-                    </span>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        ) : null}
-
-        {/* 주요 기능 */}
-        {project.detail?.features?.length ? (
-          <div
-            className="
-              project-detail-features
-              mt-4
-              md:mt-6
-              rounded-2xl
-              border
-              border-white/10
-              bg-slate-900/15
-              p-4
-              md:p-8
-            "
-          >
-            <div
-              className="
-                text-sm
-                md:text-sm
-                font-bold
-                text-slate-100
-                flex
-                items-center
-                gap-2
-              "
-            >
-              <BoltRoundedIcon fontSize="small" />
-              주요 기능
-            </div>
-            <ul
-              className="
-                project-detail-feature-list
-                mt-3
-                space-y-2
-                text-[11px]
-                md:text-sm
-                text-slate-300
-                list-disc
-                pl-5
-              "
-            >
-              {project.detail.features.map((f) => (
-                <li key={f}>{f}</li>
-              ))}
-            </ul>
-          </div>
-        ) : null}
-
-        {/* ✅ 핵심 하이라이트 */}
-        {project.detail?.highlights?.length ? (
-          <div
-            className="
-              project-detail-highlights
-              mt-4
-              md:mt-6
-              rounded-2xl
-              border
-              border-white/10
-              bg-slate-900/15
-              p-4
-              md:p-8
-            "
-          >
-            <div
-              className="
-                text-sm
-                md:text-sm
-                font-bold
-                text-slate-100
-                flex
-                items-center
-                gap-2
-              "
-            >
-              <BoltRoundedIcon fontSize="small" />
-              핵심 포인트
-            </div>
-
-            <div
-              className="
-                mt-4
-                grid
-                gap-3
-              "
-            >
-              {project.detail.highlights.map((h) => (
-                <div
-                  key={h}
-                  className="
-                    project-detail-highlight-item
-                    flex
-                    items-start
-                    gap-3
-                    rounded-xl
-                    border
-                    border-white/10
-                    bg-black/20
-                    p-4
-                  "
-                >
-                  <span
-                    className="
-                      mt-[6px]
-                      h-2
-                      w-2
-                      rounded-full
-                      bg-teal-400/80
-                      shrink-0
-                    "
-                  />
-                  <p
-                    className="
-                      text-[11px]
-                      md:text-sm
-                      text-slate-300
-                      leading-relaxed
-                    "
-                  >
-                    {h}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        ) : null}
-
-        {/* 기술 선정 이유 */}
-        {project.detail?.techReasons ? (
-          <div
-            className="
-              project-detail-tech-reasons
-              mt-4
-              md:mt-6
-              rounded-2xl
-              border
-              border-white/10
-              bg-slate-900/15
-              p-4
-              md:p-8
-            "
-          >
-            <div
-              className="
-                text-sm
-                md:text-sm
-                font-bold
-                text-slate-100
-                flex
-                items-center
-                gap-2
-              "
-            >
-              <EmojiObjectsRoundedIcon fontSize="small" />
-              기술 선정 이유
-            </div>
-              <p
+            {(project.detail?.intro || project.role) && (
+              <div
                 className="
-                  mt-3
-                  text-[11px]
-                  md:text-sm
-                  text-slate-300
-                  leading-relaxed
-                  whitespace-pre-line
+                  project-detail-intro
+                  rounded-2xl
+                  bg-white/[0.08]
+                  shadow-[0_20px_45px_-12px_rgba(0,0,0,0.55),inset_0_1px_0_0_rgba(255,255,255,0.06)]
+                  p-3
+                  md:p-8
                 "
               >
-                {project.detail.techReasons}
-              </p>
-          </div>
-        ) : null}
-
-        {/* 개발 이슈 (문제/해결) */}
-        {project.detail?.issues?.length ? (
-          <div
-            className="
-              project-detail-issues
-              mt-4
-              md:mt-6
-              rounded-2xl
-              border
-              border-white/10
-              bg-slate-900/15
-              p-4
-              md:p-8
-            "
-          >
-            <div
-              className="
-                text-sm
-                md:text-sm
-                font-bold
-                text-slate-100
-                flex
-                items-center
-                gap-2
-              "
-            >
-              <BugReportRoundedIcon fontSize="small" />
-              개발 이슈
-            </div>
-
-            <div
-              className="
-                mt-4
-                space-y-5
-              "
-            >
-              {project.detail.issues.map((it, idx) => (
-                <div
-                  key={idx}
+                <h3
                   className="
-                    project-detail-issue-item
-                    rounded-xl
-                    border
-                    border-white/10
-                    bg-black/20
-                    p-4
+                    text-lg
+                    font-extrabold
+                    text-slate-50
                   "
                 >
-                  <div
-                    className="
-                      text-[13px]
-                      md:text-sm
-                      font-semibold
-                      text-rose-200
-                    "
-                  >
-                    문제
-                  </div>
-                  <div
-                    className="
-                      mt-1
-                      text-[11px]
-                      md:text-sm
-                      text-slate-300
-                      whitespace-pre-line
-                    "
-                  >
-                    {it.problem}
-                  </div>
+                  INTRO.
+                </h3>
+                <p
+                  className="
+                    mt-3
+                    text-[11px]
+                    md:text-[15px]
+                    leading-relaxed
+                    text-slate-300
+                    whitespace-pre-line
+                  "
+                >
+                  {project.detail?.intro ?? project.role ?? ""}
+                </p>
+              </div>
+            )}
 
-                  <div
-                    className="
-                      mt-4
-                      text-[13px]
-                      md:text-sm
-                      font-semibold
-                      text-emerald-200
-                    "
-                  >
-                    해결
-                  </div>
-                  <div
-                    className="
-                      mt-1
-                      text-[11px]
-                      md:text-sm
-                      text-slate-300
-                      whitespace-pre-line
-                    "
-                  >
-                    {it.solution}
-                  </div>
+            {(project.detail?.duration ||
+              project.detail?.team ||
+              project.detail?.contribution?.length) && (
+              <div
+                className="
+                  project-detail-meta
+                  rounded-xl
+                  md:rounded-2xl
+                  bg-white/[0.08]
+                  shadow-[0_20px_45px_-12px_rgba(0,0,0,0.55),inset_0_1px_0_0_rgba(255,255,255,0.06)]
+                  p-3
+                  md:p-8
+                "
+              >
+                <div
+                  className="
+                    grid
+                    gap-5
+                  "
+                >
+                  {project.detail?.duration && (
+                    <div>
+                      <div
+                        className="
+                          text-xs
+                          md:text-sm
+                          font-bold
+                          text-slate-100
+                          flex
+                          items-center
+                          gap-2
+                        "
+                      >
+                        <ScheduleRoundedIcon
+                          fontSize="small"
+                          className="text-teal-300"
+                        />
+                        개발 기간
+                      </div>
+                      <div
+                        className="
+                          mt-1
+                          text-[11px]
+                          md:text-sm
+                          text-slate-300
+                        "
+                      >
+                        {project.detail.duration}
+                      </div>
+                    </div>
+                  )}
+
+                  {project.detail?.team && (
+                    <div>
+                      <div
+                        className="
+                          text-xs
+                          md:text-sm
+                          font-bold
+                          text-slate-100
+                          flex
+                          items-center
+                          gap-2
+                        "
+                      >
+                        <GroupRoundedIcon
+                          fontSize="small"
+                          className="text-teal-300"
+                        />
+                        구성원
+                      </div>
+                      <div
+                        className="
+                          mt-1
+                          text-[11px]
+                          md:text-sm
+                          text-slate-300
+                        "
+                      >
+                        {project.detail.team}
+                      </div>
+                    </div>
+                  )}
+
+                  {project.detail?.contribution?.length ? (
+                    <div>
+                      <div
+                        className="
+                          text-xs
+                          md:text-sm
+                          font-bold
+                          text-slate-100
+                          flex
+                          items-center
+                          gap-2
+                        "
+                      >
+                        <BuildRoundedIcon
+                          fontSize="small"
+                          className="text-teal-300"
+                        />
+                        기여도
+                      </div>
+                      <div
+                        className="
+                          project-detail-contribution-list
+                          mt-2
+                          flex
+                          flex-wrap
+                          gap-2
+                        "
+                      >
+                        {project.detail.contribution.map((c) => (
+                          <span
+                            key={c}
+                            className="
+                              project-detail-contribution-chip
+                              px-2.5
+                              md:px-3
+                              py-1
+                              md:py-1
+                              rounded-full
+                              text-[11px]
+                              md:text-xs
+                              font-semibold
+                              bg-rose-200/15
+                              text-rose-100
+                              border
+                              border-rose-200/20
+                            "
+                          >
+                            {c}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  ) : null}
                 </div>
-              ))}
-            </div>
-          </div>
-        ) : null}
+              </div>
+            )}
 
-        {/* 느낀점 */}
-        {project.detail?.takeaway ? (
+            {project.techStack?.length ? (
+              <div
+                className="
+                  project-detail-tech-stack
+                  rounded-2xl
+                  bg-white/[0.08]
+                  shadow-[0_20px_45px_-12px_rgba(0,0,0,0.55),inset_0_1px_0_0_rgba(255,255,255,0.06)]
+                  p-3
+                  md:p-8
+                "
+              >
+                <div
+                  className="
+                    text-xs
+                    md:text-sm
+                    font-bold
+                    text-slate-100
+                    flex
+                    items-center
+                    gap-2
+                  "
+                >
+                  <BuildRoundedIcon
+                    fontSize="small"
+                    className="text-teal-300"
+                  />
+                  사용된 기술 스택
+                </div>
+
+                <div
+                  className="
+                    mt-4
+                    flex
+                    flex-wrap
+                    gap-4
+                  "
+                >
+                  {project.techStack.map((tech) => {
+                    const logo = TECH_LOGOS[tech];
+
+                    return (
+                      <div
+                        key={tech}
+                        className="
+                          project-detail-tech-chip
+                          flex
+                          items-center
+                          gap-2
+                          px-2.5
+                          md:px-4
+                          py-1
+                          md:py-2
+                          rounded-lg
+                          md:rounded-xl
+                          bg-slate-800
+                        "
+                      >
+                        {logo && (
+                          <img
+                            src={logo}
+                            alt={tech}
+                            className={`
+                              w-5
+                              h-5
+                              object-contain
+                              ${tech === "Vercel" ? "invert" : ""}
+                            `}
+                            draggable={false}
+                          />
+                        )}
+                        <span
+                          className="
+                            text-[11px]
+                            md:text-sm
+                            font-semibold
+                            text-slate-200
+                          "
+                        >
+                          {tech}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            ) : null}
+
+            {project.detail?.features?.length ? (
+              <div
+                className="
+                  project-detail-features
+                  rounded-2xl
+                  bg-white/[0.08]
+                  shadow-[0_20px_45px_-12px_rgba(0,0,0,0.55),inset_0_1px_0_0_rgba(255,255,255,0.06)]
+                  p-3
+                  md:p-8
+                "
+              >
+                <div
+                  className="
+                    text-xs
+                    md:text-sm
+                    font-bold
+                    text-slate-100
+                    flex
+                    items-center
+                    gap-2
+                  "
+                >
+                  <BoltRoundedIcon fontSize="small" className="text-teal-300" />
+                  주요 기능
+                </div>
+                <ul
+                  className="
+                    project-detail-feature-list
+                    mt-3
+                    space-y-2
+                    text-[10px]
+                    md:text-sm
+                    text-slate-300
+                    list-disc
+                    pl-5
+                  "
+                >
+                  {project.detail.features.map((f) => (
+                    <li key={f}>{f}</li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
+
+            {!hasOverview && (
+              <p className="text-sm text-slate-500">표시할 정보가 없습니다.</p>
+            )}
+          </div>
+        )}
+
+        {/* 문제해결: 개발 이슈 + 느낀점 */}
+        {activeTab === "issues" && (
           <div
             className="
-              project-detail-takeaway
               mt-4
               md:mt-6
-              rounded-2xl
-              border
-              border-white/10
-              bg-slate-900/15
-              p-4
-              md:p-8
+              space-y-4
+              md:space-y-6
             "
           >
-            <div
-              className="
-                text-sm
-                md:text-sm
-                font-bold
-                text-slate-100
-                flex
-                items-center
-                gap-2
-              "
-            >
-              <CloudRoundedIcon fontSize="small" />
-              개발 후 느낀점
-            </div>
-            <p
-              className="
-                mt-3
-                text-[11px]
-                md:text-sm
-                text-slate-300
-                leading-relaxed
-                whitespace-pre-line
-              "
-            >
-              {project.detail.takeaway}
-            </p>
+            {project.detail?.issues?.length ? (
+              <div
+                className="
+                  project-detail-issues
+                  rounded-2xl
+                  bg-white/[0.08]
+                  shadow-[0_20px_45px_-12px_rgba(0,0,0,0.55),inset_0_1px_0_0_rgba(255,255,255,0.06)]
+                  p-4
+                  md:p-8
+                "
+              >
+                <div
+                  className="
+                    text-sm
+                    md:text-sm
+                    font-bold
+                    text-slate-100
+                    flex
+                    items-center
+                    gap-2
+                  "
+                >
+                  <BugReportRoundedIcon
+                    fontSize="small"
+                    className="text-teal-300"
+                  />
+                  개발 이슈
+                </div>
+
+                <div
+                  className="
+                    mt-4
+                    space-y-5
+                  "
+                >
+                  {project.detail.issues.map((it, idx) => (
+                    <div
+                      key={idx}
+                      className="
+                        project-detail-issue-item
+                        relative
+                        rounded-xl
+                        bg-black/25
+                        p-4
+                        md:p-5
+                        space-y-3
+                      "
+                    >
+                      <span
+                        className="
+                          hidden
+                          md:block
+                          absolute
+                          right-4
+                          top-4
+                          text-[11px]
+                          md:text-xs
+                          font-bold
+                          text-slate-600
+                        "
+                      >
+                        {String(idx + 1).padStart(2, "0")}
+                      </span>
+
+                      <div
+                        className="
+                          flex
+                          items-start
+                          gap-3
+                        "
+                      >
+                        <span
+                          className="
+                            inline-flex
+                            items-center
+                            justify-center
+                            shrink-0
+                            h-6
+                            md:h-7
+                            px-2
+                            md:px-3
+                            rounded-md
+                            text-[10px]
+                            md:text-xs
+                            font-semibold
+                            border
+                            bg-rose-500/10
+                            text-rose-200
+                            border-rose-500/20
+                          "
+                        >
+                          문제
+                        </span>
+                        <p
+                          className="
+                            text-[9px]
+                            md:text-sm
+                            text-slate-300
+                            leading-relaxed
+                            whitespace-pre-line
+                          "
+                        >
+                          {it.problem}
+                        </p>
+                      </div>
+
+                      <div
+                        className="
+                          flex
+                          items-start
+                          gap-3
+                        "
+                      >
+                        <span
+                          className="
+                            inline-flex
+                            items-center
+                            justify-center
+                            shrink-0
+                            h-6
+                            md:h-7
+                            px-2
+                            md:px-3
+                            rounded-md
+                            text-[10px]
+                            md:text-xs
+                            font-semibold
+                            border
+                            bg-teal-500/10
+                            text-teal-200
+                            border-teal-500/20
+                          "
+                        >
+                          해결
+                        </span>
+                        <p
+                          className="
+                            text-[9px]
+                            md:text-sm
+                            text-slate-300
+                            leading-relaxed
+                            whitespace-pre-line
+                          "
+                        >
+                          {it.solution}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : null}
+
+            {project.detail?.takeaway ? (
+              <div
+                className="
+                  project-detail-takeaway
+                  rounded-2xl
+                  bg-white/[0.08]
+                  shadow-[0_20px_45px_-12px_rgba(0,0,0,0.55),inset_0_1px_0_0_rgba(255,255,255,0.06)]
+                  p-4
+                  md:p-8
+                "
+              >
+                <div
+                  className="
+                    text-sm
+                    md:text-sm
+                    font-bold
+                    text-slate-100
+                    flex
+                    items-center
+                    gap-2
+                  "
+                >
+                  <CloudRoundedIcon fontSize="small" className="text-teal-300" />
+                  개발 후 느낀점
+                </div>
+                <p
+                  className="
+                    mt-3
+                    text-[9px]
+                    md:text-sm
+                    text-slate-300
+                    leading-relaxed
+                    whitespace-pre-line
+                  "
+                >
+                  {project.detail.takeaway}
+                </p>
+              </div>
+            ) : null}
+
+            {!hasIssues && (
+              <p className="text-sm text-slate-500">표시할 정보가 없습니다.</p>
+            )}
           </div>
-        ) : null}
+        )}
 
         <div
           className="

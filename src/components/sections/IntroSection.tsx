@@ -22,10 +22,8 @@ import UpgradeRoundedIcon from "@mui/icons-material/UpgradeRounded";
 
 import { useEffect, useRef, useState} from "react";
 import galaxyImg from "../../assets/images/galaxy.jpg";
-import strengthImg1 from "../../assets/images/portfolio_1.png";
-import strengthImg2 from "../../assets/images/portfolio_2.png";
-import strengthImg3 from "../../assets/images/portfolio_3.png";
-import strengthImg4 from "../../assets/images/portfolio_4.png";
+import strengthImgPetoryFigma from "../../assets/images/펫토리 피그마.png";
+import strengthImgLayer from "../../assets/images/레이어.png";
 import LogoLottie from "../common/LogoLottie";
 
 import { createPortal } from "react-dom";
@@ -101,8 +99,6 @@ const StrengthImageStack = ({
           md:w-40
           rounded-xl
           bg-slate-800/60
-          border
-          border-slate-700/60
           overflow-hidden
           cursor-pointer
         "
@@ -157,8 +153,6 @@ const StrengthImageStack = ({
               inset-0
               rounded-xl
               bg-slate-800/60
-              border
-              border-slate-700/60
               overflow-hidden
               cursor-pointer
               transition-transform
@@ -663,7 +657,7 @@ useEffect(() => {
                 grid-cols-2
                 md:grid-cols-2
                 lg:grid-cols-3
-                gap-3
+                gap-2
                 md:gap-5
               "
             >
@@ -672,12 +666,16 @@ useEffect(() => {
                 variants={itemVariants}
                 className="
                   intro-about-card
+                  group
                   rounded-2xl
-                  border
-                  border-slate-800/60
-                  bg-slate-950/25
-                  p-4
+                  bg-white/[0.09]
+                  shadow-[0_20px_45px_-12px_rgba(0,0,0,0.55),inset_0_1px_0_0_rgba(255,255,255,0.06)]
+                  p-2.5
                   md:p-6
+                  transition-all
+                  duration-200
+                  hover:-translate-y-1
+                  hover:bg-white/[0.14]
                 "
               >
                 <div
@@ -690,8 +688,8 @@ useEffect(() => {
                 >
                   <div
                     className="
-                      w-8
-                      h-8
+                      w-6
+                      h-7
                       md:w-10
                       md:h-10
                       rounded-lg
@@ -702,13 +700,16 @@ useEffect(() => {
                       justify-center
                       text-slate-300
                       shrink-0
+                      transition-transform
+                      duration-200
+                      group-hover:scale-110
                     "
                   >
                     <PersonRoundedIcon sx={{ fontSize: 18 }} />
                   </div>
                   <p
                     className="
-                      text-xs
+                      text-[10px]
                       md:text-sm
                       text-slate-500
                     "
@@ -719,9 +720,9 @@ useEffect(() => {
 
                 <p
                   className="
-                    mt-3
+                    mt-2
                     md:mt-4
-                    text-base
+                    text-[11px]
                     md:text-xl
                     font-bold
                     text-slate-100
@@ -736,12 +737,16 @@ useEffect(() => {
                 variants={itemVariants}
                 className="
                   intro-about-card
+                  group
                   rounded-2xl
-                  border
-                  border-slate-800/60
-                  bg-slate-950/25
-                  p-4
+                  bg-white/[0.09]
+                  shadow-[0_20px_45px_-12px_rgba(0,0,0,0.55),inset_0_1px_0_0_rgba(255,255,255,0.06)]
+                  p-2.5
                   md:p-6
+                  transition-all
+                  duration-200
+                  hover:-translate-y-1
+                  hover:bg-white/[0.14]
                 "
               >
                 <div
@@ -754,8 +759,8 @@ useEffect(() => {
                 >
                   <div
                     className="
-                      w-8
-                      h-8
+                      w-6
+                      h-7
                       md:w-10
                       md:h-10
                       rounded-lg
@@ -766,13 +771,16 @@ useEffect(() => {
                       justify-center
                       text-slate-300
                       shrink-0
+                      transition-transform
+                      duration-200
+                      group-hover:scale-110
                     "
                   >
                     <CalendarMonthRoundedIcon sx={{ fontSize: 18 }} />
                   </div>
                   <p
                     className="
-                      text-xs
+                      text-[10px]
                       md:text-sm
                       text-slate-500
                     "
@@ -783,9 +791,9 @@ useEffect(() => {
 
                 <p
                   className="
-                    mt-3
+                    mt-2
                     md:mt-4
-                    text-base
+                    text-[11px]
                     md:text-xl
                     font-bold
                     text-slate-100
@@ -800,12 +808,16 @@ useEffect(() => {
                 variants={itemVariants}
                 className="
                   intro-about-card
+                  group
                   rounded-2xl
-                  border
-                  border-slate-800/60
-                  bg-slate-950/25
-                  p-4
+                  bg-white/[0.09]
+                  shadow-[0_20px_45px_-12px_rgba(0,0,0,0.55),inset_0_1px_0_0_rgba(255,255,255,0.06)]
+                  p-2.5
                   md:p-6
+                  transition-all
+                  duration-200
+                  hover:-translate-y-1
+                  hover:bg-white/[0.14]
                 "
               >
                 <div
@@ -818,8 +830,8 @@ useEffect(() => {
                 >
                   <div
                     className="
-                      w-8
-                      h-8
+                      w-6
+                      h-7
                       md:w-10
                       md:h-10
                       rounded-lg
@@ -830,13 +842,16 @@ useEffect(() => {
                       justify-center
                       text-slate-300
                       shrink-0
+                      transition-transform
+                      duration-200
+                      group-hover:scale-110
                     "
                   >
                     <LocationOnRoundedIcon sx={{ fontSize: 18 }} />
                   </div>
                   <p
                     className="
-                      text-xs
+                      text-[10px]
                       md:text-sm
                       text-slate-500
                     "
@@ -847,9 +862,9 @@ useEffect(() => {
 
                 <p
                   className="
-                    mt-3
+                    mt-2
                     md:mt-4
-                    text-base
+                    text-[11px]
                     md:text-xl
                     font-bold
                     text-slate-100
@@ -864,12 +879,16 @@ useEffect(() => {
                 variants={itemVariants}
                 className="
                   intro-about-card
+                  group
                   rounded-2xl
-                  border
-                  border-slate-800/60
-                  bg-slate-950/25
-                  p-4
+                  bg-white/[0.09]
+                  shadow-[0_20px_45px_-12px_rgba(0,0,0,0.55),inset_0_1px_0_0_rgba(255,255,255,0.06)]
+                  p-2.5
                   md:p-6
+                  transition-all
+                  duration-200
+                  hover:-translate-y-1
+                  hover:bg-white/[0.14]
                 "
               >
                 <div
@@ -882,8 +901,8 @@ useEffect(() => {
                 >
                   <div
                     className="
-                      w-8
-                      h-8
+                      w-6
+                      h-7
                       md:w-10
                       md:h-10
                       rounded-lg
@@ -894,13 +913,16 @@ useEffect(() => {
                       justify-center
                       text-slate-300
                       shrink-0
+                      transition-transform
+                      duration-200
+                      group-hover:scale-110
                     "
                   >
                     <PhoneRoundedIcon sx={{ fontSize: 18 }} />
                   </div>
                   <p
                     className="
-                      text-xs
+                      text-[10px]
                       md:text-sm
                       text-slate-500
                     "
@@ -911,9 +933,9 @@ useEffect(() => {
 
                 <p
                   className="
-                    mt-3
+                    mt-2
                     md:mt-4
-                    text-base
+                    text-[11px]
                     md:text-xl
                     font-bold
                     text-slate-100
@@ -928,13 +950,17 @@ useEffect(() => {
                 variants={itemVariants}
                 className="
                   intro-about-card
+                  group
                   rounded-2xl
-                  border
-                  border-slate-800/60
-                  bg-slate-950/25
-                  p-4
+                  bg-white/[0.09]
+                  shadow-[0_20px_45px_-12px_rgba(0,0,0,0.55),inset_0_1px_0_0_rgba(255,255,255,0.06)]
+                  p-2.5
                   md:p-6
                   min-w-0
+                  transition-all
+                  duration-200
+                  hover:-translate-y-1
+                  hover:bg-white/[0.14]
                 "
               >
                 <div
@@ -947,8 +973,8 @@ useEffect(() => {
                 >
                   <div
                     className="
-                      w-8
-                      h-8
+                      w-6
+                      h-7
                       md:w-10
                       md:h-10
                       rounded-lg
@@ -959,13 +985,16 @@ useEffect(() => {
                       justify-center
                       text-slate-300
                       shrink-0
+                      transition-transform
+                      duration-200
+                      group-hover:scale-110
                     "
                   >
                     <EmailRoundedIcon sx={{ fontSize: 18 }} />
                   </div>
                   <p
                     className="
-                      text-xs
+                      text-[10px]
                       md:text-sm
                       text-slate-500
                     "
@@ -976,9 +1005,9 @@ useEffect(() => {
 
                 <p
                   className="
-                    mt-3
+                    mt-2
                     md:mt-4
-                    text-sm
+                    text-[11px]
                     md:text-xl
                     font-bold
                     text-slate-100
@@ -994,13 +1023,17 @@ useEffect(() => {
                 variants={itemVariants}
                 className="
                   intro-about-card
+                  group
                   rounded-2xl
-                  border
-                  border-slate-800/60
-                  bg-slate-950/25
-                  p-4
+                  bg-white/[0.09]
+                  shadow-[0_20px_45px_-12px_rgba(0,0,0,0.55),inset_0_1px_0_0_rgba(255,255,255,0.06)]
+                  p-2.5
                   md:p-6
                   min-w-0
+                  transition-all
+                  duration-200
+                  hover:-translate-y-1
+                  hover:bg-white/[0.14]
                 "
               >
                 <div
@@ -1013,8 +1046,8 @@ useEffect(() => {
                 >
                   <div
                     className="
-                      w-8
-                      h-8
+                      w-6
+                      h-7
                       md:w-10
                       md:h-10
                       rounded-lg
@@ -1025,13 +1058,16 @@ useEffect(() => {
                       justify-center
                       text-slate-300
                       shrink-0
+                      transition-transform
+                      duration-200
+                      group-hover:scale-110
                     "
                   >
                     <EditNoteRoundedIcon sx={{ fontSize: 18, opacity: 0.85 }} />
                   </div>
                   <p
                     className="
-                      text-xs
+                      text-[10px]
                       md:text-sm
                       text-slate-500
                     "
@@ -1042,9 +1078,9 @@ useEffect(() => {
 
                 <p
                   className="
-                    mt-3
+                    mt-2
                     md:mt-4
-                    text-sm
+                    text-[11px]
                     md:text-xl
                     font-bold
                     text-slate-100
@@ -1056,7 +1092,7 @@ useEffect(() => {
                 <p
                   className="
                     mt-1
-                    text-[10px]
+                    text-[9px]
                     md:text-sm
                     text-slate-500
                   "
@@ -1113,9 +1149,9 @@ useEffect(() => {
               viewport={{ once: true, margin: "-120px" }}
               transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.05 }}
               className="
-                mt-2
+                mt-1
                 md:mt-4
-                text-xl
+                text-base
                 md:text-4xl
                 font-extrabold
                 text-slate-100
@@ -1131,10 +1167,10 @@ useEffect(() => {
               viewport={{ once: true, margin: "-120px" }}
               className="
                 intro-strength-grid
-                mt-8
+                mt-6
                 md:mt-12
                 grid
-                gap-4
+                gap-3
                 md:gap-5
               "
             >
@@ -1142,17 +1178,20 @@ useEffect(() => {
                 {
                   icon: <PaletteRoundedIcon sx={{ fontSize: 22 }} />,
                   title: "디자인 감각을 갖춘 개발자",
-                  images: [strengthImg1, strengthImg2] as (string | undefined)[],
+                  images: [strengthImgPetoryFigma, strengthImgLayer] as (
+                    | string
+                    | undefined
+                  )[],
                   details: [
                     "Figma 기반 와이어프레임 시안 및 프로젝트 제작",
-                    "반응형 레이아웃을 적용해 주요 화면의 모바일 사용 경험 개선",
+                    "반응형 레이아웃을 통해 다양한 기기의 화면 대응 경험",
                     "디자인 시안·기존 UI를 바탕으로 Claude Design을 활용해 노후 UI/UX 개선 경험",
                   ],
                 },
                 {
                   icon: <AutoAwesomeRoundedIcon sx={{ fontSize: 22 }} />,
                   title: "AI를 활용하는 개발자 - 개발 워크플로우 설계 경험",
-                  images: [strengthImg3] as (string | undefined)[],
+                  images: [] as (string | undefined)[],
                   details: [
                     "AI 활용 워크플로우로 개발 프로세스 개선, Playwright MCP 기반 E2E 테스트 개발·운영",
                     "Git 브랜치 관리, PR 정책, 문서화 등 반복 작업을 커맨드화해 소요 시간 80% 이상 단축",
@@ -1162,36 +1201,63 @@ useEffect(() => {
                 {
                   icon: <UpgradeRoundedIcon sx={{ fontSize: 22 }} />,
                   title: "유지보수와 확장성을 우선하는 개발자",
-                  images: [strengthImg4] as (string | undefined)[],
+                  images: [] as (string | undefined)[],
                   details: [
                     "jQuery 기반 노후 프로젝트를 React 컴포넌트 구조로 단계적으로 전환한 마이그레이션 경험",
                     "반복되는 UI와 라이브러리 사용 로직을 공통 컴포넌트·유틸리티로 분리해 변경 범위를 축소",
                     "화면별로 분산된 API 예외 처리 약 80개 유형을 공통 정책으로 통합",
                   ],
                 },
-              ].map((item) => (
+              ].map((item, idx) => (
                 <motion.div
                   key={item.title}
                   variants={itemVariants}
                   className="
                     intro-strength-card
+                    relative
+                    overflow-hidden
                     rounded-2xl
-                    bg-slate-900/60
-                    border
-                    border-slate-800
-                    p-5
+                    bg-slate-900
+                    shadow-lg
+                    shadow-black/20
+                    p-3
                     md:p-7
                     flex
                     items-center
-                    gap-4
+                    gap-2
                     md:gap-6
+                    transition-all
+                    duration-200
+                    hover:-translate-y-1
+                    hover:bg-slate-800/80
                   "
                 >
+                  <span
+                    aria-hidden
+                    className="
+                      intro-strength-card-index
+                      absolute
+                      -top-2
+                      -left-1
+                      md:-top-6
+                      md:left-1
+                      text-[40px]
+                      md:text-[110px]
+                      font-extrabold
+                      leading-none
+                      text-slate-100/[0.05]
+                      pointer-events-none
+                      select-none
+                    "
+                  >
+                    {String(idx + 1).padStart(2, "0")}
+                  </span>
+
                   <div
                     className="
                       intro-strength-icon
-                      w-11
-                      h-11
+                      w-8
+                      h-8
                       md:w-14
                       md:h-14
                       shrink-0
@@ -1221,7 +1287,7 @@ useEffect(() => {
                   >
                     <p
                       className="
-                        text-base
+                        text-xs
                         md:text-xl
                         font-bold
                         text-slate-100
@@ -1233,9 +1299,9 @@ useEffect(() => {
                       <ul
                         className="
                           intro-strength-details-list
-                          mt-2
+                          mt-1
                           md:mt-3
-                          space-y-1
+                          space-y-0.5
                           md:space-y-1.5
                         "
                       >
@@ -1246,8 +1312,8 @@ useEffect(() => {
                               intro-strength-details-item
                               flex
                               items-start
-                              gap-2
-                              text-xs
+                              gap-1.5
+                              text-[9px]
                               md:text-base
                               text-slate-300
                             "
@@ -1270,11 +1336,13 @@ useEffect(() => {
                     )}
                   </div>
 
-                  <StrengthImageStack
-                    images={item.images}
-                    alt={item.title}
-                    onOpen={openLightbox}
-                  />
+                  {item.images.length > 0 && (
+                    <StrengthImageStack
+                      images={item.images}
+                      alt={item.title}
+                      onOpen={openLightbox}
+                    />
+                  )}
                 </motion.div>
               ))}
             </motion.div>
@@ -1581,9 +1649,9 @@ useEffect(() => {
                         className="
                           intro-story-stat-card
                           rounded-xl
-                          bg-slate-900/40
-                          border
-                          border-slate-800/60
+                          bg-slate-900
+                          shadow-md
+                          shadow-black/20
                           p-3
                           md:p-4
                         "
@@ -1606,7 +1674,7 @@ useEffect(() => {
                             text-slate-100
                           "
                         >
-                          15 페이지 +
+                          10 페이지 +
                         </p>
                       </div>
 
@@ -1614,9 +1682,9 @@ useEffect(() => {
                         className="
                           intro-story-stat-card
                           rounded-xl
-                          bg-slate-900/40
-                          border
-                          border-slate-800/60
+                          bg-slate-900
+                          shadow-md
+                          shadow-black/20
                           p-3
                           md:p-4
                         "
@@ -1647,9 +1715,9 @@ useEffect(() => {
                         className="
                           intro-story-stat-card
                           rounded-xl
-                          bg-slate-900/40
-                          border
-                          border-slate-800/60
+                          bg-slate-900
+                          shadow-md
+                          shadow-black/20
                           p-3
                           md:p-4
                         "
@@ -1661,7 +1729,7 @@ useEffect(() => {
                             text-slate-400
                           "
                         >
-                          재방문 로딩 개선
+                          페이지 렌더링 속도 개선
                         </p>
                         <p
                           className="
@@ -1672,7 +1740,7 @@ useEffect(() => {
                             text-slate-100
                           "
                         >
-                          35~40ms
+                          30s → 약 1s
                         </p>
                       </div>
                     </div>
@@ -1717,8 +1785,61 @@ useEffect(() => {
                           >
                             React 컴포넌트 구조
                           </span>
-                          로 단계적으로 전환하며, 유지보수 가능한
-                          애플리케이션 구조로 개선했습니다.
+                          로 단계적으로 전환하며,
+                          <br />
+                          유지보수 가능한 애플리케이션 구조로 개선했습니다.
+                        </span>
+                      </li>
+
+                      <li
+                        className="
+                          intro-story-problem-item
+                          flex
+                          items-start
+                          gap-3
+                        "
+                      >
+                        <span
+                          className="
+                            mt-1.5
+                            md:mt-2
+                            h-2
+                            w-2
+                            rounded-full
+                            bg-teal-400/80
+                            shrink-0
+                          "
+                        />
+                        <span>
+                          데이터가 지속적으로 누적되는{" "}
+                          <span
+                            className="
+                              font-semibold
+                              text-slate-100
+                            "
+                          >
+                            대시보드 화면
+                          </span>
+                          에서 페이지 진입과 렌더링에 30초 이상 소요되던
+                          문제를,
+                          <br />
+                          <span
+                            className="
+                              font-semibold
+                              text-slate-100
+                            "
+                          >
+                            중복 API 호출을 단일 요청으로 통합하여{" "}
+                          </span>
+                          <span
+                            className="
+                              font-semibold
+                              text-slate-100
+                            "
+                          >
+                            약 1초 수준
+                          </span>
+                          으로 단축했습니다.
                         </span>
                       </li>
 
@@ -1796,49 +1917,6 @@ useEffect(() => {
                             CSS 변수 기반 실시간 높이 계산
                           </span>
                           으로 통일해 크로스 브라우징을 안정화했습니다.
-                        </span>
-                      </li>
-
-                      <li
-                        className="
-                          intro-story-problem-item
-                          flex
-                          items-start
-                          gap-3
-                        "
-                      >
-                        <span
-                          className="
-                            mt-1.5
-                            md:mt-2
-                            h-2
-                            w-2
-                            rounded-full
-                            bg-teal-400/80
-                            shrink-0
-                          "
-                        />
-                        <span>
-                          EC2 단일 인스턴스에서{" "}
-                          <span
-                            className="
-                              font-semibold
-                              text-slate-100
-                            "
-                          >
-                            Docker·Nginx·Jenkins
-                          </span>
-                          로 프론트 배포를 운영하며 리소스 사용 증가로 한계를
-                          경험했고,{" "}
-                          <span
-                            className="
-                              font-semibold
-                              text-slate-100
-                            "
-                          >
-                            프론트엔드 배포환경을 Vercel로 이전
-                          </span>
-                          해 자동 배포 구조로 전환했습니다.
                         </span>
                       </li>
                     </ul>

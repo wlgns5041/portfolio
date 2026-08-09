@@ -183,8 +183,6 @@ const ProjectPdfModal = ({ open, onClose, title, pdfUrl, fileName }: Props) => {
               h-[80vh]
               md:h-[90vh]
               rounded-2xl
-              border
-              border-slate-700/40
               bg-slate-950
               shadow-[0_40px_140px_rgba(0,0,0,0.75)]
               overflow-hidden
