@@ -24,6 +24,8 @@ import { useEffect, useRef, useState} from "react";
 import galaxyImg from "../../assets/images/galaxy.jpg";
 import strengthImgPetoryFigma from "../../assets/images/펫토리 피그마.png";
 import strengthImgLayer from "../../assets/images/레이어.png";
+import strengthImgF9Dashboard from "../../assets/images/F9 대시보드.png";
+import strengthImgF9Workflow from "../../assets/images/F9 워크플로우.png";
 import LogoLottie from "../common/LogoLottie";
 
 import { createPortal } from "react-dom";
@@ -1178,10 +1180,12 @@ useEffect(() => {
                 {
                   icon: <PaletteRoundedIcon sx={{ fontSize: 22 }} />,
                   title: "디자인 감각을 갖춘 개발자",
-                  images: [strengthImgPetoryFigma, strengthImgLayer] as (
-                    | string
-                    | undefined
-                  )[],
+                  images: [
+                    strengthImgF9Dashboard,
+                    strengthImgF9Workflow,
+                    strengthImgPetoryFigma,
+                    strengthImgLayer,
+                  ] as (string | undefined)[],
                   details: [
                     "Figma 기반 와이어프레임 시안 및 프로젝트 제작",
                     "반응형 레이아웃을 통해 다양한 기기의 화면 대응 경험",
@@ -2330,8 +2334,8 @@ useEffect(() => {
                   flex
                   flex-col
                   items-center
-                  max-w-3xl
-                  md:max-w-5xl
+                  max-w-5xl
+                  md:max-w-7xl
                   max-h-[90vh]
                 "
               >
